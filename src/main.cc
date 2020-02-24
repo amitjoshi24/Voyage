@@ -181,6 +181,9 @@ MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 
 int main(int argc, char* argv[])
 {
+	//initializes camera
+	g_camera.init();
+
 	std::string window_title = "Menger";
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	g_menger = std::make_shared<Menger>();
