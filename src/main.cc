@@ -131,10 +131,13 @@ KeyCallback(GLFWwindow* window,
 	else if (key == GLFW_KEY_S && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE) {
 		// FIXME: save geometry to OBJ
 	} else if (key == GLFW_KEY_W && action != GLFW_RELEASE) {
-		// FIXME: WASD
+		g_camera.forward();
 	} else if (key == GLFW_KEY_S && action != GLFW_RELEASE) {
+		g_camera.backward();
 	} else if (key == GLFW_KEY_A && action != GLFW_RELEASE) {
+		g_camera.left();
 	} else if (key == GLFW_KEY_D && action != GLFW_RELEASE) {
+		g_camera.right();
 	} else if (key == GLFW_KEY_LEFT && action != GLFW_RELEASE) {
 		// FIXME: Left Right Up and Down
 	} else if (key == GLFW_KEY_RIGHT && action != GLFW_RELEASE) {
