@@ -9,6 +9,24 @@ namespace {
 	float zoom_speed = 0.1f;
 };
 
+#include <iostream>
+
+
+void print_vec(glm::vec4 vec){
+	for (int j = 0; j < 4; j ++){
+			std::cout<< vec[j] << ' ';
+		}
+
+		std::cout<< std::endl;
+}
+
+void print_matrix(glm::mat4 mat){
+	for (int i = 0; i < 4; i ++){
+		print_vec(mat[i]);
+	}
+
+}
+
 
 void Camera::init(){
 	eye = glm::vec3(0.0f, 0.0f, camera_distance_);
@@ -17,11 +35,12 @@ void Camera::init(){
 	cam_up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	update();
+
+
 }
 
 void Camera::update(){
-	cam_right = glm::normalize(glm::cross(cam_up, look));
-	cam_up = glm::cross(look, cam_right);
+	cam_right = glm::normalize(glm::cross(look, cam_up));
 
 	center = eye + camera_distance_*look; //TODO elementwise multiply might be weird
 }
@@ -57,9 +76,9 @@ void Camera::down(){
 
 } //down arrow
 
-// FIXME: Calculate the view matrix
 glm::mat4 Camera::get_view_matrix() const
 {
+
 
 	glm::mat4 viewMatrix;
 
@@ -73,20 +92,50 @@ glm::mat4 Camera::get_view_matrix() const
 				else if ( i == 1)
 					transformMatrix[i][j] = cam_up[j];
 				else if (i == 2)
-					transformMatrix[i][j] = look[j];
+					transformMatrix[i][j] = -look[j];
+				else if (i == 3)
+					transformMatrix[i][j] = -eye[j];
 
 			}
 			else
-				transformMatrix[i][j] = 0;
+				transformMatrix[i][j] = 0.0f;
 
 		}
 
 	}
 
+
 	transformMatrix[3][3] = 1.0f;
+	print_matrix(transformMatrix);
 
-	glm::mat4 translationMatrix = glm::translate(glm::mat4(), -eye);
+	return transformMatrix;
 
-	return transformMatrix * translationMatrix;
+	/*
+
+	glm::mat4 translationMatrix = glm::mat4();
+
+	for (int j = 0; j < 4; j++){
+		for (int i = 0; i < 4; i++){
+			if ( j == 3 && i < 3)
+				translationMatrix[j][i] = -eye[i];
+			if (j == i)
+				translationMatrix[j][i] = 1;
+		}
+	}
+
+	glm::mat4 view_matrix = transformMatrix * translationMatrix;
+
+	return  view_matrix;
+
+	glm::mat4 temp = glm::lookAt(
+    eye, // the position of your camera, in world space
+    center,   // where you want to look at, in world space
+    cam_up        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
+); 
+
+	print_matrix(temp);
+	//SOLUTION
+	return temp;
+	*/
 }
 

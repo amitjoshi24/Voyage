@@ -358,7 +358,6 @@ int main(int argc, char* argv[])
 			glm::perspective(glm::radians(45.0f), aspect, 0.0001f, 1000.0f);
 
 		// Compute the view matrix
-		// FIXME: change eye and center through mouse/keyboard events.
 		glm::mat4 view_matrix = g_camera.get_view_matrix();
 
 		// Use our program.
