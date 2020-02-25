@@ -14,7 +14,7 @@ void Camera::init(){
 	eye = glm::vec3(0.0f, 0.0f, camera_distance_);
 
 	look = glm::vec3(0.0f, 0.0f, -1.0f);
-	cam_up = glm::vec3(0.0f, 1.0, 0.0f);
+	cam_up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	update();
 }

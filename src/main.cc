@@ -142,7 +142,9 @@ KeyCallback(GLFWwindow* window,
 		// FIXME: Left Right Up and Down
 	} else if (key == GLFW_KEY_RIGHT && action != GLFW_RELEASE) {
 	} else if (key == GLFW_KEY_DOWN && action != GLFW_RELEASE) {
+		g_camera.down();
 	} else if (key == GLFW_KEY_UP && action != GLFW_RELEASE) {
+		g_camera.up();
 	} else if (key == GLFW_KEY_C && action != GLFW_RELEASE) {
 		// FIXME: FPS mode on/off
 	}
