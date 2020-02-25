@@ -1,6 +1,5 @@
 #include "camera.h"
 #include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
 
 namespace {
 	float pan_speed = 0.1f;
@@ -75,6 +74,26 @@ void Camera::down(){
 	update();
 
 } //down arrow
+
+void Camera::clockwise(){
+	cam_up = glm::rotate(cam_up, roll_speed, look );
+
+	update();
+
+} //rotate up around look
+
+void Camera::counterclockwise(){
+
+	cam_up = glm::rotate(cam_up, -roll_speed, look );
+
+	update();
+
+
+}
+
+void Camera::swivel(){
+
+}
 
 glm::mat4 Camera::get_view_matrix() const
 {

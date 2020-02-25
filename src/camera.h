@@ -2,6 +2,8 @@
 #define CAMERA_H
 
 #include <glm/glm.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/transform.hpp>
 
 class Camera {
 public:
@@ -20,7 +22,6 @@ public:
 	void clockwise();
 	void counterclockwise();
 	void swivel(); //with mouse delta ROTATE
-	// FIXME: add functions to manipulate camera objects.
 private:
 	float camera_distance_ = 3.0;
 	glm::vec3 look;

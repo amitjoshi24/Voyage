@@ -139,8 +139,10 @@ KeyCallback(GLFWwindow* window,
 	} else if (key == GLFW_KEY_D && action != GLFW_RELEASE) {
 		g_camera.right();
 	} else if (key == GLFW_KEY_LEFT && action != GLFW_RELEASE) {
+		g_camera.counterclockwise();
 		// FIXME: Left Right Up and Down
 	} else if (key == GLFW_KEY_RIGHT && action != GLFW_RELEASE) {
+		g_camera.clockwise();
 	} else if (key == GLFW_KEY_DOWN && action != GLFW_RELEASE) {
 		g_camera.down();
 	} else if (key == GLFW_KEY_UP && action != GLFW_RELEASE) {
