@@ -105,6 +105,17 @@ SaveObj(const std::string& file,
         const std::vector<glm::vec4>& vertices,
         const std::vector<glm::uvec3>& indices)
 {
+	ofstream outputFile("geometry.obj");
+	for(int i = 0; i < vertices.size(); i++){
+		glm::vec4 curVertex = vertices.at(i);
+		outputFile << "v " << curVertex[0] << " " << curVertex[1] << " " << curVertex[2] << endl;
+	}
+
+	for(int i = 0; i < indices.size(); i++){
+		glm::uvec3 curFace = indices.at(i);
+		outputFile << "f " << curFace[0] << " " << curFace[1] << " " << curFace[2] << endl;
+	}
+	outputFile.close();
 }
 
 void
@@ -223,8 +234,9 @@ int main(int argc, char* argv[])
 	std::vector<glm::uvec3> obj_faces;
 
         //FIXME: Create the geometry from a Menger object.
-        CreateTriangle(obj_vertices, obj_faces);
+        //CreateTriangle(obj_vertices, obj_faces);
 
+	//call menger.h's generate_geometry instead
 	g_menger->set_nesting_level(1);
 
 	glm::vec4 min_bounds = glm::vec4(std::numeric_limits<float>::max());

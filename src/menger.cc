@@ -1,4 +1,7 @@
 #include "menger.h"
+#include <iostream>
+#include <string>
+
 
 namespace {
 	const int kMinLevel = 0;
@@ -34,9 +37,33 @@ Menger::set_clean()
 }
 
 // FIXME generate Menger sponge geometry
-void
+void generate_cube(float m, float M, std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces){
+	vertices.push_back(glm::vec4(m, M, m, 1.0f));
+	vertices.push_back(glm::vec4(m, m, m, 1.0f));
+	vertices.push_back(glm::vec4(M, M, m, 1.0f));
+	vertices.push_back(glm::vec4(M, m, m, 1.0f));
+
+	vertices.push_back(glm::vec4(m, M, M, 1.0f));
+	vertices.push_back(glm::vec4(m, m, M, 1.0f));
+	vertices.push_back(glm::vec4(M, M, M, 1.0f));
+	vertices.push_back(glm::vec4(M, m, M, 1.0f));
+
+
+	indices.push_back(glm::uvec3(0, 1, 2));
+}
 Menger::generate_geometry(std::vector<glm::vec4>& obj_vertices,
                           std::vector<glm::uvec3>& obj_faces) const
 {
+	// generate basic cube for now
+	// diametrically oppposite corners should be (m,m,m) and (M,M,M) where m = -0.5 and M = 0.5
+
+	generate_cube(-0.5f, 0.5f, obj_vertices, obj_faces);
+
+
 }
+
+
+
+
+
 
