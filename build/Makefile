@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge
+CMAKE_SOURCE_DIR = /u/doracgp/workspace/378h-graphics/menger_sponge
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build
+CMAKE_BINARY_DIR = /u/doracgp/workspace/378h-graphics/menger_sponge/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles /u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -110,6 +110,86 @@ depend:
 	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+#=============================================================================
+# Target rules for targets named utgraphicsutil
+
+# Build rule for target.
+utgraphicsutil: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 utgraphicsutil
+.PHONY : utgraphicsutil
+
+# fast build rule for target.
+utgraphicsutil/fast:
+	$(MAKE) -f CMakeFiles/utgraphicsutil.dir/build.make CMakeFiles/utgraphicsutil.dir/build
+.PHONY : utgraphicsutil/fast
+
+#=============================================================================
+# Target rules for targets named menger
+
+# Build rule for target.
+menger: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 menger
+.PHONY : menger
+
+# fast build rule for target.
+menger/fast:
+	$(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/build
+.PHONY : menger/fast
+
+lib/utgraphicsutil/debuggl.o: lib/utgraphicsutil/debuggl.cc.o
+
+.PHONY : lib/utgraphicsutil/debuggl.o
+
+# target to build an object file
+lib/utgraphicsutil/debuggl.cc.o:
+	$(MAKE) -f CMakeFiles/utgraphicsutil.dir/build.make CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o
+.PHONY : lib/utgraphicsutil/debuggl.cc.o
+
+lib/utgraphicsutil/debuggl.i: lib/utgraphicsutil/debuggl.cc.i
+
+.PHONY : lib/utgraphicsutil/debuggl.i
+
+# target to preprocess a source file
+lib/utgraphicsutil/debuggl.cc.i:
+	$(MAKE) -f CMakeFiles/utgraphicsutil.dir/build.make CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.i
+.PHONY : lib/utgraphicsutil/debuggl.cc.i
+
+lib/utgraphicsutil/debuggl.s: lib/utgraphicsutil/debuggl.cc.s
+
+.PHONY : lib/utgraphicsutil/debuggl.s
+
+# target to generate assembly for a file
+lib/utgraphicsutil/debuggl.cc.s:
+	$(MAKE) -f CMakeFiles/utgraphicsutil.dir/build.make CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.s
+.PHONY : lib/utgraphicsutil/debuggl.cc.s
+
+lib/utgraphicsutil/jpegio.o: lib/utgraphicsutil/jpegio.cc.o
+
+.PHONY : lib/utgraphicsutil/jpegio.o
+
+# target to build an object file
+lib/utgraphicsutil/jpegio.cc.o:
+	$(MAKE) -f CMakeFiles/utgraphicsutil.dir/build.make CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o
+.PHONY : lib/utgraphicsutil/jpegio.cc.o
+
+lib/utgraphicsutil/jpegio.i: lib/utgraphicsutil/jpegio.cc.i
+
+.PHONY : lib/utgraphicsutil/jpegio.i
+
+# target to preprocess a source file
+lib/utgraphicsutil/jpegio.cc.i:
+	$(MAKE) -f CMakeFiles/utgraphicsutil.dir/build.make CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.i
+.PHONY : lib/utgraphicsutil/jpegio.cc.i
+
+lib/utgraphicsutil/jpegio.s: lib/utgraphicsutil/jpegio.cc.s
+
+.PHONY : lib/utgraphicsutil/jpegio.s
+
+# target to generate assembly for a file
+lib/utgraphicsutil/jpegio.cc.s:
+	$(MAKE) -f CMakeFiles/utgraphicsutil.dir/build.make CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.s
+.PHONY : lib/utgraphicsutil/jpegio.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -117,7 +197,15 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... utgraphicsutil"
 	@echo "... edit_cache"
+	@echo "... menger"
+	@echo "... lib/utgraphicsutil/debuggl.o"
+	@echo "... lib/utgraphicsutil/debuggl.i"
+	@echo "... lib/utgraphicsutil/debuggl.s"
+	@echo "... lib/utgraphicsutil/jpegio.o"
+	@echo "... lib/utgraphicsutil/jpegio.i"
+	@echo "... lib/utgraphicsutil/jpegio.s"
 .PHONY : help
 
 
