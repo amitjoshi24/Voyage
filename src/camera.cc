@@ -103,7 +103,7 @@ void Camera::swivel(glm::vec2 dir){
 	//vector perpendicular to this and look
 	glm::vec3 turn = cam_right*dir[0] - cam_up*dir[1];
 	glm::vec3 axis = glm::cross(turn, look); //maybe this axis should go about center?
-	print_vec3(axis);
+	//print_vec3(axis);
 
 	look = glm::rotate(look, rotation_speed, axis);
 
@@ -162,9 +162,9 @@ glm::mat4 Camera::get_view_matrix() const
     center,   // where you want to look at, in world space
     cam_up        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
 ); 
-	std::cout<<"-----------------"<<std::endl;
+	/*std::cout<<"-----------------"<<std::endl;
 	print_matrix(view_matrix);
-	print_matrix(temp);
+	print_matrix(temp);*/
 	//SOLUTION
 	return temp;
 	

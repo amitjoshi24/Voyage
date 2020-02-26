@@ -74,7 +74,7 @@ Menger::generate_geometry(std::vector<glm::vec4>& obj_vertices,
 {
 	// generate basic cube for now
 	// diametrically oppposite corners should be (m,m,m) and (M,M,M) where m = -0.5 and M = 0.5
-
+	std::cout << "litty" << endl;
 	generate_cube(-0.5f, 0.5f, obj_vertices, obj_faces);
 
 

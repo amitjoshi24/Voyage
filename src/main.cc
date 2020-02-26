@@ -248,6 +248,7 @@ int main(int argc, char* argv[])
         //CreateTriangle(obj_vertices, obj_faces);
 
 	//call menger.h's generate_geometry instead
+	Menger::generate_geometry(obj_vertices, obj_faces);
 	g_menger->set_nesting_level(1);
 
 	glm::vec4 min_bounds = glm::vec4(std::numeric_limits<float>::max());
