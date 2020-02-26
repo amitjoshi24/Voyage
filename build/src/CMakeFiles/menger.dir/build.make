@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /u/doracgp/workspace/378h-graphics/menger_sponge
+CMAKE_SOURCE_DIR = /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /u/doracgp/workspace/378h-graphics/menger_sponge/build
+CMAKE_BINARY_DIR = /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build
 
 # Include any dependencies generated for this target.
 include src/CMakeFiles/menger.dir/depend.make
@@ -59,16 +59,16 @@ include src/CMakeFiles/menger.dir/flags.make
 
 src/CMakeFiles/menger.dir/camera.cc.o: src/CMakeFiles/menger.dir/flags.make
 src/CMakeFiles/menger.dir/camera.cc.o: ../src/camera.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/menger.dir/camera.cc.o"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/menger.dir/camera.cc.o -c /u/doracgp/workspace/378h-graphics/menger_sponge/src/camera.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/menger.dir/camera.cc.o"
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/menger.dir/camera.cc.o -c /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/camera.cc
 
 src/CMakeFiles/menger.dir/camera.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/menger.dir/camera.cc.i"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/doracgp/workspace/378h-graphics/menger_sponge/src/camera.cc > CMakeFiles/menger.dir/camera.cc.i
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/camera.cc > CMakeFiles/menger.dir/camera.cc.i
 
 src/CMakeFiles/menger.dir/camera.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/menger.dir/camera.cc.s"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/doracgp/workspace/378h-graphics/menger_sponge/src/camera.cc -o CMakeFiles/menger.dir/camera.cc.s
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/camera.cc -o CMakeFiles/menger.dir/camera.cc.s
 
 src/CMakeFiles/menger.dir/camera.cc.o.requires:
 
@@ -83,16 +83,16 @@ src/CMakeFiles/menger.dir/camera.cc.o.provides.build: src/CMakeFiles/menger.dir/
 
 src/CMakeFiles/menger.dir/main.cc.o: src/CMakeFiles/menger.dir/flags.make
 src/CMakeFiles/menger.dir/main.cc.o: ../src/main.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/menger.dir/main.cc.o"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/menger.dir/main.cc.o -c /u/doracgp/workspace/378h-graphics/menger_sponge/src/main.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/menger.dir/main.cc.o"
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/menger.dir/main.cc.o -c /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/main.cc
 
 src/CMakeFiles/menger.dir/main.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/menger.dir/main.cc.i"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/doracgp/workspace/378h-graphics/menger_sponge/src/main.cc > CMakeFiles/menger.dir/main.cc.i
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/main.cc > CMakeFiles/menger.dir/main.cc.i
 
 src/CMakeFiles/menger.dir/main.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/menger.dir/main.cc.s"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/doracgp/workspace/378h-graphics/menger_sponge/src/main.cc -o CMakeFiles/menger.dir/main.cc.s
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/main.cc -o CMakeFiles/menger.dir/main.cc.s
 
 src/CMakeFiles/menger.dir/main.cc.o.requires:
 
@@ -107,16 +107,16 @@ src/CMakeFiles/menger.dir/main.cc.o.provides.build: src/CMakeFiles/menger.dir/ma
 
 src/CMakeFiles/menger.dir/menger.cc.o: src/CMakeFiles/menger.dir/flags.make
 src/CMakeFiles/menger.dir/menger.cc.o: ../src/menger.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/CMakeFiles/menger.dir/menger.cc.o"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/menger.dir/menger.cc.o -c /u/doracgp/workspace/378h-graphics/menger_sponge/src/menger.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/CMakeFiles/menger.dir/menger.cc.o"
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/menger.dir/menger.cc.o -c /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/menger.cc
 
 src/CMakeFiles/menger.dir/menger.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/menger.dir/menger.cc.i"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/doracgp/workspace/378h-graphics/menger_sponge/src/menger.cc > CMakeFiles/menger.dir/menger.cc.i
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/menger.cc > CMakeFiles/menger.dir/menger.cc.i
 
 src/CMakeFiles/menger.dir/menger.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/menger.dir/menger.cc.s"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/doracgp/workspace/378h-graphics/menger_sponge/src/menger.cc -o CMakeFiles/menger.dir/menger.cc.s
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/menger.cc -o CMakeFiles/menger.dir/menger.cc.s
 
 src/CMakeFiles/menger.dir/menger.cc.o.requires:
 
@@ -149,8 +149,8 @@ bin/menger: libutgraphicsutil.a
 bin/menger: /usr/lib/x86_64-linux-gnu/libGLEW.so
 bin/menger: /usr/lib/x86_64-linux-gnu/libjpeg.so
 bin/menger: src/CMakeFiles/menger.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ../bin/menger"
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/menger.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ../bin/menger"
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/menger.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 src/CMakeFiles/menger.dir/build: bin/menger
@@ -164,10 +164,10 @@ src/CMakeFiles/menger.dir/requires: src/CMakeFiles/menger.dir/menger.cc.o.requir
 .PHONY : src/CMakeFiles/menger.dir/requires
 
 src/CMakeFiles/menger.dir/clean:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build/src && $(CMAKE_COMMAND) -P CMakeFiles/menger.dir/cmake_clean.cmake
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src && $(CMAKE_COMMAND) -P CMakeFiles/menger.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/menger.dir/clean
 
 src/CMakeFiles/menger.dir/depend:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /u/doracgp/workspace/378h-graphics/menger_sponge /u/doracgp/workspace/378h-graphics/menger_sponge/src /u/doracgp/workspace/378h-graphics/menger_sponge/build /u/doracgp/workspace/378h-graphics/menger_sponge/build/src /u/doracgp/workspace/378h-graphics/menger_sponge/build/src/CMakeFiles/menger.dir/DependInfo.cmake --color=$(COLOR)
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/menger.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : src/CMakeFiles/menger.dir/depend
 

@@ -96,7 +96,13 @@ CreateTriangle(std::vector<glm::vec4>& vertices,
 	vertices.push_back(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f));
 	vertices.push_back(glm::vec4(0.5f, -0.5f, -0.5f, 1.0f));
 	vertices.push_back(glm::vec4(0.0f, 0.5f, -0.5f, 1.0f));
+
+
+	/*vertices.push_back(glm::vec4(0.5f, 1.5f, 0.5f, 1.0f));
+	vertices.push_back(glm::vec4(1.5f, 0.5f, 0.5f, 1.0f));
+	vertices.push_back(glm::vec4(1.0f, 1.5f, 0.5f, 1.0f));*/
 	indices.push_back(glm::uvec3(0, 1, 2));
+	//indices.push_back(glm::uvec3(3, 4, 5));
 }
 
 // FIXME: Save geometry to OBJ file
@@ -105,15 +111,16 @@ SaveObj(const std::string& file,
         const std::vector<glm::vec4>& vertices,
         const std::vector<glm::uvec3>& indices)
 {
-	std::ofstream outputFile("geometry.obj");
+	std::ofstream outputFile(file);
 	for(unsigned int i = 0; i < vertices.size(); i++){
 		glm::vec4 curVertex = vertices.at(i);
-		outputFile << "v " << curVertex[0] << " " << curVertex[1] << " " << curVertex[2] << std::endl;
+		outputFile << "v " << curVertex[0] << " " << curVertex[1] << " " << curVertex[2]<< std::endl;
 	}
 
 	for(unsigned int i = 0; i < indices.size(); i++){
 		glm::uvec3 curFace = indices.at(i);
-		outputFile << "f " << curFace[0] << " " << curFace[1] << " " << curFace[2] << std::endl;
+		outputFile << "f " << curFace[0] + 1<< " " << curFace[1] + 1<< " " << curFace[2] + 1 << std::endl;
+		//outputFile << "f " << curFace[0] << " " << curFace[1] << " " << curFace[2]  << std::endl;
 	}
 	outputFile.close();
 }
@@ -124,6 +131,13 @@ ErrorCallback(int error, const char* description)
 	std::cerr << "GLFW Error: " << description << "\n";
 }
 
+void updateMengerStuff(int level){
+	/*obj_vertices->clear();
+	obj_faces->clear();
+	g_menger->set_nesting_level(level);
+	g_menger->generate_geometry(obj_vertices, obj_faces);*/
+
+}
 std::shared_ptr<Menger> g_menger;
 Camera g_camera;
 
@@ -141,6 +155,8 @@ KeyCallback(GLFWwindow* window,
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	else if (key == GLFW_KEY_S && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE) {
 		// FIXME: save geometry to OBJ
+		SaveObj("geometry.obj", g_menger->obj_vertices, g_menger->obj_faces);
+		std::cout<<"Saved it." <<std::endl;
 	} else if (key == GLFW_KEY_W && action != GLFW_RELEASE) {
 		g_camera.forward();
 	} else if (key == GLFW_KEY_S && action != GLFW_RELEASE) {
@@ -165,10 +181,15 @@ KeyCallback(GLFWwindow* window,
 	if (key == GLFW_KEY_0 && action != GLFW_RELEASE) {
 		// FIXME: Change nesting level of g_menger
 		// Note: GLFW_KEY_0 - 4 may not be continuous.
+		g_menger->set_nesting_level(0);
 	} else if (key == GLFW_KEY_1 && action != GLFW_RELEASE) {
+		g_menger->set_nesting_level(1);
 	} else if (key == GLFW_KEY_2 && action != GLFW_RELEASE) {
+		g_menger->set_nesting_level(2);
 	} else if (key == GLFW_KEY_3 && action != GLFW_RELEASE) {
+		g_menger->set_nesting_level(3);
 	} else if (key == GLFW_KEY_4 && action != GLFW_RELEASE) {
+		g_menger->set_nesting_level(4);
 	}
 }
 
@@ -248,8 +269,9 @@ int main(int argc, char* argv[])
         //CreateTriangle(obj_vertices, obj_faces);
 
 	//call menger.h's generate_geometry instead
+	
+	g_menger->set_nesting_level(0);
 	g_menger->generate_geometry(obj_vertices, obj_faces);
-	g_menger->set_nesting_level(1);
 
 	glm::vec4 min_bounds = glm::vec4(std::numeric_limits<float>::max());
 	glm::vec4 max_bounds = glm::vec4(-std::numeric_limits<float>::max());

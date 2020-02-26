@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /u/doracgp/workspace/378h-graphics/menger_sponge
+CMAKE_SOURCE_DIR = /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /u/doracgp/workspace/378h-graphics/menger_sponge/build
+CMAKE_BINARY_DIR = /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(CMAKE_COMMAND) -E cmake_progress_start /u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles /u/doracgp/workspace/378h-graphics/menger_sponge/build/src/CMakeFiles/progress.marks
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles 0
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(CMAKE_COMMAND) -E cmake_progress_start /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/progress.marks
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,22 +97,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/menger.dir/rule:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/menger.dir/rule
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/menger.dir/rule
 .PHONY : src/CMakeFiles/menger.dir/rule
 
 # Convenience name for target.
@@ -122,7 +122,7 @@ menger: src/CMakeFiles/menger.dir/rule
 
 # fast build rule for target.
 menger/fast:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/build
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/build
 .PHONY : menger/fast
 
 camera.o: camera.cc.o
@@ -131,7 +131,7 @@ camera.o: camera.cc.o
 
 # target to build an object file
 camera.cc.o:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/camera.cc.o
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/camera.cc.o
 .PHONY : camera.cc.o
 
 camera.i: camera.cc.i
@@ -140,7 +140,7 @@ camera.i: camera.cc.i
 
 # target to preprocess a source file
 camera.cc.i:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/camera.cc.i
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/camera.cc.i
 .PHONY : camera.cc.i
 
 camera.s: camera.cc.s
@@ -149,7 +149,7 @@ camera.s: camera.cc.s
 
 # target to generate assembly for a file
 camera.cc.s:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/camera.cc.s
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/camera.cc.s
 .PHONY : camera.cc.s
 
 main.o: main.cc.o
@@ -158,7 +158,7 @@ main.o: main.cc.o
 
 # target to build an object file
 main.cc.o:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/main.cc.o
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/main.cc.o
 .PHONY : main.cc.o
 
 main.i: main.cc.i
@@ -167,7 +167,7 @@ main.i: main.cc.i
 
 # target to preprocess a source file
 main.cc.i:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/main.cc.i
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/main.cc.i
 .PHONY : main.cc.i
 
 main.s: main.cc.s
@@ -176,7 +176,7 @@ main.s: main.cc.s
 
 # target to generate assembly for a file
 main.cc.s:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/main.cc.s
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/main.cc.s
 .PHONY : main.cc.s
 
 menger.o: menger.cc.o
@@ -185,7 +185,7 @@ menger.o: menger.cc.o
 
 # target to build an object file
 menger.cc.o:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/menger.cc.o
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/menger.cc.o
 .PHONY : menger.cc.o
 
 menger.i: menger.cc.i
@@ -194,7 +194,7 @@ menger.i: menger.cc.i
 
 # target to preprocess a source file
 menger.cc.i:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/menger.cc.i
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/menger.cc.i
 .PHONY : menger.cc.i
 
 menger.s: menger.cc.s
@@ -203,7 +203,7 @@ menger.s: menger.cc.s
 
 # target to generate assembly for a file
 menger.cc.s:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/menger.cc.s
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(MAKE) -f src/CMakeFiles/menger.dir/build.make src/CMakeFiles/menger.dir/menger.cc.s
 .PHONY : menger.cc.s
 
 # Help Target
@@ -235,6 +235,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

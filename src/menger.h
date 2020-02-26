@@ -12,7 +12,11 @@ public:
 	bool is_dirty() const;
 	void set_clean();
 	void generate_geometry(std::vector<glm::vec4>& obj_vertices,
-	                       std::vector<glm::uvec3>& obj_faces) const;
+	                       std::vector<glm::uvec3>& obj_faces) ;
+	void generate_geometry_helper(float s, glm::dvec3 min, std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces, int curDepth) const;
+	std::vector<glm::vec4> obj_vertices;
+	std::vector<glm::uvec3> obj_faces;
+
 private:
 	int nesting_level_ = 0;
 	bool dirty_ = false;

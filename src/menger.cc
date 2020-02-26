@@ -1,6 +1,8 @@
 #include "menger.h"
 #include <iostream>
 #include <string>
+#include <cmath>        // std::abs
+using namespace std;
 
 
 namespace {
@@ -24,6 +26,7 @@ Menger::set_nesting_level(int level)
 	dirty_ = true;
 }
 
+
 bool
 Menger::is_dirty() const
 {
@@ -36,11 +39,12 @@ Menger::set_clean()
 	dirty_ = false;
 }
 
+
 // FIXME generate Menger sponge geometry
 void generate_cube(float s, glm::vec3 min, std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces){
 	glm::vec3 sVec(s, s, s);
 
-	glm::vec3 max = min + s;
+	glm::vec3 max = min + sVec;
 
 	obj_vertices.push_back(glm::vec4(min[0], max[1], min[2], 1.0f));
 	obj_vertices.push_back(glm::vec4(min[0], min[1], min[2], 1.0f));
@@ -66,35 +70,78 @@ void generate_cube(float s, glm::vec3 min, std::vector<glm::vec4>& obj_vertices,
 	obj_vertices.push_back(glm::vec4(M, m, M, 1.0f)); //backC 7
 	*/
 
-	obj_faces.push_back(glm::uvec3(0, 1, 2));
-	obj_faces.push_back(glm::uvec3(1, 3, 2));
+	int pastSize = obj_faces.size();
 
-	obj_faces.push_back(glm::uvec3(3, 7, 6));
-	obj_faces.push_back(glm::uvec3(6, 2, 3));
-	
-	obj_faces.push_back(glm::uvec3(2, 6, 4));
-	obj_faces.push_back(glm::uvec3(4, 0, 2));  
-	
-	obj_faces.push_back(glm::uvec3(1, 0, 4));
-	obj_faces.push_back(glm::uvec3(4, 5, 0));  
-	
-	obj_faces.push_back(glm::uvec3(4, 6, 7));
-	obj_faces.push_back(glm::uvec3(7, 5, 4));  
-	
-	obj_faces.push_back(glm::uvec3(1, 5, 7));
-	obj_faces.push_back(glm::uvec3(7, 3, 1));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 0, pastSize + 1, pastSize + 2));
+	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 3, pastSize + 2));
 
+	obj_faces.push_back(glm::uvec3(pastSize + 3, pastSize + 7, pastSize + 6));
+	obj_faces.push_back(glm::uvec3(pastSize + 6, pastSize + 2, pastSize + 3));
+	
+	obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 6, pastSize + 4));
+	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 0, pastSize + 2));  
+	
+	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 0, pastSize + 4));
+	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 5, pastSize + 1));  
+	
+	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 6, pastSize + 7));
+	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 5, pastSize + 4));  
+	
+	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 5, pastSize + 7));
+	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 3, pastSize + 1));  
+	
+}
+void check(std::vector<glm::vec4>& obj_vertices){
+	for(unsigned int i = 0; i < obj_vertices.size(); i++){
+		glm::vec4 curVertex = obj_vertices.at(i);
+		for(unsigned int j = 0; j < 3; j++){
+			if(abs(curVertex[j]) >= 0.5){
+				cout << "WHAT THE FUCK\n";
+			}
+		}
+	}
 
 }
+void Menger::generate_geometry_helper(float s, glm::dvec3 min, std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces, int curDepth) const{
+	//std::cout << "nestinglevel: " << nesting_level_ << std::endl;
+	if(curDepth == nesting_level_){
+		std::cout << " ayyy generating a cube\n";
+		generate_cube(s, min, obj_vertices, obj_faces);
+		//std::cout << "obj_faces.size(): " << obj_faces.size() << std::endl;
+	}
+	else{
+		float newS = (float)(s/3);
+		for(int i = 0; i < 3; i++){
+			int forI = (int)(i==1);
+			for(int j = 0; j < 3; j++){
+				int forJ = (int)(j==1);
+				for(int k = 0; k < 3; k++){
+					int forK = (int)(k==1);
+					int sumStrikes = forI + forJ + forK;
+					if(sumStrikes < 2){
+						//only if this subcube is in the center of less than 2 axes, then recur
+						glm::dvec3 deltaFromMin(i*newS, -j*newS, k*newS);
+						glm::dvec3 newMin = min + deltaFromMin;
+						generate_geometry_helper(newS, newMin, obj_vertices, obj_faces, curDepth + 1);
+					}
+				}
+			}
+		}
+	}
+}
 void Menger::generate_geometry(std::vector<glm::vec4>& obj_vertices,
-                          std::vector<glm::uvec3>& obj_faces) const
+                          std::vector<glm::uvec3>& obj_faces) 
 {
+	obj_vertices.clear();
+	obj_faces.clear();
 	// generate basic cube for now
 	// diametrically oppposite corners should be (m,m,m) and (M,M,M) where m = -0.5 and M = 0.5
 	//std::cout << "litty" << endl;
-	generate_cube(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces);
-
+	//generate_cube(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces);
+	generate_geometry_helper(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces, 0);
+	check(obj_vertices);
+	this->obj_vertices = obj_vertices;
+	this->obj_faces = obj_faces;
 
 }
 

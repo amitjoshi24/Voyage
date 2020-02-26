@@ -1,6 +1,6 @@
-/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles/rebuild_cache.dir
-/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles/utgraphicsutil.dir
-/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles/edit_cache.dir
-/u/doracgp/workspace/378h-graphics/menger_sponge/build/src/CMakeFiles/rebuild_cache.dir
-/u/doracgp/workspace/378h-graphics/menger_sponge/build/src/CMakeFiles/menger.dir
-/u/doracgp/workspace/378h-graphics/menger_sponge/build/src/CMakeFiles/edit_cache.dir
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/rebuild_cache.dir
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/utgraphicsutil.dir
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/edit_cache.dir
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/rebuild_cache.dir
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/menger.dir
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/edit_cache.dir

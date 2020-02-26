@@ -8,15 +8,15 @@
 
 ../lib/utgraphicsutil/debuggl.h
 
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/camera.cc
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/camera.cc
 camera.h
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/camera.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/camera.h
 glm/glm.hpp
 -
 iostream
 -
 
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/camera.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/camera.h
 glm/glm.hpp
 -
 glm/gtx/rotate_vector.hpp
@@ -26,7 +26,7 @@ glm/gtx/transform.hpp
 math.h
 -
 
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/main.cc
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/main.cc
 fstream
 -
 iostream
@@ -50,19 +50,21 @@ GLFW/glfw3.h
 debuggl.h
 -
 menger.h
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/menger.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/menger.h
 camera.h
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/camera.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/camera.h
 
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/menger.cc
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/menger.cc
 menger.h
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/menger.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/menger.h
 iostream
 -
 string
 -
+cmath
+-
 
-/u/doracgp/workspace/378h-graphics/menger_sponge/src/menger.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/menger.h
 glm/glm.hpp
 -
 vector
