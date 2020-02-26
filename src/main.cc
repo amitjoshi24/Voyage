@@ -105,15 +105,15 @@ SaveObj(const std::string& file,
         const std::vector<glm::vec4>& vertices,
         const std::vector<glm::uvec3>& indices)
 {
-	ofstream outputFile("geometry.obj");
-	for(int i = 0; i < vertices.size(); i++){
+	std::ofstream outputFile("geometry.obj");
+	for(unsigned int i = 0; i < vertices.size(); i++){
 		glm::vec4 curVertex = vertices.at(i);
-		outputFile << "v " << curVertex[0] << " " << curVertex[1] << " " << curVertex[2] << endl;
+		outputFile << "v " << curVertex[0] << " " << curVertex[1] << " " << curVertex[2] << std::endl;
 	}
 
-	for(int i = 0; i < indices.size(); i++){
+	for(unsigned int i = 0; i < indices.size(); i++){
 		glm::uvec3 curFace = indices.at(i);
-		outputFile << "f " << curFace[0] << " " << curFace[1] << " " << curFace[2] << endl;
+		outputFile << "f " << curFace[0] << " " << curFace[1] << " " << curFace[2] << std::endl;
 	}
 	outputFile.close();
 }
@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
 	glfwSwapInterval(1);
 	const GLubyte* renderer = glGetString(GL_RENDERER);  // get renderer string
 	const GLubyte* version = glGetString(GL_VERSION);    // version as a string
-	std::cout << "Renderer: " << renderer << "\n";
+	std::cout << "fuck Renderer: " << renderer << "\n";
 	std::cout << "OpenGL version supported:" << version << "\n";
 
 	std::vector<glm::vec4> obj_vertices;
@@ -248,7 +248,7 @@ int main(int argc, char* argv[])
         //CreateTriangle(obj_vertices, obj_faces);
 
 	//call menger.h's generate_geometry instead
-	Menger::generate_geometry(obj_vertices, obj_faces);
+	g_menger->generate_geometry(obj_vertices, obj_faces);
 	g_menger->set_nesting_level(1);
 
 	glm::vec4 min_bounds = glm::vec4(std::numeric_limits<float>::max());
