@@ -1,0 +1,2 @@
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/rebuild_cache.dir
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/edit_cache.dir

@@ -118,55 +118,40 @@ glm::mat4 Camera::get_view_matrix() const
 
 	glm::mat4 transformMatrix = glm::mat4();
 
-	glm::vec3 forward = look; //z
-	glm::vec3 right_temp = glm::cross(cam_up, forward); //x
-	glm::vec3 up_temp = glm::cross(forward, right_temp); //y
-
-	for (int i = 0; i < 4; i ++){
-		for (int j = 0; j < 4; j ++){
-			if (j < 3){
-				if ( i == 0) // right vector
-					transformMatrix[i][j] = right_temp[j];
-				else if (i == 1)
-					transformMatrix[i][j] = up_temp[j];
-				else if (i == 2)
-					transformMatrix[i][j] = forward[j];
-			}
-			else
-				transformMatrix[i][j] = 0.0f;
-
-		}
-
-	}
+	glm::vec3 forward = glm::normalize(look); //z
+	glm::vec3 right_temp = glm::cross(forward, glm::normalize(cam_up)); //x
+	glm::vec3 up_temp = glm::cross(right_temp, forward); //y
 
 
-	transformMatrix[3][3] = 1.0f;
+    viewMatrix[0][0] = right_temp[0];
+    viewMatrix[1][0] = right_temp[1];
+    viewMatrix[2][0] = right_temp[2];
+    viewMatrix[0][1] = up_temp[0];
+    viewMatrix[1][1] = up_temp[1];
+    viewMatrix[2][1] = up_temp[2];
+    viewMatrix[0][2] = -forward[0];
+    viewMatrix[1][2] =-forward[1];
+    viewMatrix[2][2] =-forward[2];
+    viewMatrix[3][0] =-dot(right_temp, eye);
+    viewMatrix[3][1] =-dot(up_temp, eye);
+    viewMatrix[3][2] = dot(forward, eye);
 
-	glm::mat4 translationMatrix = glm::mat4();
+    viewMatrix[0][3] = 0.0f;
+    viewMatrix[1][3] = 0.0f;
+    viewMatrix[2][3] = 0.0f;
+    viewMatrix[3][3] = 1.0f;
 
-	for (int j = 0; j < 4; j++){
-		for (int i = 0; i < 4; i++){
-			if ( j == 3 && i < 3)
-				translationMatrix[j][i] = -eye[i];
-			if (j == i)
-				translationMatrix[j][i] = 1;
-		}
-	}
+    return viewMatrix;
 
-	glm::mat4 view_matrix = transformMatrix * translationMatrix;
-
-	//return  view_matrix;
-
+/*
 	glm::mat4 temp = glm::lookAt(
     eye, // the position of your camera, in world space
     center,   // where you want to look at, in world space
     cam_up        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
 ); 
-	/*std::cout<<"-----------------"<<std::endl;
-	print_matrix(view_matrix);
-	print_matrix(temp);*/
-	//SOLUTION
+
 	return temp;
+	*/
 	
 	
 }
