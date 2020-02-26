@@ -106,6 +106,8 @@ void Camera::swivel(glm::vec2 dir){
 	//print_vec3(axis);
 
 	look = glm::rotate(look, rotation_speed, axis);
+	//cam_up = glm::rotate(cam_up, rotation_speed, axis);
+	std::cout<< glm::length(glm::dot(look, cam_up)) <<std::endl;
 
 	update();
 
@@ -155,4 +157,5 @@ glm::mat4 Camera::get_view_matrix() const
 	
 	
 }
+
 
