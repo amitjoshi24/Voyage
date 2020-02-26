@@ -45,7 +45,8 @@ void generate_cube(float s, glm::vec3 min, std::vector<glm::vec4>& obj_vertices,
 	glm::vec3 sVec(s, s, s);
 
 	glm::vec3 max = min + sVec;
-
+	int pastSize = obj_vertices.size();
+	
 	obj_vertices.push_back(glm::vec4(min[0], max[1], min[2], 1.0f));
 	obj_vertices.push_back(glm::vec4(min[0], min[1], min[2], 1.0f));
 
@@ -70,7 +71,7 @@ void generate_cube(float s, glm::vec3 min, std::vector<glm::vec4>& obj_vertices,
 	obj_vertices.push_back(glm::vec4(M, m, M, 1.0f)); //backC 7
 	*/
 
-	int pastSize = obj_faces.size();
+	
 
 	obj_faces.push_back(glm::uvec3(pastSize + 0, pastSize + 1, pastSize + 2));
 	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 3, pastSize + 2));
@@ -95,7 +96,7 @@ void check(std::vector<glm::vec4>& obj_vertices){
 	for(unsigned int i = 0; i < obj_vertices.size(); i++){
 		glm::vec4 curVertex = obj_vertices.at(i);
 		for(unsigned int j = 0; j < 3; j++){
-			if(abs(curVertex[j]) >= 0.5){
+			if(abs(curVertex[j]) > 0.5){
 				cout << "WHAT THE FUCK\n";
 			}
 		}
@@ -120,7 +121,7 @@ void Menger::generate_geometry_helper(float s, glm::dvec3 min, std::vector<glm::
 					int sumStrikes = forI + forJ + forK;
 					if(sumStrikes < 2){
 						//only if this subcube is in the center of less than 2 axes, then recur
-						glm::dvec3 deltaFromMin(i*newS, -j*newS, k*newS);
+						glm::dvec3 deltaFromMin(i*newS, j*newS, k*newS);
 						glm::dvec3 newMin = min + deltaFromMin;
 						generate_geometry_helper(newS, newMin, obj_vertices, obj_faces, curDepth + 1);
 					}
