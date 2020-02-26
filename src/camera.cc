@@ -55,12 +55,12 @@ void Camera::update(){
 }
 
 void Camera::left(){
-	eye += -abs_right * pan_speed;
+	eye += cam_right * pan_speed;
 	update();
 	//update camera private variables 
 } // a
 void Camera::right(){
-	eye += abs_right * pan_speed;
+	eye += -cam_right * pan_speed;
 	update();
 } //d
 void Camera::forward(){
@@ -74,12 +74,12 @@ void Camera::backward(){
 
 } // s
 void Camera::up(){
-	eye+= abs_up * pan_speed;
+	eye+= -cam_up * pan_speed;
 	update();
 
 } //up arrow
 void Camera::down(){
-	eye+= -abs_up * pan_speed;
+	eye+= cam_up * pan_speed;
 	update();
 
 } //down arrow
@@ -113,24 +113,24 @@ void Camera::swivel(glm::vec2 dir){
 
 glm::mat4 Camera::get_view_matrix() const
 {
-/*
 
 	glm::mat4 viewMatrix;
 
 	glm::mat4 transformMatrix = glm::mat4();
 
+	glm::vec3 forward = look; //z
+	glm::vec3 right_temp = glm::cross(cam_up, forward); //x
+	glm::vec3 up_temp = glm::cross(forward, right_temp); //y
+
 	for (int i = 0; i < 4; i ++){
 		for (int j = 0; j < 4; j ++){
 			if (j < 3){
 				if ( i == 0) // right vector
-					transformMatrix[i][j] = cam_right[j];
-				else if ( i == 1)
-					transformMatrix[i][j] = cam_up[j];
+					transformMatrix[i][j] = right_temp[j];
+				else if (i == 1)
+					transformMatrix[i][j] = up_temp[j];
 				else if (i == 2)
-					transformMatrix[i][j] = -look[j];
-				else if (i == 3)
-					transformMatrix[i][j] = -eye[j];
-
+					transformMatrix[i][j] = forward[j];
 			}
 			else
 				transformMatrix[i][j] = 0.0f;
@@ -141,9 +141,6 @@ glm::mat4 Camera::get_view_matrix() const
 
 
 	transformMatrix[3][3] = 1.0f;
-
-	return transformMatrix;
-
 
 	glm::mat4 translationMatrix = glm::mat4();
 
@@ -158,17 +155,19 @@ glm::mat4 Camera::get_view_matrix() const
 
 	glm::mat4 view_matrix = transformMatrix * translationMatrix;
 
-	return  view_matrix;
-*/
+	//return  view_matrix;
+
 	glm::mat4 temp = glm::lookAt(
     eye, // the position of your camera, in world space
     center,   // where you want to look at, in world space
     cam_up        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
 ); 
-
+	std::cout<<"-----------------"<<std::endl;
+	print_matrix(view_matrix);
 	print_matrix(temp);
 	//SOLUTION
 	return temp;
+	
 	
 }
 
