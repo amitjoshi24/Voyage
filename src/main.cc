@@ -140,7 +140,6 @@ KeyCallback(GLFWwindow* window,
 		g_camera.right();
 	} else if (key == GLFW_KEY_LEFT && action != GLFW_RELEASE) {
 		g_camera.counterclockwise();
-		// FIXME: Left Right Up and Down
 	} else if (key == GLFW_KEY_RIGHT && action != GLFW_RELEASE) {
 		g_camera.clockwise();
 	} else if (key == GLFW_KEY_DOWN && action != GLFW_RELEASE) {
@@ -164,18 +163,30 @@ KeyCallback(GLFWwindow* window,
 
 int g_current_button;
 bool g_mouse_pressed;
+int prev_x;
+int prev_y;
 
 void
 MousePosCallback(GLFWwindow* window, double mouse_x, double mouse_y)
 {
-	if (!g_mouse_pressed)
+	if (!g_mouse_pressed){
+		prev_x = -1;
+		prev_y = -1;
 		return;
+	}
 	if (g_current_button == GLFW_MOUSE_BUTTON_LEFT) {
+
+		if (prev_x >= 0 && prev_y >= 0 && mouse_x > 0 && mouse_y > 0){
+			g_camera.swivel(glm::vec2(mouse_x - prev_x, mouse_y - prev_y));
+
+		}
+		prev_x = mouse_x;
+		prev_y = mouse_y;
 		// FIXME: left drag
 	} else if (g_current_button == GLFW_MOUSE_BUTTON_RIGHT) {
-		// FIXME: middle drag
+		// FIXME: middle drag, nothing for now
 	} else if (g_current_button == GLFW_MOUSE_BUTTON_MIDDLE) {
-		// FIXME: right drag
+		// FIXME: right drag, nothing for now
 	}
 }
 
