@@ -33,6 +33,9 @@ void Camera::init(){
 	look = glm::vec3(0.0f, 0.0f, -1.0f);
 	cam_up = glm::vec3(0.0f, 1.0f, 0.0f);
 
+	abs_up = glm::vec3(0.0f, 1.0, 0.0f);
+	abs_right = glm::vec3(1.0f, 0.0f, 0.0f);
+
 	update();
 
 
@@ -45,13 +48,13 @@ void Camera::update(){
 }
 
 void Camera::left(){
-	eye += -cam_right * pan_speed;
+	eye += -abs_right * pan_speed;
 
 	update();
 	//update camera private variables 
 } // a
 void Camera::right(){
-	eye += cam_right * pan_speed;
+	eye += abs_right * pan_speed;
 	update();
 } //d
 void Camera::forward(){
@@ -65,26 +68,26 @@ void Camera::backward(){
 
 } // s
 void Camera::up(){
-	eye+= cam_up * pan_speed;
+	eye+= abs_up * pan_speed;
 	update();
 
 } //up arrow
 void Camera::down(){
-	eye+= -cam_up * pan_speed;
+	eye+= -abs_up * pan_speed;
 	update();
 
 } //down arrow
 
+//TODO determine whether roll_speed should be converted to degrees or not
 void Camera::clockwise(){
-	cam_up = glm::rotate(cam_up, roll_speed, look );
+	cam_up = glm::rotate(cam_up, roll_speed, look);
 
 	update();
 
 } //rotate up around look
 
 void Camera::counterclockwise(){
-
-	cam_up = glm::rotate(cam_up, -roll_speed, look );
+	cam_up = glm::rotate(cam_up, -roll_speed, look);
 
 	update();
 

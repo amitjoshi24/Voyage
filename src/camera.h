@@ -29,6 +29,8 @@ private:
 	glm::vec3 cam_right;
 	glm::vec3 eye; //pos of camera in space
 	glm::vec3 center;
+	glm::vec3 abs_up;
+	glm::vec3 abs_right;
 
 	// Note: you may need additional member variables
 };
