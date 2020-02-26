@@ -78,7 +78,6 @@ void Camera::down(){
 
 } //down arrow
 
-//TODO determine whether roll_speed should be converted to degrees or not
 void Camera::clockwise(){
 	cam_up = glm::rotate(cam_up, roll_speed, look);
 
@@ -128,7 +127,6 @@ glm::mat4 Camera::get_view_matrix() const
 
 
 	transformMatrix[3][3] = 1.0f;
-	print_matrix(transformMatrix);
 
 	return transformMatrix;
 
