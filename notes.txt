@@ -1,0 +1,4 @@
+basically:
+	1) vertex shader, do the rigid transformation of rotate and translate
+	2) geometric shader, change the normal of the face based off of this transformation
+	3) fragment shader, basically colors the actual shit, then divide by z and drop the z access and multiply by the projection matrix (or maybe open glm does the drop the z and divide by z for us)
