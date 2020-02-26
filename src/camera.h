@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/transform.hpp>
+#include <math.h>
 
 class Camera {
 public:
@@ -21,7 +22,7 @@ public:
 	//rotate camera
 	void clockwise();
 	void counterclockwise();
-	void swivel(); //with mouse delta ROTATE
+	void swivel(glm::vec2); //with mouse delta ROTATE
 private:
 	float camera_distance_ = 3.0;
 	glm::vec3 look;

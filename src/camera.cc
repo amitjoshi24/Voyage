@@ -18,6 +18,13 @@ void print_vec(glm::vec4 vec){
 
 		std::cout<< std::endl;
 }
+void print_vec3(glm::vec3 vec){
+	for (int j = 0; j < 3; j ++){
+			std::cout<< vec[j] << ' ';
+		}
+
+		std::cout<< std::endl;
+}
 
 void print_matrix(glm::mat4 mat){
 	for (int i = 0; i < 4; i ++){
@@ -49,7 +56,6 @@ void Camera::update(){
 
 void Camera::left(){
 	eye += -abs_right * pan_speed;
-
 	update();
 	//update camera private variables 
 } // a
@@ -78,7 +84,6 @@ void Camera::down(){
 
 } //down arrow
 
-//TODO determine whether roll_speed should be converted to degrees or not
 void Camera::clockwise(){
 	cam_up = glm::rotate(cam_up, roll_speed, look);
 
@@ -94,13 +99,21 @@ void Camera::counterclockwise(){
 
 }
 
-void Camera::swivel(){
+void Camera::swivel(glm::vec2 dir){
+	//vector perpendicular to this and look
+	glm::vec3 turn = cam_right*dir[0] - cam_up*dir[1];
+	glm::vec3 axis = glm::cross(turn, look); //maybe this axis should go about center?
+	print_vec3(axis);
+
+	look = glm::rotate(look, rotation_speed, axis);
+
+	update();
 
 }
 
 glm::mat4 Camera::get_view_matrix() const
 {
-
+/*
 
 	glm::mat4 viewMatrix;
 
@@ -128,11 +141,9 @@ glm::mat4 Camera::get_view_matrix() const
 
 
 	transformMatrix[3][3] = 1.0f;
-	print_matrix(transformMatrix);
 
 	return transformMatrix;
 
-	/*
 
 	glm::mat4 translationMatrix = glm::mat4();
 
@@ -148,7 +159,7 @@ glm::mat4 Camera::get_view_matrix() const
 	glm::mat4 view_matrix = transformMatrix * translationMatrix;
 
 	return  view_matrix;
-
+*/
 	glm::mat4 temp = glm::lookAt(
     eye, // the position of your camera, in world space
     center,   // where you want to look at, in world space
@@ -158,6 +169,6 @@ glm::mat4 Camera::get_view_matrix() const
 	print_matrix(temp);
 	//SOLUTION
 	return temp;
-	*/
+	
 }
 
