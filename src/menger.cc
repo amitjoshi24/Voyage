@@ -46,7 +46,7 @@ void generate_cube(float s, glm::vec3 min, std::vector<glm::vec4>& obj_vertices,
 
 	glm::vec3 max = min + sVec;
 	int pastSize = obj_vertices.size();
-	
+
 	obj_vertices.push_back(glm::vec4(min[0], max[1], min[2], 1.0f));
 	obj_vertices.push_back(glm::vec4(min[0], min[1], min[2], 1.0f));
 
@@ -106,7 +106,6 @@ void check(std::vector<glm::vec4>& obj_vertices){
 void Menger::generate_geometry_helper(float s, glm::dvec3 min, std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces, int curDepth) const{
 	//std::cout << "nestinglevel: " << nesting_level_ << std::endl;
 	if(curDepth == nesting_level_){
-		std::cout << " ayyy generating a cube\n";
 		generate_cube(s, min, obj_vertices, obj_faces);
 		//std::cout << "obj_faces.size(): " << obj_faces.size() << std::endl;
 	}
@@ -139,10 +138,11 @@ void Menger::generate_geometry(std::vector<glm::vec4>& obj_vertices,
 	// diametrically oppposite corners should be (m,m,m) and (M,M,M) where m = -0.5 and M = 0.5
 	//std::cout << "litty" << endl;
 	//generate_cube(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces);
-	generate_geometry_helper(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces, 0);
-	check(obj_vertices);
 	this->obj_vertices = obj_vertices;
 	this->obj_faces = obj_faces;
+	generate_geometry_helper(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces, 0);
+	check(obj_vertices);
+
 
 }
 

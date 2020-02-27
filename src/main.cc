@@ -52,7 +52,8 @@ out vec4 light_direction;
 void main()
 {
 	int n = 0;
-	normal = vec4(0.0, 0.0, 1.0f, 0.0);
+	vec3 fuck = normalize(cross(gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
+	normal = vec4(fuck[0], fuck[1], fuck[2], 0.0);
 	for (n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
 		gl_Position = projection * gl_in[n].gl_Position;
@@ -69,7 +70,25 @@ in vec4 light_direction;
 out vec4 fragment_color;
 void main()
 {
-	vec4 color = vec4(1.0, 0.0, 0.0, 1.0);
+	vec4 color;
+	int maxIndex = 0;
+	float maxVal = -9999999;
+	for(int i = 0; i < 3; i++){
+		if(abs(normal[i]) > maxVal){
+			maxIndex = i;
+			maxVal = abs(normal[i]);
+		}
+	}
+	if(maxIndex == 0){
+		color = vec4(1.0, 0.0, 0.0, 0.0);
+	}
+	else if(maxIndex == 1){
+		color = vec4(0.0, 1.0, 0.0, 1.0);
+	}
+	else{
+		color = vec4(0.0, 0.0, 1.0, 1.0);
+	}
+	
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
@@ -130,15 +149,15 @@ ErrorCallback(int error, const char* description)
 {
 	std::cerr << "GLFW Error: " << description << "\n";
 }
-
+std::shared_ptr<Menger> g_menger;
 void updateMengerStuff(int level){
-	/*obj_vertices->clear();
-	obj_faces->clear();
+	g_menger->obj_vertices.clear();
+	g_menger->obj_faces.clear();
 	g_menger->set_nesting_level(level);
-	g_menger->generate_geometry(obj_vertices, obj_faces);*/
+	g_menger->generate_geometry(g_menger->obj_vertices, g_menger->obj_faces);
 
 }
-std::shared_ptr<Menger> g_menger;
+
 Camera g_camera;
 
 void
@@ -181,15 +200,15 @@ KeyCallback(GLFWwindow* window,
 	if (key == GLFW_KEY_0 && action != GLFW_RELEASE) {
 		// FIXME: Change nesting level of g_menger
 		// Note: GLFW_KEY_0 - 4 may not be continuous.
-		g_menger->set_nesting_level(0);
+		updateMengerStuff(0);
 	} else if (key == GLFW_KEY_1 && action != GLFW_RELEASE) {
-		g_menger->set_nesting_level(1);
+		updateMengerStuff(1);
 	} else if (key == GLFW_KEY_2 && action != GLFW_RELEASE) {
-		g_menger->set_nesting_level(2);
+		updateMengerStuff(2);
 	} else if (key == GLFW_KEY_3 && action != GLFW_RELEASE) {
-		g_menger->set_nesting_level(3);
+		updateMengerStuff(3);
 	} else if (key == GLFW_KEY_4 && action != GLFW_RELEASE) {
-		g_menger->set_nesting_level(4);
+		updateMengerStuff(4);
 	}
 }
 
