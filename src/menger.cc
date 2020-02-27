@@ -138,10 +138,11 @@ void Menger::generate_geometry(std::vector<glm::vec4>& obj_vertices,
 	// diametrically oppposite corners should be (m,m,m) and (M,M,M) where m = -0.5 and M = 0.5
 	//std::cout << "litty" << endl;
 	//generate_cube(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces);
-	this->obj_vertices = obj_vertices;
-	this->obj_faces = obj_faces;
+
 	std::cout << "nestinglevel: " << nesting_level_ << std::endl;
 	generate_geometry_helper(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces, 0);
+	this->obj_vertices = obj_vertices;
+	this->obj_faces = obj_faces;
 	check(obj_vertices);
 
 

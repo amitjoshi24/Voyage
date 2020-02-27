@@ -17,7 +17,7 @@ public:
 	std::vector<glm::vec4> obj_vertices;
 	std::vector<glm::uvec3> obj_faces;
 
-private:
+public:
 	int nesting_level_ = 0;
 	bool dirty_ = false;
 };
