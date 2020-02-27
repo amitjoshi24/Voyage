@@ -55,12 +55,12 @@ void Camera::update(){
 }
 
 void Camera::left(){
-	eye += cam_right * pan_speed;
+	eye += -cam_right * pan_speed;
 	update();
 	//update camera private variables 
 } // a
 void Camera::right(){
-	eye += -cam_right * pan_speed;
+	eye += cam_right * pan_speed;
 	update();
 } //d
 void Camera::forward(){
@@ -85,14 +85,14 @@ void Camera::down(){
 } //down arrow
 
 void Camera::clockwise(){
-	cam_up = glm::rotate(cam_up, -roll_speed, look);
+	cam_up = glm::rotate(cam_up, roll_speed, look);
 
 	update();
 
 } //rotate up around look
 
 void Camera::counterclockwise(){
-	cam_up = glm::rotate(cam_up, roll_speed, look);
+	cam_up = glm::rotate(cam_up, -roll_speed, look);
 
 	update();
 

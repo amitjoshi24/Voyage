@@ -20,5 +20,12 @@ Obj Dump: Fairly simple, we just loop through the vertices and faces and print i
 
 Shaders:
 
+Shading of sponge: To shade the sponge the right colors, we calculated the normals with respect to the world coordinates.  We passed world coordinates from the vertex shader into the geometry shader.  Then, depending on which axis (x, y, or z) the normal was facing (either positive or negative), we colored it red green or blue.  To find the light intensity.  We also changed vs_light_direction inside vertex shader to give itself in world coordinates, because we ran into a bug where rotating the camera would change the light intensity on the sponge surface.
+
+Shading of floor: To shade floor, we passed in world coordinates through the entire pipeline of shaders.  We used the formula (since y was constant) a = floor(x) + floor(z).  If a was even, we colored it white, if a was odd, we did black (like reference solution).
+
+Floor: to do the floor, we created 4 triangles.  All triangles had a point at (0, -2, 0).  The other 4 points used to create 4
+triangles were (+- inf, -2, +- inf).
+
 
 

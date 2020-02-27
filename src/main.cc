@@ -117,7 +117,7 @@ out vec4 fragment_color;
 void main()
 {
 	vec4 color;
-	if( mod((floor(world_coordinates.x) + floor(world_coordinates.z)), 2) == 0 ){
+	if( mod((floor(world_coordinates.x) + floor(world_coordinates.z)), 2) != 0 ){
 		color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 	else{
