@@ -74,25 +74,25 @@ void Camera::backward(){
 
 } // s
 void Camera::up(){
-	eye+= -cam_up * pan_speed;
+	eye+= cam_up * pan_speed;
 	update();
 
 } //up arrow
 void Camera::down(){
-	eye+= cam_up * pan_speed;
+	eye+= -cam_up * pan_speed;
 	update();
 
 } //down arrow
 
 void Camera::clockwise(){
-	cam_up = glm::rotate(cam_up, roll_speed, look);
+	cam_up = glm::rotate(cam_up, -roll_speed, look);
 
 	update();
 
 } //rotate up around look
 
 void Camera::counterclockwise(){
-	cam_up = glm::rotate(cam_up, -roll_speed, look);
+	cam_up = glm::rotate(cam_up, roll_speed, look);
 
 	update();
 
@@ -106,7 +106,7 @@ void Camera::swivel(glm::vec2 dir){
 	//print_vec3(axis);
 
 	look = glm::rotate(look, rotation_speed, axis);
-	//cam_up = glm::rotate(cam_up, rotation_speed, axis);
+	cam_up = glm::rotate(cam_up, rotation_speed, axis);
 	//std::cout<< glm::length(glm::dot(look, cam_up)) <<std::endl;
 
 	update();
