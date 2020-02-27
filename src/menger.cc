@@ -140,6 +140,7 @@ void Menger::generate_geometry(std::vector<glm::vec4>& obj_vertices,
 	//generate_cube(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces);
 	this->obj_vertices = obj_vertices;
 	this->obj_faces = obj_faces;
+	std::cout << "nestinglevel: " << nesting_level_ << std::endl;
 	generate_geometry_helper(1.0f, glm::dvec3(-0.5f, -0.5f, -0.5f), obj_vertices, obj_faces, 0);
 	check(obj_vertices);
 

@@ -34,10 +34,14 @@ in vec4 vertex_position;
 uniform mat4 view;
 uniform vec4 light_position;
 out vec4 vs_light_direction;
+out vec4 world_vertex_position;
 void main()
 {
+	world_vertex_position = vertex_position;
 	gl_Position = view * vertex_position;
-	vs_light_direction = -gl_Position + view * light_position;
+	vs_light_direction = -world_vertex_position + light_position;
+	//vs_light_direction = -gl_Position + view * light_position;
+	//gl_Position = world_vertex_position;
 }
 )zzz";
 
@@ -46,13 +50,17 @@ R"zzz(#version 330 core
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 uniform mat4 projection;
+uniform mat4 view;
 in vec4 vs_light_direction[];
+in vec4 world_vertex_position[];
 flat out vec4 normal;
 out vec4 light_direction;
+
 void main()
 {
 	int n = 0;
-	vec3 fuck = normalize(cross(gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
+
+	vec3 fuck = normalize(cross( world_vertex_position[2].xyz - world_vertex_position[0].xyz, world_vertex_position[1].xyz - world_vertex_position[0].xyz));
 	normal = vec4(fuck[0], fuck[1], fuck[2], 0.0);
 	for (n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
@@ -289,7 +297,7 @@ int main(int argc, char* argv[])
 
 	//call menger.h's generate_geometry instead
 	
-	g_menger->set_nesting_level(1);
+	g_menger->set_nesting_level(3);
 	g_menger->generate_geometry(obj_vertices, obj_faces);
 
 	glm::vec4 min_bounds = glm::vec4(std::numeric_limits<float>::max());
