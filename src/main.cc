@@ -499,9 +499,18 @@ int main(int argc, char* argv[])
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kGeometryVao]));
 
 		if (g_menger && g_menger->is_dirty()) {
-			
+
 			g_menger->generate_geometry(obj_vertices, obj_faces);
 			g_menger->set_clean();
+			CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kGeometryVao][kVertexBuffer]));
+			CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
+				sizeof(float) * obj_vertices.size() * 4, obj_vertices.data(),
+				GL_STATIC_DRAW));
+
+			CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kGeometryVao][kIndexBuffer]));
+			CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+				sizeof(uint32_t) * obj_faces.size() * 3,
+				obj_faces.data(), GL_STATIC_DRAW));
 
 
 			// FIXME: Upload your vertex data here.
