@@ -56,6 +56,7 @@ in vec4 world_vertex_position[];
 
 flat out vec4 normal;
 out vec4 light_direction;
+out vec3 vertex_id;
 
 out vec4 world_coordinates;
 
@@ -69,6 +70,13 @@ void main()
 		light_direction = vs_light_direction[n];
 		gl_Position = projection * gl_in[n].gl_Position;
 		world_coordinates = world_vertex_position[n];
+		if (n == 0){
+			vertex_id = vec3(1, 0, 0);
+		} else if (n == 1){
+			vertex_id = vec3(0,1, 0);
+		} else {
+			vertex_id = vec3(0, 0, 1);
+		}
 		EmitVertex();
 	}
 	EndPrimitive();
@@ -79,6 +87,7 @@ const char* fragment_shader =
 R"zzz(#version 330 core
 flat in vec4 normal;
 in vec4 light_direction;
+in vec3 vertex_id;
 out vec4 fragment_color;
 void main()
 {
@@ -107,23 +116,31 @@ void main()
 }
 )zzz";
 
+
 // FIXME: Implement shader effects with an alternative shader.
 const char* floor_fragment_shader =
 R"zzz(#version 330 core
 flat in vec4 normal;
 in vec4 light_direction;
 in vec4 world_coordinates;
+in vec3 vertex_id;
 out vec4 fragment_color;
+uniform bool wireframe;
 void main()
 {
 	vec4 color;
+	float thres = 0.5;
+
 	if(mod((floor(world_coordinates.x) + floor(world_coordinates.z)), 2) != 0 ){
 		color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	}
-	else{
+	} else{
 		color = vec4(0.0, 0.0, 0.0, 1.0);
 	}
 
+	if (wireframe) {
+		if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres)
+			color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	}
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
@@ -217,6 +234,8 @@ void updateMengerStuff(int level){
 }
 
 Camera g_camera;
+bool wireframe = false;
+
 
 void
 KeyCallback(GLFWwindow* window,
@@ -271,6 +290,7 @@ KeyCallback(GLFWwindow* window,
 
 	if (key == GLFW_KEY_F && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
 		std::cout<<"Turning on wireframe"<<std::endl;
+		wireframe = true;
 	}
 }
 
@@ -278,8 +298,6 @@ int g_current_button;
 bool g_mouse_pressed;
 int prev_x;
 int prev_y;
-bool wireframe = false;
-
 void
 MousePosCallback(GLFWwindow* window, double mouse_x, double mouse_y)
 {
