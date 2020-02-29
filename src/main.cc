@@ -156,11 +156,11 @@ void main()
 
 
 	if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
-		color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+		//color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	}
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+	//fragment_color = clamp(dot_nl * color, 0.0, 1.0);
 
 }
 )zzz";
@@ -499,8 +499,10 @@ int main(int argc, char* argv[])
 	glCompileShader(floor_fragment_shader_id);
 	CHECK_GL_SHADER_ERROR(floor_fragment_shader_id);
 
+	// Setup wireframe shader
+
 	GLuint floor_fragment_wireframe_shader_id = 0;
-	const char* floor_fragment_wireframe_source_pointer = floor_fragment_wireframe_shader;
+	const char* floor_fragment_wireframe_source_pointer = floor_fragment_shader;
 	CHECK_GL_ERROR(floor_fragment_wireframe_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
 	CHECK_GL_ERROR(glShaderSource(floor_fragment_wireframe_shader_id, 1,
 				&floor_fragment_wireframe_source_pointer, nullptr));
@@ -517,7 +519,7 @@ int main(int argc, char* argv[])
 	GLuint floor_wireframe_program_id = 0;
 	CHECK_GL_ERROR(floor_wireframe_program_id = glCreateProgram());
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, vertex_shader_id));
-	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_fragment_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_fragment_wireframe_shader_id));
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, geometry_shader_id));
 
 
@@ -668,23 +670,26 @@ int main(int argc, char* argv[])
 		// Poll and swap.
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
 
-		CHECK_GL_ERROR(glUseProgram(floor_program_id));
-		
-		// Draw our triangles.
+		if(wireframe){
+			CHECK_GL_ERROR(glUseProgram(floor_program_id));
+			
 
-				// Pass uniforms in.
-		CHECK_GL_ERROR(glUniformMatrix4fv(floor_projection_matrix_location, 1, GL_FALSE,
-					&projection_matrix[0][0]));
-		CHECK_GL_ERROR(glUniformMatrix4fv(floor_view_matrix_location, 1, GL_FALSE,
-					&view_matrix[0][0]));
-		CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
+			// Draw our triangles.
+
+			// Pass uniforms in.
+			CHECK_GL_ERROR(glUniformMatrix4fv(floor_projection_matrix_location, 1, GL_FALSE,
+						&projection_matrix[0][0]));
+			CHECK_GL_ERROR(glUniformMatrix4fv(floor_view_matrix_location, 1, GL_FALSE,
+						&view_matrix[0][0]));
+			CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
 
 
-		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
-
+			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
+		}
 		if(wireframe){
 			//TODO: PROLLY WRONG LOWKEY
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			std::cout << "used wireframe" << std::endl;
+			/*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 			CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
 							// Pass uniforms in.
@@ -697,7 +702,10 @@ int main(int argc, char* argv[])
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
 		
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
+		}
+		else{
+			std::cout << "didn't use wireframe" << std::endl;
 		}
 		glfwPollEvents();
 		glfwSwapBuffers(window);
