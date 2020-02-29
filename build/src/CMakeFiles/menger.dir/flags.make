@@ -6,5 +6,5 @@ CXX_FLAGS = --std=c++14 -g -fdiagnostics-color=always -fopenmp -Wall -Wno-reorde
 
 CXX_DEFINES = -DGLM_ENABLE_EXPERIMENTAL -DGLM_FORCE_RADIANS=1 -DGLM_FORCE_SIZE_FUNC=1
 
-CXX_INCLUDES = -isystem /usr/include/eigen3 -I/usr/local/include -I/opt/local/include -I/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib -I/lusr/opt/glfw-3.2.1/include -I/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil 
+CXX_INCLUDES = -isystem /usr/include/eigen3 -I/usr/local/include -I/opt/local/include -I/u/doracgp/workspace/378h-graphics/menger_sponge/lib -I/lusr/opt/glfw-3.2.1/include -I/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil 
 

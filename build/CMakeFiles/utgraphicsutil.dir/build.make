@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge
+CMAKE_SOURCE_DIR = /u/doracgp/workspace/378h-graphics/menger_sponge
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build
+CMAKE_BINARY_DIR = /u/doracgp/workspace/378h-graphics/menger_sponge/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/utgraphicsutil.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/utgraphicsutil.dir/flags.make
 
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o: CMakeFiles/utgraphicsutil.dir/flags.make
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o: ../lib/utgraphicsutil/debuggl.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o -c /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o -c /u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/debuggl.cc
 
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.cc > CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/debuggl.cc > CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.i
 
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.cc -o CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/debuggl.cc -o CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.s
 
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o.provides.build: CM
 
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o: CMakeFiles/utgraphicsutil.dir/flags.make
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o: ../lib/utgraphicsutil/jpegio.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o -c /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o -c /u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/jpegio.cc
 
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.cc > CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/jpegio.cc > CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.i
 
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.cc -o CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/jpegio.cc -o CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.s
 
 CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o.requires:
 
@@ -117,7 +117,7 @@ libutgraphicsutil.a: CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc
 libutgraphicsutil.a: CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o
 libutgraphicsutil.a: CMakeFiles/utgraphicsutil.dir/build.make
 libutgraphicsutil.a: CMakeFiles/utgraphicsutil.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libutgraphicsutil.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libutgraphicsutil.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/utgraphicsutil.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/utgraphicsutil.dir/link.txt --verbose=$(VERBOSE)
 
@@ -136,6 +136,6 @@ CMakeFiles/utgraphicsutil.dir/clean:
 .PHONY : CMakeFiles/utgraphicsutil.dir/clean
 
 CMakeFiles/utgraphicsutil.dir/depend:
-	cd /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/utgraphicsutil.dir/DependInfo.cmake --color=$(COLOR)
+	cd /u/doracgp/workspace/378h-graphics/menger_sponge/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /u/doracgp/workspace/378h-graphics/menger_sponge /u/doracgp/workspace/378h-graphics/menger_sponge /u/doracgp/workspace/378h-graphics/menger_sponge/build /u/doracgp/workspace/378h-graphics/menger_sponge/build /u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles/utgraphicsutil.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/utgraphicsutil.dir/depend
 

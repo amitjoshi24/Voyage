@@ -6,23 +6,23 @@
 
 #IncludeRegexTransform: 
 
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.cc
+/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/debuggl.cc
 debuggl.h
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.h
+/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/debuggl.h
 GL/glew.h
 -
 GLFW/glfw3.h
 -
 
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.h
+/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/debuggl.h
 
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/image.h
+/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/image.h
 vector
 -
 
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.cc
+/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/jpegio.cc
 jpegio.h
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.h
+/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/jpegio.h
 vector
 -
 jpeglib.h
@@ -30,11 +30,11 @@ jpeglib.h
 stdio.h
 -
 
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.h
+/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/jpegio.h
 string
 -
 image.h
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/image.h
+/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/image.h
 
 /usr/local/include/GLFW/glfw3.h
 stddef.h

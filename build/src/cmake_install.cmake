@@ -1,4 +1,4 @@
-# Install script for directory: /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src
+# Install script for directory: /u/doracgp/workspace/378h-graphics/menger_sponge/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

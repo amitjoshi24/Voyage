@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.cc" "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o"
-  "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.cc" "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o"
+  "/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/debuggl.cc" "/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/debuggl.cc.o"
+  "/u/doracgp/workspace/378h-graphics/menger_sponge/lib/utgraphicsutil/jpegio.cc" "/u/doracgp/workspace/378h-graphics/menger_sponge/build/CMakeFiles/utgraphicsutil.dir/lib/utgraphicsutil/jpegio.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

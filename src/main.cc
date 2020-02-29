@@ -250,12 +250,17 @@ KeyCallback(GLFWwindow* window,
 	} else if (key == GLFW_KEY_4 && action != GLFW_RELEASE) {
 		updateMengerStuff(4);
 	}
+
+	if (key == GLFW_KEY_F && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
+		std::cout<<"Turning on wireframe"<<std::endl;
+	}
 }
 
 int g_current_button;
 bool g_mouse_pressed;
 int prev_x;
 int prev_y;
+bool wireframe = false;
 
 void
 MousePosCallback(GLFWwindow* window, double mouse_x, double mouse_y)
