@@ -117,7 +117,7 @@ out vec4 fragment_color;
 void main()
 {
 	vec4 color;
-	if( mod((floor(world_coordinates.x) + floor(world_coordinates.z)), 2) != 0 ){
+	if(mod((floor(world_coordinates.x) + floor(world_coordinates.z)), 2) != 0 ){
 		color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 	else{
@@ -147,7 +147,7 @@ CreateTriangle(std::vector<glm::vec4>& vertices,
 	//indices.push_back(glm::uvec3(3, 4, 5));
 }
 
-void
+/*void
 CreateFloor(std::vector<glm::vec4>& vertices,
         std::vector<glm::uvec3>& indices){
 	float inf = 9999999.0f;
@@ -161,10 +161,28 @@ CreateFloor(std::vector<glm::vec4>& vertices,
 	indices.push_back(glm::uvec3(0, 4, 2));
 	indices.push_back(glm::uvec3(0, 3, 4));
 	indices.push_back(glm::uvec3(0, 1, 3));
+}*/
 
-
+void 
+CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec3>& indices){
+	float inf = 20.0f;
+	float inc = 40.0f/16.0f;
+	int dotCounter = 0;
+	for(float j = -inf; j <= inf; j+=inc){
+		for(float i = -inf; i <= inf; i+=inc){
+			vertices.push_back(glm::vec4(i, -2.0f, j, 1.0f));
+			dotCounter += 1;
+			int lastDotPlacedIndex = dotCounter - 1;
+			if(lastDotPlacedIndex > 16 && (lastDotPlacedIndex % 17) != 0){
+				// only if its not in the lowermost row and leftmost column, then you can make triangle
+				indices.push_back(glm::uvec3(lastDotPlacedIndex-18, lastDotPlacedIndex, lastDotPlacedIndex-1));
+				indices.push_back(glm::uvec3(lastDotPlacedIndex-18, lastDotPlacedIndex-17, lastDotPlacedIndex));
+			}
+			
+		}
+		std::cout << "dotCounter: " << dotCounter << std::endl;
+	}
 }
-
 // FIXME: Save geometry to OBJ file
 void
 SaveObj(const std::string& file,
