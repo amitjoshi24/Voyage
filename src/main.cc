@@ -683,6 +683,9 @@ int main(int argc, char* argv[])
 		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
 		if(wireframe){
+			//TODO: PROLLY WRONG LOWKEY
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 			CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
 							// Pass uniforms in.
 			CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE,
@@ -693,6 +696,8 @@ int main(int argc, char* argv[])
 
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
+		
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 		glfwPollEvents();
 		glfwSwapBuffers(window);
