@@ -1,6 +1,0 @@
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/rebuild_cache.dir
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/utgraphicsutil.dir
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/edit_cache.dir
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/rebuild_cache.dir
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/menger.dir
-/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/edit_cache.dir

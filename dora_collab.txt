@@ -1,0 +1,1 @@
+Collaboration Report: Hi, I did the Camera functions and then helped Amit debug the shader. Amit did the Menger sponge implementation, which I helped pseudocode and debug, but he wrote the initial recursive definition. 50/50 overall.
