@@ -35,13 +35,10 @@ void print_matrix(glm::mat4 mat){
 
 
 void Camera::init(){
-	eye = glm::vec3(0.0f, 0.0f, camera_distance_);
+	eye = glm::vec3(0.0f, 10.0f, 10.0f);
 
-	look = glm::vec3(0.0f, 0.0f, -1.0f);
+	look = glm::vec3(0.0f, -10.0f, -10.0f);
 	cam_up = glm::vec3(0.0f, 1.0f, 0.0f);
-
-	abs_up = glm::vec3(0.0f, 1.0, 0.0f);
-	abs_right = glm::vec3(1.0f, 0.0f, 0.0f);
 
 	update();
 
