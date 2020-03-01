@@ -38,7 +38,7 @@ out vec4 world_vertex_position;
 void main()
 {
 	world_vertex_position = vertex_position;
-	gl_Position = view * vertex_position;
+	gl_Position = view * vertex_position; //camera coord
 	vs_light_direction = -world_vertex_position + light_position;
 	//vs_light_direction = -gl_Position + view * light_position;
 	//gl_Position = world_vertex_position;
@@ -54,7 +54,7 @@ uniform mat4 view;
 in vec4 vs_light_direction[];
 in vec4 world_vertex_position[];
 
-flat out vec4 normal;
+flat out vec4 normal; //if interpolate normal, do it here by taking out flat
 out vec4 light_direction;
 out vec3 vertex_id;
 
@@ -68,8 +68,10 @@ void main()
 	normal = vec4(fuck[0], fuck[1], fuck[2], 0.0);
 	for (n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
-		gl_Position = projection * gl_in[n].gl_Position;
+		gl_Position = projection * gl_in[n].gl_Position; // homogoenous coord
 		world_coordinates = world_vertex_position[n];
+
+		//TODO check that making vertex_id a vertex attribute
 		if (n == 0){
 			vertex_id = vec3(1, 0, 0);
 		} else if (n == 1){
@@ -155,9 +157,9 @@ void main()
 	float thres = 0.5;
 
 
-	//if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
+	if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
 		color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	//}
+	}
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
@@ -578,7 +580,7 @@ int main(int argc, char* argv[])
 	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
 				sizeof(float) * floor_vertices.size() * 4, floor_vertices.data(),
 				GL_STATIC_DRAW));
-	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
+	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0)); //TODO modify this to account for the per vertex vectors
 	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
 
 	// Setup element array buffer.
@@ -618,23 +620,7 @@ int main(int argc, char* argv[])
 
 		}
 
-		if(floor_dirty){
-			// Setup vertex data in a VBO.
-	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kVertexBuffer]));
-	// NOTE: We do not send anything right now, we just describe it to OpenGL.
-	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-				sizeof(float) * floor_vertices.size() * 4, floor_vertices.data(),
-				GL_STATIC_DRAW));
-	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
-	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
 
-	// Setup element array buffer.
-	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kIndexBuffer]));
-	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				sizeof(uint32_t) * floor_faces.size() * 3,
-				floor_faces.data(), GL_STATIC_DRAW));
-			floor_dirty = false;
-		}
 
 		// Compute the projection matrix.
 		aspect = static_cast<float>(window_width) / window_height;
@@ -669,8 +655,26 @@ int main(int argc, char* argv[])
 
 		// Poll and swap.
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
+		if(floor_dirty){
+					CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
+			// Setup vertex data in a VBO.
+	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kVertexBuffer]));
+	// NOTE: We do not send anything right now, we just describe it to OpenGL.
+	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
+				sizeof(float) * floor_vertices.size() * 4, floor_vertices.data(),
+				GL_STATIC_DRAW));
+	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
+	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
 
-		if(wireframe){
+	// Setup element array buffer.
+	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kIndexBuffer]));
+	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+				sizeof(uint32_t) * floor_faces.size() * 3,
+				floor_faces.data(), GL_STATIC_DRAW));
+			floor_dirty = false;
+		}
+
+		//if(wireframe){
 			CHECK_GL_ERROR(glUseProgram(floor_program_id));
 			
 
@@ -685,11 +689,12 @@ int main(int argc, char* argv[])
 
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
-		}
+		//}
 		if(wireframe){
 			//TODO: PROLLY WRONG LOWKEY
 			std::cout << "used wireframe" << std::endl;
-			/*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			
 
 			CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
 							// Pass uniforms in.
@@ -702,10 +707,13 @@ int main(int argc, char* argv[])
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
 		
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
+			
+			
 		}
+
 		else{
 			std::cout << "didn't use wireframe" << std::endl;
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 		glfwPollEvents();
 		glfwSwapBuffers(window);
