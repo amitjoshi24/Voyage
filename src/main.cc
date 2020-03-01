@@ -155,12 +155,12 @@ void main()
 	float thres = 0.5;
 
 
-	if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
-		//color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	}
+	//if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
+		color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	//}
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	//fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
 
 }
 )zzz";
@@ -502,7 +502,7 @@ int main(int argc, char* argv[])
 	// Setup wireframe shader
 
 	GLuint floor_fragment_wireframe_shader_id = 0;
-	const char* floor_fragment_wireframe_source_pointer = floor_fragment_shader;
+	const char* floor_fragment_wireframe_source_pointer = floor_fragment_wireframe_shader;
 	CHECK_GL_ERROR(floor_fragment_wireframe_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
 	CHECK_GL_ERROR(glShaderSource(floor_fragment_wireframe_shader_id, 1,
 				&floor_fragment_wireframe_source_pointer, nullptr));
@@ -516,18 +516,18 @@ int main(int argc, char* argv[])
 	CHECK_GL_ERROR(glAttachShader(floor_program_id, floor_fragment_shader_id));
 	CHECK_GL_ERROR(glAttachShader(floor_program_id, geometry_shader_id));
 
+		// Bind attributes.
+	CHECK_GL_ERROR(glBindAttribLocation(floor_program_id, 0, "vertex_position"));
+	CHECK_GL_ERROR(glBindFragDataLocation(floor_program_id, 0, "fragment_color"));
+	glLinkProgram(floor_program_id);
+	CHECK_GL_PROGRAM_ERROR(floor_program_id);
+
+	
 	GLuint floor_wireframe_program_id = 0;
 	CHECK_GL_ERROR(floor_wireframe_program_id = glCreateProgram());
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, vertex_shader_id));
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_fragment_wireframe_shader_id));
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, geometry_shader_id));
-
-
-	// Bind attributes.
-	CHECK_GL_ERROR(glBindAttribLocation(floor_program_id, 0, "vertex_position"));
-	CHECK_GL_ERROR(glBindFragDataLocation(floor_program_id, 0, "fragment_color"));
-	glLinkProgram(floor_program_id);
-	CHECK_GL_PROGRAM_ERROR(floor_program_id);
 
 	CHECK_GL_ERROR(glBindAttribLocation(floor_wireframe_program_id, 0, "vertex_position"));
 	CHECK_GL_ERROR(glBindFragDataLocation(floor_wireframe_program_id, 0, "fragment_color"));
