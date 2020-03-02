@@ -167,6 +167,15 @@ void main()
 }
 )zzz";
 
+const char* tesselation_control_shader = 
+R"zzz(#version 330 core
+void main()
+{
+
+
+}
+)zzz";
+
 
 
 void
