@@ -154,7 +154,7 @@ out vec4 fragment_color;
 void main()
 {
 	vec4 color;
-	float thres = 0.5;
+	float thres = 0.1;
 
 
 	if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
@@ -256,6 +256,7 @@ void updateMengerStuff(int level){
 
 Camera g_camera;
 bool wireframe = false;
+bool showFloor = true;
 bool floor_dirty = false;
 
 
@@ -311,12 +312,14 @@ KeyCallback(GLFWwindow* window,
 	}
 	if (key == GLFW_KEY_F && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
 		// for faces as well
+		floor_dirty = true;
+		showFloor = !showFloor;
 	}
 	else if(key == GLFW_KEY_F && action == GLFW_RELEASE){
 		//std::cout<<"Turning on wireframe"<<std::endl;
 		floor_dirty = true;
 		wireframe = !wireframe;
-		std::cout << "wireframe is now: " << wireframe << std::endl;
+		//std::cout << "wireframe is now: " << wireframe << std::endl;
 	}
 }
 
@@ -674,7 +677,7 @@ int main(int argc, char* argv[])
 			floor_dirty = false;
 		}
 
-		//if(wireframe){
+		if(showFloor){
 			CHECK_GL_ERROR(glUseProgram(floor_program_id));
 			
 
@@ -689,7 +692,7 @@ int main(int argc, char* argv[])
 
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
-		//}
+		}
 		if(wireframe){
 			//TODO: PROLLY WRONG LOWKEY
 			std::cout << "used wireframe" << std::endl;
@@ -706,14 +709,14 @@ int main(int argc, char* argv[])
 
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
-		
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		
 			
 			
 		}
 
 		else{
 			std::cout << "didn't use wireframe" << std::endl;
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			
 		}
 		glfwPollEvents();
 		glfwSwapBuffers(window);
