@@ -54,6 +54,7 @@ uniform mat4 view;
 in vec4 vs_light_direction[];
 in vec4 world_vertex_position[];
 
+uniform int wireframe;
 flat out vec4 normal; //if interpolate normal, do it here by taking out flat
 out vec4 light_direction;
 out vec3 vertex_id;
@@ -68,7 +69,12 @@ void main()
 	normal = vec4(fuck[0], fuck[1], fuck[2], 0.0);
 	for (n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
-		gl_Position = projection * gl_in[n].gl_Position; // homogoenous coord
+		if(wireframe == 1){
+			gl_Position = projection * (gl_in[n].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f)); // homogoenous coord
+		}
+		else{
+			gl_Position = projection * gl_in[n].gl_Position;
+		}
 		world_coordinates = world_vertex_position[n];
 
 		//TODO check that making vertex_id a vertex attribute
@@ -264,7 +270,9 @@ void updateMengerStuff(int level){
 }
 
 Camera g_camera;
-bool wireframe = false;
+int wireframe = 0;
+int zeroInt = 0;
+int oneInt = 1;
 bool showFloor = true;
 bool floor_dirty = false;
 
@@ -327,7 +335,13 @@ KeyCallback(GLFWwindow* window,
 	else if(key == GLFW_KEY_F && action == GLFW_RELEASE){
 		//std::cout<<"Turning on wireframe"<<std::endl;
 		floor_dirty = true;
-		wireframe = !wireframe;
+		if(wireframe == 0){
+			wireframe = 1;
+		}
+		else{
+			wireframe = 0;
+		}
+		//wireframe = !wireframe;
 		//std::cout << "wireframe is now: " << wireframe << std::endl;
 	}
 }
@@ -503,6 +517,9 @@ int main(int argc, char* argv[])
 	GLint light_position_location = 0;
 	CHECK_GL_ERROR(light_position_location =
 			glGetUniformLocation(program_id, "light_position"));
+	GLint wireframe_location = 0;
+	CHECK_GL_ERROR(wireframe_location =
+		glGetUniformLocation(program_id, "wireframe"));
 
 	// Setup fragment shader for the floor
 	GLuint floor_fragment_shader_id = 0;
@@ -559,6 +576,8 @@ int main(int argc, char* argv[])
 	GLint floor_light_position_location = 0;
 	CHECK_GL_ERROR(floor_light_position_location =
 			glGetUniformLocation(floor_program_id, "light_position"));
+	CHECK_GL_ERROR(wireframe_location =
+		glGetUniformLocation(program_id, "wireframe"));
 
 	GLint floor_wireframe_projection_matrix_location = 0;
 	CHECK_GL_ERROR(floor_wireframe_projection_matrix_location =
@@ -569,6 +588,8 @@ int main(int argc, char* argv[])
 	GLint floor_wireframe_light_position_location = 0;
 	CHECK_GL_ERROR(floor_wireframe_light_position_location =
 			glGetUniformLocation(floor_wireframe_program_id, "light_position"));
+	CHECK_GL_ERROR(wireframe_location =
+		glGetUniformLocation(program_id, "wireframe"));
 
 
 
@@ -652,6 +673,7 @@ int main(int argc, char* argv[])
 					&view_matrix[0][0]));
 		CHECK_GL_ERROR(glUniform4fv(light_position_location, 1, &light_position[0]));
 
+		CHECK_GL_ERROR(glUniform1i(wireframe_location, zeroInt));
 		// Draw our triangles.
 		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
@@ -698,7 +720,7 @@ int main(int argc, char* argv[])
 			CHECK_GL_ERROR(glUniformMatrix4fv(floor_view_matrix_location, 1, GL_FALSE,
 						&view_matrix[0][0]));
 			CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
-
+			CHECK_GL_ERROR(glUniform1i(wireframe_location, zeroInt));
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
 		}
@@ -715,6 +737,8 @@ int main(int argc, char* argv[])
 			CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE,
 						&view_matrix[0][0]));
 			CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
+			CHECK_GL_ERROR(glUniform1i(wireframe_location, oneInt));
+
 
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
