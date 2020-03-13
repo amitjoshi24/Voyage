@@ -8,6 +8,7 @@ src/CMakeFiles/menger.dir/main.cc.o: ../lib/utgraphicsutil/debuggl.h
 src/CMakeFiles/menger.dir/main.cc.o: ../src/camera.h
 src/CMakeFiles/menger.dir/main.cc.o: ../src/main.cc
 src/CMakeFiles/menger.dir/main.cc.o: ../src/menger.h
+src/CMakeFiles/menger.dir/main.cc.o: ../src/stb_image.h
 src/CMakeFiles/menger.dir/main.cc.o: /usr/local/include/GLFW/glfw3.h
 
 src/CMakeFiles/menger.dir/menger.cc.o: ../src/menger.cc
