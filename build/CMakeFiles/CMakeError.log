@@ -670,3 +670,99 @@ make: *** [cmTC_813c5/fast] Error 2
 
 
 
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_a55b0/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_a55b0.dir/build.make CMakeFiles/cmTC_a55b0.dir/build
+Building C object CMakeFiles/cmTC_a55b0.dir/OpenMPTryFlag.c.o
+/Library/Developer/CommandLineTools/usr/bin/cc   -fopenmp=libomp -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/cmTC_a55b0.dir/OpenMPTryFlag.c.o   -c /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.12)
+Target: x86_64-apple-darwin19.3.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_a55b0.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_a55b0/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_3f9e8/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_3f9e8.dir/build.make CMakeFiles/cmTC_3f9e8.dir/build
+Building C object CMakeFiles/cmTC_3f9e8.dir/OpenMPTryFlag.c.o
+/Library/Developer/CommandLineTools/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/cmTC_3f9e8.dir/OpenMPTryFlag.c.o   -c /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.12)
+Target: x86_64-apple-darwin19.3.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_3f9e8.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_3f9e8/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_3e6f6/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_3e6f6.dir/build.make CMakeFiles/cmTC_3e6f6.dir/build
+Building C object CMakeFiles/cmTC_3e6f6.dir/OpenMPTryFlag.c.o
+/Library/Developer/CommandLineTools/usr/bin/cc   -fopenmp -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/cmTC_3e6f6.dir/OpenMPTryFlag.c.o   -c /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.12)
+Target: x86_64-apple-darwin19.3.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_3e6f6.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_3e6f6/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_aa852/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_aa852.dir/build.make CMakeFiles/cmTC_aa852.dir/build
+Building CXX object CMakeFiles/cmTC_aa852.dir/OpenMPTryFlag.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/cmTC_aa852.dir/OpenMPTryFlag.cpp.o -c /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.12)
+Target: x86_64-apple-darwin19.3.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_aa852.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_aa852/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_46f6c/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_46f6c.dir/build.make CMakeFiles/cmTC_46f6c.dir/build
+Building CXX object CMakeFiles/cmTC_46f6c.dir/OpenMPTryFlag.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/cmTC_46f6c.dir/OpenMPTryFlag.cpp.o -c /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.12)
+Target: x86_64-apple-darwin19.3.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_46f6c.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_46f6c/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7be9d/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_7be9d.dir/build.make CMakeFiles/cmTC_7be9d.dir/build
+Building CXX object CMakeFiles/cmTC_7be9d.dir/OpenMPTryFlag.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/cmTC_7be9d.dir/OpenMPTryFlag.cpp.o -c /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.12)
+Target: x86_64-apple-darwin19.3.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_7be9d.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_7be9d/fast] Error 2
+
+
+

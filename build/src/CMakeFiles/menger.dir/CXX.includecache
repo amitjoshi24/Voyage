@@ -1456,6 +1456,14 @@ detail/setup.hpp
 detail/func_vector_relational.inl
 ../third-party/glm/glm/detail/func_vector_relational.inl
 
+/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/camera.cc
+camera.h
+/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/camera.h
+glm/glm.hpp
+-
+iostream
+-
+
 /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/camera.h
 glm/glm.hpp
 -
@@ -1493,6 +1501,16 @@ menger.h
 /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/menger.h
 camera.h
 /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/camera.h
+
+/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/menger.cc
+menger.h
+/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/menger.h
+iostream
+-
+string
+-
+cmath
+-
 
 /Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/menger.h
 glm/glm.hpp
