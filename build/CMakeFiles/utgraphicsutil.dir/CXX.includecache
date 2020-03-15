@@ -6,23 +6,23 @@
 
 #IncludeRegexTransform: 
 
-/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/lib/utgraphicsutil/debuggl.cc
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.cc
 debuggl.h
-/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/lib/utgraphicsutil/debuggl.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.h
 GL/glew.h
 -
 GLFW/glfw3.h
 -
 
-/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/lib/utgraphicsutil/debuggl.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/debuggl.h
 
-/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/lib/utgraphicsutil/image.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/image.h
 vector
 -
 
-/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/lib/utgraphicsutil/jpegio.cc
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.cc
 jpegio.h
-/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/lib/utgraphicsutil/jpegio.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.h
 vector
 -
 jpeglib.h
@@ -30,34 +30,26 @@ jpeglib.h
 stdio.h
 -
 
-/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/lib/utgraphicsutil/jpegio.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/jpegio.h
 string
 -
 image.h
-/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/lib/utgraphicsutil/image.h
+/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/lib/utgraphicsutil/image.h
 
-/usr/local/Cellar/glew/2.1.0_1/include/GL/glew.h
+/usr/local/include/GLFW/glfw3.h
 stddef.h
--
-inttypes.h
 -
 stdint.h
 -
-inttypes.h
+OpenGL/gl3.h
 -
-Availability.h
+OpenGL/gl3ext.h
+-
+OpenGL/gl.h
 -
 OpenGL/glu.h
 -
-GL/glu.h
--
-
-/usr/local/Cellar/glfw/3.3.2/include/GLFW/glfw3.h
-stddef.h
--
-stdint.h
--
-vulkan/vulkan.h
+GL/glcorearb.h
 -
 GLES/gl.h
 -
@@ -75,19 +67,7 @@ GLES3/gl31.h
 -
 GLES2/gl2ext.h
 -
-GLES3/gl32.h
--
-GLES2/gl2ext.h
--
-OpenGL/gl3.h
--
-OpenGL/gl3ext.h
--
-GL/glcorearb.h
--
-OpenGL/gl.h
--
-OpenGL/glu.h
+vulkan/vulkan.h
 -
 GL/gl.h
 -
@@ -95,20 +75,4 @@ GL/glext.h
 -
 GL/glu.h
 -
-
-/usr/local/include/jconfig.h
-
-/usr/local/include/jerror.h
-
-/usr/local/include/jmorecfg.h
-
-/usr/local/include/jpeglib.h
-jconfig.h
-/usr/local/include/jconfig.h
-jmorecfg.h
-/usr/local/include/jmorecfg.h
-jpegint.h
-/usr/local/include/jpegint.h
-jerror.h
-/usr/local/include/jerror.h
 
