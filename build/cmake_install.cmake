@@ -1,4 +1,4 @@
-# Install script for directory: /u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge
+# Install script for directory: /Users/dcgp/workspace/20/graphics/graphics_menger_sponge
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -27,11 +27,6 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
-# Install shared libraries without execute permission?
-if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "1")
-endif()
-
 # Is this installation the result of a crosscompile?
 if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
@@ -39,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/cmake_install.cmake")
+  include("/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/src/cmake_install.cmake")
 
 endif()
 
@@ -51,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

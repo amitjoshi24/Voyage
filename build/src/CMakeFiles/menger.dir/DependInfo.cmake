@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/camera.cc" "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/menger.dir/camera.cc.o"
-  "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/main.cc" "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/menger.dir/main.cc.o"
-  "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/src/menger.cc" "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/src/CMakeFiles/menger.dir/menger.cc.o"
+  "/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/camera.cc" "/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/src/CMakeFiles/menger.dir/camera.cc.o"
+  "/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/main.cc" "/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/src/CMakeFiles/menger.dir/main.cc.o"
+  "/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/src/menger.cc" "/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/src/CMakeFiles/menger.dir/menger.cc.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "Clang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
@@ -19,17 +19,18 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/usr/include/eigen3"
   "/usr/local/include"
   "/opt/local/include"
   "../lib"
-  "/lusr/opt/glfw-3.2.1/include"
+  "/usr/local/Cellar/glew/2.1.0_1/include"
+  "/usr/local/Cellar/glfw/3.3.2/include"
   "../lib/utgraphicsutil"
+  "../third-party/glm"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/u/amit56/Desktop/ComputerGraphicsssh/graphics_menger_sponge/build/CMakeFiles/utgraphicsutil.dir/DependInfo.cmake"
+  "/Users/dcgp/workspace/20/graphics/graphics_menger_sponge/build/CMakeFiles/utgraphicsutil.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.
