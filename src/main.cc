@@ -167,7 +167,47 @@ void main()
 }
 )zzz";
 
+// both TCS and TES were heavily based from https://www.informit.com/articles/article.aspx?p=2120983
 
+const char* tesselation_control_shader =
+R"zzz(#version 410 core
+
+uniform int outerTess;
+uniform int innerTess;
+layout (vertices = 4) out;
+    void main(){
+       if (gl_InvocationID == 0)
+    {
+        for(int i = 0; i < 4; i++){
+            gl_TessLevelInner[i] = innerTess;
+            gl_TessLevelOuter[i] = outerTess;
+        } 
+    }
+
+    gl_out[gl_InvocationID].gl_Position =
+        gl_in[gl_InvocationID].gl_Position; 
+    }
+)zzz"
+
+const char* tesselation_evaluation_shader =
+R"zzz(#version 410 core
+    layout (quads) in;
+    void main(void){
+        // Interpolate along bottom edge using x component of the
+    // tessellation coordinate
+    vec4 p1 = mix(gl_in[0].gl_Position,
+                  gl_in[1].gl_Position,
+                  gl_TessCoord.x);
+    // Interpolate along top edge using x component of the
+    // tessellation coordinate
+    vec4 p2 = mix(gl_in[2].gl_Position,
+                  gl_in[3].gl_Position,
+                  gl_TessCoord.x);
+    // Now interpolate those two results using the y component
+    // of tessellation coordinate
+    gl_Position = mix(p1, p2, gl_TessCoord.y);
+    }
+)zzz"
 
 void
 CreateTriangle(std::vector<glm::vec4>& vertices,
@@ -257,7 +297,8 @@ void updateMengerStuff(int level){
 Camera g_camera;
 bool wireframe = false;
 bool floor_dirty = false;
-
+int outerTess = 5;
+int innerTess = 5;
 
 void
 KeyCallback(GLFWwindow* window,
@@ -318,7 +359,21 @@ KeyCallback(GLFWwindow* window,
 		wireframe = !wireframe;
 		std::cout << "wireframe is now: " << wireframe << std::endl;
 	}
+    if( key == GLFW_KEY_MINUS && action != GLFW_RELEASE){
+        outerTess++;
+    }
+    else if(key == GLFW_KEY_EQUAL && action != GLFW_RELEASE){
+        outerTess--;
+    }
+    else if(key == GLFW_KEY_COMMA && action != GLFW_RELEASE){
+        innerTess++;
+    }
+    else if(key == GLFW_KEY_PERIOD && action != GLFW_RELEASE){
+        innerTess--;
+    }
+
 }
+
 
 int g_current_button;
 bool g_mouse_pressed;
@@ -524,7 +579,8 @@ int main(int argc, char* argv[])
 	glLinkProgram(floor_program_id);
 	CHECK_GL_PROGRAM_ERROR(floor_program_id);
 
-	
+
+    // setup tesselation controln
 	GLuint floor_wireframe_program_id = 0;
 	CHECK_GL_ERROR(floor_wireframe_program_id = glCreateProgram());
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, vertex_shader_id));
@@ -557,7 +613,15 @@ int main(int argc, char* argv[])
 	GLint floor_wireframe_light_position_location = 0;
 	CHECK_GL_ERROR(floor_wireframe_light_position_location =
 			glGetUniformLocation(floor_wireframe_program_id, "light_position"));
-
+    
+    GLint outerTess_location = 0;
+    CHECK_GL_ERROR(outerTess_location =
+            glGetUniformLocation(floor_wireframe_program_id, "outerTess"));
+    
+    GLint innerTess_location = 0;
+    CHECK_GL_ERROR(innerTess_location =
+            glGetUniformLocation(floor_wireframe_program_id, "innerTess"));
+    
 
 
 
@@ -704,6 +768,8 @@ int main(int argc, char* argv[])
 						&view_matrix[0][0]));
 			CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
 
+            CHECK_GL_ERROR(glUniform1i(outerTess_location, outerTess));
+            CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
 
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
 		
