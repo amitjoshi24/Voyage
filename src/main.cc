@@ -87,47 +87,7 @@ void main()
 }
 )zzz";
 
-const char* tess_control_shader =
-R"zzz(#version 330 core
-layout (triangles) in;
-layout (triangle_strip, max_vertices = 3) out;
-uniform mat4 projection;
-uniform mat4 view;
-in vec4 vs_light_direction[];
-in vec4 world_vertex_position[];
-uniform int wireframe;
-uniform int ocean;
-flat out vec4 normal; //if interpolate normal, do it here by taking out flat
-out vec4 light_direction;
-out vec3 vertex_id;
-out vec4 world_coordinates;
-void main()
-{
-	int n = 0;
-	vec3 fuck = normalize(cross( world_vertex_position[2].xyz - world_vertex_position[0].xyz, world_vertex_position[1].xyz - world_vertex_position[0].xyz));
-	normal = vec4(fuck[0], fuck[1], fuck[2], 0.0);
-	for (n = 0; n < gl_in.length(); n++) {
-		light_direction = vs_light_direction[n];
-		if(wireframe == 1){
-			gl_Position = projection * (gl_in[n].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f)); // homogoenous coord
-		}
-		else{
-			gl_Position = projection * gl_in[n].gl_Position;
-		}
-		world_coordinates = world_vertex_position[n];
-		//TODO check that making vertex_id a vertex attribute
-		if (n == 0){
-			vertex_id = vec3(1, 0, 0);
-		} else if (n == 1){
-			vertex_id = vec3(0,1, 0);
-		} else {
-			vertex_id = vec3(0, 0, 1);
-		}
-		EmitVertex();
-	}
-	EndPrimitive();
-}
-)zzz";
+
 
 const char* fragment_shader =
 R"zzz(#version 330 core
@@ -248,7 +208,10 @@ R"zzz(#version 410 core
 layout (vertices = 4) out;
 uniform int outerTess;
 uniform int innerTess;
-
+in vec4 world_vertex_position;
+out vec4 world_vertex_position;
+in vec4 vs_light_direction;
+out vec4 vs_light_direciton;
 void main()
 {
 
@@ -271,7 +234,10 @@ void main()
 const char* tesselation_evaluation_shader =
 R"zzz(#version 410 core
 layout (quads) in;
-
+in vec4 world_vertex_position;
+out vec4 world_vertex_position;
+in vec4 vs_light_direction;
+out vec4 vs_light_direction;
 void main(void)
 {
     // Interpolate along bottom edge using x component of the
