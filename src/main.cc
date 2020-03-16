@@ -208,10 +208,10 @@ R"zzz(#version 410 core
 layout (vertices = 4) out;
 uniform int outerTess;
 uniform int innerTess;
-in vec4 world_vertex_position;
-out vec4 world_vertex_position;
-in vec4 vs_light_direction;
-out vec4 vs_light_direciton;
+in vec4 world_vertex_position[];
+out vec4 world_vertex_position[];
+in vec4 vs_light_direction[];
+out vec4 vs_light_direciton[];
 void main()
 {
 
@@ -234,10 +234,10 @@ void main()
 const char* tesselation_evaluation_shader =
 R"zzz(#version 410 core
 layout (quads) in;
-in vec4 world_vertex_position;
-out vec4 world_vertex_position;
-in vec4 vs_light_direction;
-out vec4 vs_light_direction;
+in vec4 world_vertex_position[];
+out vec4 world_vertex_position[];
+in vec4 vs_light_direction[];
+out vec4 vs_light_direction[];
 void main(void)
 {
     // Interpolate along bottom edge using x component of the
