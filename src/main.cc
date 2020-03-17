@@ -62,8 +62,8 @@ out vec4 world_coordinates;
 void main()
 {
 	int n = 0;
-	vec3 fuck = normalize(cross( world_vertex_position[2].xyz - world_vertex_position[0].xyz, world_vertex_position[1].xyz - world_vertex_position[0].xyz));
-	normal = vec4(fuck[0], fuck[1], fuck[2], 0.0);
+	vec3 nhn = normalize(cross( world_vertex_position[2].xyz - world_vertex_position[0].xyz, world_vertex_position[1].xyz - world_vertex_position[0].xyz));
+	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0);
 	for (n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
 		if(wireframe == 1){
@@ -242,15 +242,12 @@ out vec4 vs_light_direction;
 
 void main(void)
 {
-
-    vec4 p1 = mix(gl_in[0].gl_Position,
-                  gl_in[1].gl_Position,
-                  gl_TessCoord.x);
-
-    vec4 p2 = mix(gl_in[2].gl_Position,
-                  gl_in[3].gl_Position,
-                  gl_TessCoord.x);
-
+/*
+		//unless it's a triangle then
+		gl_Position = (gl_TessCoord.x * gl_in[0].gl_Position) + (gl_TessCoord.y * gl_in[1].gl_Position) + (gl_TessCoord.z * gl_in[2].gl_Position);
+*/
+    vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
+    vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
     gl_Position = mix(p1, p2, gl_TessCoord.y);
 
 		world_vertex_position = world_vertex_position4[gl_PrimitiveID];
@@ -942,9 +939,6 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 				obj_faces.data(), GL_STATIC_DRAW));
 
 
-			// FIXME: Upload your vertex data here.
-			//we should do smth here lollllll
-
 		}
 
 
@@ -1058,7 +1052,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
 			CHECK_GL_ERROR(glUniform1i(floor_wireframe_location, zeroInt));
 
-			//CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
+//okay what is up here???
+			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
 		}
 		if(wireframe){
 			//TODO: PROLLY WRONG LOWKEY
@@ -1078,7 +1073,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
             CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
 
 
-
+//why is this different from the 1050 range???
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
