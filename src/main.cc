@@ -758,7 +758,9 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	GLint wireframe_location = 0;
 	CHECK_GL_ERROR(wireframe_location =
 		glGetUniformLocation(program_id, "wireframe"));
-
+    GLint waves_location = 0;
+    CHECK_GL_ERROR(waves_location =
+        glGetUniformLocation(program_id, "waves"));
 	// Setup fragment shader for the floor
 	GLuint floor_fragment_shader_id = 0;
 	const char* floor_fragment_source_pointer = floor_fragment_shader;
