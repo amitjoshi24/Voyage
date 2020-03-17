@@ -114,14 +114,14 @@ void main()
 	else{
 		color = vec4(0.0, 0.0, 1.0, 1.0);
 	}
-	
+
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
 }
 )zzz";
 
-const char* skybox_vertex_shader = 
+const char* skybox_vertex_shader =
 R"zzz(#version 330 core
 layout (location = 0) in vec3 aPos;
 out vec3 TexCoords;
@@ -131,7 +131,7 @@ void main()
 {
     TexCoords = aPos;
     gl_Position = projection * view * vec4(aPos, 1.0);
-}  
+}
 )zzz";
 
 const char* skybox_fragment_shader =
@@ -141,7 +141,7 @@ out vec4 FragColor;
 in vec3 TexCoords;
 uniform samplerCube skybox;
 void main()
-{    
+{
     FragColor = texture(skybox, TexCoords);
 }
 )zzz";
@@ -190,7 +190,7 @@ void main()
 }
 )zzz";
 
-const char* ocean_shader = 
+const char* ocean_shader =
 R"zzz(#version 330 core
 flat in vec4 normal;
 in vec4 light_direction;
@@ -201,17 +201,17 @@ void main(){
 }
 )zzz";
 
-// both tess control and tess eval are heavily based from 
-const char* tesselation_control_shader = 
+// both tess control and tess eval are heavily based from
+const char* tesselation_control_shader =
 R"zzz(#version 410 core
 
 layout (vertices = 4) out;
 uniform int outerTess;
 uniform int innerTess;
 in vec4 world_vertex_position[];
-out vec4 world_vertex_position[];
+out vec4 world_vertex_position4[];
 in vec4 vs_light_direction[];
-out vec4 vs_light_direciton[];
+out vec4 vs_light_direction4[];
 void main()
 {
 
@@ -227,32 +227,35 @@ void main()
 
     gl_out[gl_InvocationID].gl_Position =
         gl_in[gl_InvocationID].gl_Position;
- 
+		world_vertex_position4[gl_InvocationID] = world_vertex_position[gl_InvocationID];
+		vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
 }
 )zzz";
 
 const char* tesselation_evaluation_shader =
 R"zzz(#version 410 core
 layout (quads) in;
-in vec4 world_vertex_position[];
-out vec4 world_vertex_position[];
-in vec4 vs_light_direction[];
-out vec4 vs_light_direction[];
+in vec4 world_vertex_position4[];
+out vec4 world_vertex_position;
+in vec4 vs_light_direction4[];
+out vec4 vs_light_direction;
+
 void main(void)
 {
-    // Interpolate along bottom edge using x component of the
-    // tessellation coordinate
+
     vec4 p1 = mix(gl_in[0].gl_Position,
                   gl_in[1].gl_Position,
                   gl_TessCoord.x);
-    // Interpolate along top edge using x component of the
-    // tessellation coordinate
+
     vec4 p2 = mix(gl_in[2].gl_Position,
                   gl_in[3].gl_Position,
                   gl_TessCoord.x);
-    // Now interpolate those two results using the y component
-    // of tessellation coordinate
+
     gl_Position = mix(p1, p2, gl_TessCoord.y);
+
+		world_vertex_position = world_vertex_position4[gl_PrimitiveID];
+		vs_light_direction = vs_light_direction4[gl_PrimitiveID];
+
 }
 
 )zzz";
@@ -271,7 +274,7 @@ void main(void)
         unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
         if (data)
         {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                          0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
             );
             stbi_image_free(data);
@@ -289,7 +292,7 @@ void main(void)
     CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
 
     return textureID;
-} */ 
+} */
 
 // FIXME generate skybox
 void generate_skybox(std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces){
@@ -311,7 +314,7 @@ void generate_skybox(std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec
 
 	obj_vertices.push_back(glm::vec4(max[0], max[1], max[2], 1.0f));
 	obj_vertices.push_back(glm::vec4(max[0], min[1], max[2], 1.0f));
-	
+
 
 
 	obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 1, pastSize + 0));
@@ -319,19 +322,19 @@ void generate_skybox(std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec
 
 	obj_faces.push_back(glm::uvec3(pastSize + 6, pastSize + 7, pastSize + 3));
 	obj_faces.push_back(glm::uvec3(pastSize + 3, pastSize + 2, pastSize + 6));
-	
+
 	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 6, pastSize + 2));
-	obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 0, pastSize + 4));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 0, pastSize + 4));
+
 	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 0, pastSize + 1));
-	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 5, pastSize + 4));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 5, pastSize + 4));
+
 	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 6, pastSize + 4));
-	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 5, pastSize + 7));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 5, pastSize + 7));
+
 	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 5, pastSize + 1));
-	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 3, pastSize + 7));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 3, pastSize + 7));
+
 }
 
 void
@@ -365,7 +368,7 @@ CreateFloor(std::vector<glm::vec4>& vertices,
 	indices.push_back(glm::uvec3(0, 1, 3));
 }*/
 
-void 
+void
 CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
 	float inf = 20.0f;
 	float inc = 40.0f/16.0f;
@@ -381,7 +384,7 @@ CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
 				//indices.push_back(glm::uvec3(lastDotPlacedIndex-18, lastDotPlacedIndex, lastDotPlacedIndex-1));
 				//indices.push_back(glm::uvec3(lastDotPlacedIndex-18, lastDotPlacedIndex-17, lastDotPlacedIndex));
 			}
-			
+
 		}
 		std::cout << "dotCounter: " << dotCounter << std::endl;
 	}
@@ -607,15 +610,15 @@ int main(int argc, char* argv[])
 	    "../../src/front.jpg",
 	    "../../back.jpg"
 	};
-//unsigned int cubemapTexture = loadCubemap(faces);  
+//unsigned int cubemapTexture = loadCubemap(faces);
 
 	int width, height, nrChannels;
-unsigned char *data;  
+unsigned char *data;
 /*for(GLuint i = 0; i < faces.size(); i++)
 {
     data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
     glTexImage2D(
-        GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 
+        GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
         0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
     );
 }*/
@@ -624,7 +627,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);  
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 
         //FIXME: Create the geometry from a Menger object.
@@ -632,7 +635,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	CreateFloor(floor_vertices, floor_faces);
 
-	
+
 	g_menger->set_nesting_level(1);
 	g_menger->generate_geometry(obj_vertices, obj_faces);
 
@@ -668,7 +671,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 				sizeof(uint32_t) * obj_faces.size() * 3,
 				obj_faces.data(), GL_STATIC_DRAW));
-
+/*
 		// Switch to the VAO for Skybox.
 	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kSkyboxVao]));
 
@@ -689,7 +692,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 				sizeof(uint32_t) * skybox_faces.size() * 3,
 				skybox_faces.data(), GL_STATIC_DRAW));
-
+*/
 	/*
  	 * By far, the geometry is loaded into g_buffer_objects[kGeometryVao][*].
 	 * These buffers are binded to g_array_objects[kGeometryVao]
@@ -799,7 +802,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glLinkProgram(floor_program_id);
 	CHECK_GL_PROGRAM_ERROR(floor_program_id);
 
-	
+
 
 
 	// Get the uniform locations.
@@ -847,10 +850,10 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     CHECK_GL_ERROR(outerTess_location =
         glGetUniformLocation(floor_wireframe_program_id, "outerTess"));
     GLint innerTess_location = 0;
-    CHECK_GL_ERROR(innerTess_location = 
+    CHECK_GL_ERROR(innerTess_location =
         glGetUniformLocation(floor_wireframe_program_id, "innerTess"));
 	// setup skybox shader
-
+/*
 	GLuint skybox_vertex_shader_id = 0;
 	const char* skybox_vertex_source_pointer = skybox_vertex_shader;
 	CHECK_GL_ERROR(vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
@@ -883,7 +886,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(skybox_view_matrix_location =
 		glGetUniformLocation(skybox_program_id, "view"));
 
-
+*/
 
 
 	//glm::vec4 light_position = glm::vec4(10.0f, 10.0f, 10.0f, 1.0f);
@@ -968,7 +971,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		// Draw our triangles.
 		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
-
+/*
 		// render skybox
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kSkyboxVao]));
 		// Setup vertex data in a VBO.
@@ -986,6 +989,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 					sizeof(uint32_t) * skybox_faces.size() * 4,
 					skybox_faces.data(), GL_STATIC_DRAW));
 		CHECK_GL_ERROR(glUseProgram(skybox_program_id));			// Setup vertex data in a VBO.
+	*/
 	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kVertexBuffer]));
 	// NOTE: We do not send anything right now, we just describe it to OpenGL.
 	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
@@ -1000,6 +1004,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 				sizeof(uint32_t) * floor_faces.size() * 4,
 				floor_faces.data(), GL_STATIC_DRAW));
 
+/*
 		// Pass uniforms in.
 		CHECK_GL_ERROR(glUniformMatrix4fv(skybox_projection_matrix_location, 1, GL_FALSE,
 					&projection_matrix[0][0]));
@@ -1008,8 +1013,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		// Draw our triangles.
 		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, skybox_faces.size() * 3, GL_UNSIGNED_INT, 0));
-
-
+*/
 		// FIXME: Render the floor
 		// Note: What you need to do is
 		// 	1. Switch VAO
@@ -1042,7 +1046,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		if(showFloor){
 			CHECK_GL_ERROR(glUseProgram(floor_program_id));
-			
+
 
 			// Draw our triangles.
 
@@ -1060,7 +1064,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			//TODO: PROLLY WRONG LOWKEY
 			std::cout << "used wireframe" << std::endl;
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			
+
 
 			CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
 							// Pass uniforms in.
@@ -1076,14 +1080,14 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		
-			
-			
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+
 		}
 
 		else{
 			std::cout << "didn't use wireframe" << std::endl;
-			
+
 		}
 		glfwPollEvents();
 		glfwSwapBuffers(window);
