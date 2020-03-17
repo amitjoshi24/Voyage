@@ -824,7 +824,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(floor_light_position_location =
 			glGetUniformLocation(floor_program_id, "light_position"));
 	GLint floor_wireframe_location = 0;
-    CHECK_GL_ERROR(wireframe_location =
+    CHECK_GL_ERROR(floor_wireframe_location =
 		glGetUniformLocation(floor_program_id, "wireframe"));
 
 	GLuint floor_wireframe_program_id = 0;
@@ -1065,7 +1065,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
 			CHECK_GL_ERROR(glUniform1i(floor_wireframe_location, zeroInt));
 
-			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
+			//CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
 		}
 		if(wireframe){
 			//TODO: PROLLY WRONG LOWKEY
