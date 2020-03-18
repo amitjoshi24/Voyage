@@ -15,7 +15,6 @@
 #include "menger.h"
 #include "camera.h"
 #include "stb_image.h"
-
 int window_width = 800, window_height = 600;
 
 // VBO and VAO descriptors.
@@ -36,6 +35,7 @@ uniform mat4 view;
 uniform vec4 light_position;
 out vec4 vs_light_direction;
 out vec4 world_vertex_position;
+uniform uvec4 waves[1];
 void main()
 {
 	world_vertex_position = vertex_position;
@@ -396,6 +396,10 @@ CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
 		std::cout << "dotCounter: " << dotCounter << std::endl;
 	}
 }
+
+void generate_waves(glm::uvec4* waves){
+    waves[0] = glm::uvec4(2, 4, 1, 7);
+}
 // FIXME: Save geometry to OBJ file
 void
 SaveObj(const std::string& file,
@@ -438,7 +442,7 @@ int innerTess = 5;
 bool ocean = false;
 bool showFloor = true;
 bool floor_dirty = false;
-
+glm::uvec4* waves;
 
 void
 KeyCallback(GLFWwindow* window,
@@ -592,7 +596,7 @@ int main(int argc, char* argv[])
 	const GLubyte* version = glGetString(GL_VERSION);    // version as a string
 
 	std::cout << "OpenGL version supported:" << version << "\n";
-
+/
 	std::vector<glm::vec4> obj_vertices;
 	std::vector<glm::uvec3> obj_faces;
 
@@ -641,7 +645,10 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         //CreateTriangle(obj_vertices, obj_faces);
 
 	CreateFloor(floor_vertices, floor_faces);
-
+    //srand(917);
+    
+    waves = new glm::uvec4[1];
+    generate_waves(waves);
 
 	g_menger->set_nesting_level(1);
 	g_menger->generate_geometry(obj_vertices, obj_faces);
@@ -758,7 +765,9 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	GLint wireframe_location = 0;
 	CHECK_GL_ERROR(wireframe_location =
 		glGetUniformLocation(program_id, "wireframe"));
-
+    GLint waves_location = 0;
+    CHECK_GL_ERROR(waves_location =
+        glGetUniformLocation(program_id, "waves"));
 	// Setup fragment shader for the floor
 	GLuint floor_fragment_shader_id = 0;
 	const char* floor_fragment_source_pointer = floor_fragment_shader;
