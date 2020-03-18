@@ -66,12 +66,16 @@ void main()
 	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0);
 	for (n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
+
+		//fight z fighting
+		//TODO fix to be world coordinates
 		if(wireframe == 1){
 			gl_Position = projection * (gl_in[n].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f)); // homogoenous coord
 		}
 		else{
 			gl_Position = projection * gl_in[n].gl_Position;
 		}
+
 		world_coordinates = world_vertex_position[n];
 		//TODO check that making vertex_id a vertex attribute
 		if (n == 0){
@@ -117,7 +121,7 @@ void main()
 
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+	fragment_color = light_direction;//clamp(dot_nl * color, 0.0, 1.0);
 }
 )zzz";
 
@@ -201,7 +205,7 @@ void main(){
 }
 )zzz";
 
-// both tess control and tess eval are heavily based from
+//sets up the constants for tesselation for each patch
 const char* tesselation_control_shader =
 R"zzz(#version 410 core
 
@@ -215,15 +219,15 @@ out vec4 vs_light_direction4[];
 void main()
 {
 
-    if (gl_InvocationID == 0)
-    {
+    //if (gl_InvocationID == 0)
+    //{
         gl_TessLevelInner[0] = innerTess;
         gl_TessLevelInner[1] = innerTess;
         gl_TessLevelOuter[0] = outerTess;
         gl_TessLevelOuter[1] = outerTess;
         gl_TessLevelOuter[2] = outerTess;
         gl_TessLevelOuter[3] = outerTess;
-    }
+    //}
 
     gl_out[gl_InvocationID].gl_Position =
         gl_in[gl_InvocationID].gl_Position;
@@ -232,6 +236,7 @@ void main()
 }
 )zzz";
 
+//run on tesselated patch
 const char* tesselation_evaluation_shader =
 R"zzz(#version 410 core
 layout (quads) in;
@@ -242,22 +247,27 @@ out vec4 vs_light_direction;
 
 void main(void)
 {
-/*
-		//unless it's a triangle then
-		gl_Position = (gl_TessCoord.x * gl_in[0].gl_Position) + (gl_TessCoord.y * gl_in[1].gl_Position) + (gl_TessCoord.z * gl_in[2].gl_Position);
-*/
+
+		//TODO is it okay to interpolate between coords in camera system
+
     vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
     vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
     gl_Position = mix(p1, p2, gl_TessCoord.y);
 
+		//this needs to be updated to be setting world coords for every new point
 		world_vertex_position = world_vertex_position4[gl_PrimitiveID];
-		vs_light_direction = vs_light_direction4[gl_PrimitiveID];
+
+		//recompute this as well
+		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
+		vec4 light2 = mix(vs_light_direction4[2], vs_light_direction4[3], gl_TessCoord.x);
+		vs_light_direction = mix(light1, light2, gl_TessCoord.y);
 
 }
 
 )zzz";
 
 //copied from https://learnopengl.com/Advanced-OpenGL/Cubemaps
+//used to load in cubemap into gl (Stbi_load)
 
 /*unsigned int loadCubemap(std::vector<std::string> faces)
 {
@@ -963,7 +973,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		CHECK_GL_ERROR(glUniform1i(wireframe_location, zeroInt));
 		// Draw our triangles.
-		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
+		//CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
 /*
 		// render skybox
@@ -1053,12 +1063,12 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			CHECK_GL_ERROR(glUniform1i(floor_wireframe_location, zeroInt));
 
 //okay what is up here???
-			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
+			//CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
 		}
 		if(wireframe){
 			//TODO: PROLLY WRONG LOWKEY
 			std::cout << "used wireframe" << std::endl;
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 			CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
