@@ -243,6 +243,7 @@ void main()
 		if(tidal == 1){
 			for(int i = 0; i < 4; i++){
 				//TODO DORA CHANGED INDEX TO i instead of GL_INVOCATIONID
+				//sweaty
 				d += (distance(meanOfTidal, gl_in[i].gl_Position.xyz));
 			}
 			if(d < 1){
@@ -372,10 +373,40 @@ in vec4 world_coordinates;
 out vec4 fragment_color;
 void main(){
 	//TODO replace with proper lighting model
-	vec4 color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	float k_a = 0.2f; //random number
+	vec4 water_ambient = vec4(0.0f, 1.0f, 1.0f, 1.0f);
+
+	vec4 ambient_component = k_a * water_ambient;
+
+
+	float k_d = 0.5f; //also random number
+	vec4 light_color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	float normalLightDot = float(dot(normal, light_direction));
+	if(normalLightDot < 0){
+		normalLightDot = 0;
+	}
+	
+	vec4 diffuse_component = k_d*normalLightDot*light_color;
+
+
+	float k_s = 0.5f; //random num 3
+	vec4 reflected_light_direction = reflect(light_direction, normal);
+	float alpha = 0.8; //random num 4
+	float cameraReflectDot = float(dot(reflected_light_direction, camera_direction));
+	if(cameraReflectDot < 0){
+		cameraReflectDot = 0;
+	}
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+	
+	vec4 specular_component = dot_nl*(k_s*pow(cameraReflectDot, alpha)*light_color);
+
+	vec4 color = ambient_component + diffuse_component + specular_component;
+
+	//made it so dot_nl only multiplies specular comp
+
+	fragment_color = clamp(color, 0.0, 1.0);
 }
 )zzz";
 
