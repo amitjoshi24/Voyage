@@ -136,15 +136,60 @@ void main()
     gl_TessLevelInner[1] = innerTess;
     gl_TessLevelOuter[0] = outerTess;
     gl_TessLevelOuter[1] = outerTess;
-		gl_TessLevelOuter[2] = outerTess;
+	gl_TessLevelOuter[2] = outerTess;
     gl_TessLevelOuter[3] = outerTess;
 
+    
+    gl_out[gl_InvocationID].gl_Position =
+        gl_in[gl_InvocationID].gl_Position;
+		vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
+}
+)zzz";
+
+// is similar to the other TCS, but takes in a bool (existence of tidal wave) and int (xcoord of tidal wave)
+const char* ocean_tesselation_control_shader =
+R"zzz(#version 410 core
+layout (vertices = 4) out;
+uniform int outerTess;
+uniform int innerTess;
+uniform bool isTidal;
+uniform int xTidal;
+in vec4 vs_light_direction[];
+out vec4 vs_light_direction4[];
+void main()
+{
+
+	if(gl_InvocationID == 0){
+		float distance = 0;
+		vec3 meanOfTidal = vec3(x, 0, 0);
+		for(int i = 0; i < 4; i++){
+			distance += (float)(distance(meanOfTidal, gl_in[gl_InvocationID].gl_Position));
+		}
+		if(distance < 1){
+			distance = 1;
+		}
+		if(distance > 4){
+			distance = 4;
+		}
+		int multiplier = (int)(4 - distance);
+		int innerVal = innerTess * multiplier;
+		int outerVal = outerTess * multiplier;
+	    gl_TessLevelInner[0] = innerVal;
+	    gl_TessLevelInner[1] = innerVal;
+	    gl_TessLevelOuter[0] = outerVal;
+	    gl_TessLevelOuter[1] = outerVal;
+		gl_TessLevelOuter[2] = outerVal;
+	    gl_TessLevelOuter[3] = outerVal;
+	}
+
+	gl_Position[gl_InvocationID].gl_Position += 2
 
     gl_out[gl_InvocationID].gl_Position =
         gl_in[gl_InvocationID].gl_Position;
 		vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
 }
 )zzz";
+
 
 //run on tesselated patch
 const char* floor_wireframe_tesselation_evaluation_shader =
