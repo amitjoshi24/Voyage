@@ -246,18 +246,20 @@ void main()
 				//sweaty
 				d += (distance(meanOfTidal, gl_in[i].gl_Position.xyz));
 			}
-			if(d < 1){
-				d = 1;
-			}
-			if(d > 4){
-				d = 4;
-			}
 			multiplier =(4 - int(d));
+			if(multiplier < 1){
+				multiplier = 1;
+			}
+			if(multiplier > 4){
+				multiplier = 4;
+			}
+			
 		}
+		//multiplier = 1;
 
 		//control tesselation levels based off of how close to mean
-		int innerVal = innerTess * multiplier;
-		int outerVal = outerTess * multiplier;
+		int innerVal = int(innerTess * multiplier);
+		int outerVal = int(outerTess * multiplier);
 
 	  gl_TessLevelInner[0] = innerVal;
 	  gl_TessLevelInner[1] = innerVal;
@@ -269,6 +271,7 @@ void main()
 	}
 
 	//TODO offset gl_Position by height of tidal wave
+	//float x = gl
 	//TODO potentially tweak normals here too, to account for the tidal wave
   gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
@@ -306,25 +309,26 @@ void main(void)
 	  vec2 pos = vec2(x, z);
 
 		float wave1 [5];
-		wave1[0] = 2.0f;
- 		wave1[1] = 4.0f;
-		wave1[2] =  1.0f;
+		wave1[0] = 8.0f;
+ 		wave1[1] = 0.5f;
+		wave1[2] =  0.5f;
 		wave1[3] =  7.0f;
 		wave1[4] =  2.0f;
 
-    float h = 0;
+    float h = 2.5;
 		float dhdx = 0;
 	  float dhdz = 0;
 
 		//hardcode for every wave
 		//TODO triple check these equations
-	  h += (wave1[0] * sin(dot( vec2(wave1[3], wave1[4]), pos) + (t * (wave1[2] * 2.0f/wave1[0]))));
-		dhdx += (wave1[3] * wave1[0] * cos(dot( vec2(wave1[3], wave1[4]), pos) + (t * (wave1[2] * 2.0f/wave1[0]))));
-    dhdz += (wave1[4] * wave1[0] * cos(dot( vec2(wave1[3], wave1[4]), pos) + (t * (wave1[2] * 2.0f/wave1[0]))));
+	  float w = 1;
+	  h += (wave1[1] * sin((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+		dhdx += (wave1[3] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+    dhdz += (wave1[4] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
 
 		//TODO make sure this is also reflective of the tidal waves contribution
 	  ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
-
+      //ocean_normal = vec4(0,1,0,0);
 		//offset gl_Position by height of normal waves
 	  gl_Position[1] += h;
 
@@ -372,17 +376,22 @@ in vec4 camera_direction;
 in vec4 world_coordinates;
 out vec4 fragment_color;
 void main(){
-	//TODO replace with proper lighting model
 
-	float k_a = 0.2f; //random number
+	vec4 nlight_direction = normalize(light_direction);
+	vec4 ncamera_direction = normalize(camera_direction);
+	vec4 nnormal = normalize(normal);
+
+	float k_a = 0.5f; //random number
 	vec4 water_ambient = vec4(0.0f, 1.0f, 1.0f, 1.0f);
 
 	vec4 ambient_component = k_a * water_ambient;
 
 
-	float k_d = 0.5f; //also random number
+	float k_d = 0.3f; //also random number
 	vec4 light_color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	float normalLightDot = float(dot(normal, light_direction));
+
+
+	float normalLightDot = float(dot(nnormal, nlight_direction));
 	if(normalLightDot < 0){
 		normalLightDot = 0;
 	}
@@ -390,14 +399,14 @@ void main(){
 	vec4 diffuse_component = k_d*normalLightDot*light_color;
 
 
-	float k_s = 0.5f; //random num 3
-	vec4 reflected_light_direction = reflect(light_direction, normal);
+	float k_s = 0.3f; //random num 3
+	vec4 nreflected_light_direction = normalize(reflect(nlight_direction, nnormal));
 	float alpha = 0.8; //random num 4
-	float cameraReflectDot = float(dot(reflected_light_direction, camera_direction));
+	float cameraReflectDot = float(dot(nreflected_light_direction, ncamera_direction));
 	if(cameraReflectDot < 0){
 		cameraReflectDot = 0;
 	}
-	float dot_nl = dot(normalize(light_direction), normalize(normal));
+	float dot_nl = dot(nlight_direction, nnormal);
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 
 	vec4 specular_component = dot_nl*(k_s*pow(cameraReflectDot, alpha)*light_color);
