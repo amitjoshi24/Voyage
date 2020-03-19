@@ -14,6 +14,7 @@
 #include <debuggl.h>
 #include "menger.h"
 #include "camera.h"
+#include "shaders.h"
 #include "stb_image.h"
 int window_width = 800, window_height = 600;
 
@@ -26,250 +27,13 @@ enum { kGeometryVao, kFloorVao, kSkyboxVao, kNumVaos };
 GLuint g_array_objects[kNumVaos];  // This will store the VAO descriptors.
 GLuint g_buffer_objects[kNumVaos][kNumVbos];  // These will store VBO descriptors.
 
-// C++ 11 String Literal
-// See http://en.cppreference.com/w/cpp/language/string_literal
-const char* vertex_shader =
-R"zzz(#version 330 core
-in vec4 vertex_position;
-uniform mat4 view;
-uniform vec4 light_position;
-out vec4 vs_light_direction;
-out vec4 world_vertex_position;
-uniform uvec4 waves[1];
-void main()
-{
-	world_vertex_position = vertex_position;
-	gl_Position = view * vertex_position; //camera coord
-	vs_light_direction = -world_vertex_position + light_position;
-	//vs_light_direction = -gl_Position + view * light_position;
-	//gl_Position = world_vertex_position;
-}
-)zzz";
+/*
 
-const char* geometry_shader =
-R"zzz(#version 330 core
-layout (triangles) in;
-layout (triangle_strip, max_vertices = 3) out;
-uniform mat4 projection;
-uniform mat4 view;
-in vec4 vs_light_direction[];
-in vec4 world_vertex_position[];
-uniform int wireframe;
-flat out vec4 normal; //if interpolate normal, do it here by taking out flat
-out vec4 light_direction;
-out vec3 vertex_id;
-out vec4 world_coordinates;
-void main()
-{
-	int n = 0;
-	vec3 nhn = normalize(cross( world_vertex_position[2].xyz - world_vertex_position[0].xyz, world_vertex_position[1].xyz - world_vertex_position[0].xyz));
-	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0);
-	for (n = 0; n < gl_in.length(); n++) {
-		light_direction = vs_light_direction[n];
-
-		//fight z fighting
-		//TODO fix to be world coordinates
-		if(wireframe == 1){
-			gl_Position = projection * (gl_in[n].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f)); // homogoenous coord
-		}
-		else{
-			gl_Position = projection * gl_in[n].gl_Position;
-		}
-
-		world_coordinates = world_vertex_position[n];
-		//TODO check that making vertex_id a vertex attribute
-		if (n == 0){
-			vertex_id = vec3(1, 0, 0);
-		} else if (n == 1){
-			vertex_id = vec3(0,1, 0);
-		} else {
-			vertex_id = vec3(0, 0, 1);
-		}
-		EmitVertex();
-	}
-	EndPrimitive();
-}
-)zzz";
-
-
-
-const char* fragment_shader =
-R"zzz(#version 330 core
-flat in vec4 normal;
-in vec4 light_direction;
-out vec4 fragment_color;
-void main()
-{
-	vec4 color;
-	int maxIndex = 0;
-	float maxVal = -9999999;
-	for(int i = 0; i < 3; i++){
-		if(abs(normal[i]) > maxVal){
-			maxIndex = i;
-			maxVal = abs(normal[i]);
-		}
-	}
-	if(maxIndex == 0){
-		color = vec4(1.0, 0.0, 0.0, 0.0);
-	}
-	else if(maxIndex == 1){
-		color = vec4(0.0, 1.0, 0.0, 1.0);
-	}
-	else{
-		color = vec4(0.0, 0.0, 1.0, 1.0);
-	}
-
-	float dot_nl = dot(normalize(light_direction), normalize(normal));
-	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	fragment_color = light_direction;//clamp(dot_nl * color, 0.0, 1.0);
-}
-)zzz";
-
-const char* skybox_vertex_shader =
-R"zzz(#version 330 core
-layout (location = 0) in vec3 aPos;
-out vec3 TexCoords;
-uniform mat4 projection;
-uniform mat4 view;
-void main()
-{
-    TexCoords = aPos;
-    gl_Position = projection * view * vec4(aPos, 1.0);
-}
-)zzz";
-
-const char* skybox_fragment_shader =
-R"zzz(#version 330in vec3 textureDir;
-#version 330 core
-out vec4 FragColor;
-in vec3 TexCoords;
-uniform samplerCube skybox;
-void main()
-{
-    FragColor = texture(skybox, TexCoords);
-}
-)zzz";
-
-
-// FIXME: Implement shader effects with an alternative shader.
-const char* floor_fragment_shader =
-R"zzz(#version 330 core
-flat in vec4 normal;
-in vec4 light_direction;
-in vec4 world_coordinates;
-in vec3 vertex_id;
-out vec4 fragment_color;
-void main()
-{
-	vec4 color;
-	float thres = 0.1;
-	if(mod((floor(world_coordinates.x) + floor(world_coordinates.z)), 2) != 0 ){
-		color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	} else{
-		color = vec4(0.0, 0.0, 0.0, 1.0);
-	}
-	float dot_nl = dot(normalize(light_direction), normalize(normal));
-	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
-}
-)zzz";
-
-const char* floor_fragment_wireframe_shader =
-R"zzz(#version 330 core
-flat in vec4 normal;
-in vec4 light_direction;
-in vec4 world_coordinates;
-in vec3 vertex_id;
-out vec4 fragment_color;
-void main()
-{
-	vec4 color;
-	float thres = 0.1;
-	if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
-		color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	}
-	float dot_nl = dot(normalize(light_direction), normalize(normal));
-	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
-}
-)zzz";
-
-const char* ocean_shader =
-R"zzz(#version 330 core
-flat in vec4 normal;
-in vec4 light_direction;
-in vec4 world_coordinates;
-in vec3 vertex_id;
-out vec4 fragment_color;
-void main(){
-}
-)zzz";
-
-//sets up the constants for tesselation for each patch
-const char* tesselation_control_shader =
-R"zzz(#version 410 core
-
-layout (vertices = 4) out;
-uniform int outerTess;
-uniform int innerTess;
-in vec4 world_vertex_position[];
-out vec4 world_vertex_position4[];
-in vec4 vs_light_direction[];
-out vec4 vs_light_direction4[];
-void main()
-{
-
-    //if (gl_InvocationID == 0)
-    //{
-        gl_TessLevelInner[0] = innerTess;
-        gl_TessLevelInner[1] = innerTess;
-        gl_TessLevelOuter[0] = outerTess;
-        gl_TessLevelOuter[1] = outerTess;
-        gl_TessLevelOuter[2] = outerTess;
-        gl_TessLevelOuter[3] = outerTess;
-    //}
-
-    gl_out[gl_InvocationID].gl_Position =
-        gl_in[gl_InvocationID].gl_Position;
-		world_vertex_position4[gl_InvocationID] = world_vertex_position[gl_InvocationID];
-		vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
-}
-)zzz";
-
-//run on tesselated patch
-const char* tesselation_evaluation_shader =
-R"zzz(#version 410 core
-layout (quads) in;
-in vec4 world_vertex_position4[];
-out vec4 world_vertex_position;
-in vec4 vs_light_direction4[];
-out vec4 vs_light_direction;
-
-void main(void)
-{
-
-		//TODO is it okay to interpolate between coords in camera system
-
-    vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
-    vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
-    gl_Position = mix(p1, p2, gl_TessCoord.y);
-
-		//this needs to be updated to be setting world coords for every new point
-		world_vertex_position = world_vertex_position4[gl_PrimitiveID];
-
-		//recompute this as well
-		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
-		vec4 light2 = mix(vs_light_direction4[2], vs_light_direction4[3], gl_TessCoord.x);
-		vs_light_direction = mix(light1, light2, gl_TessCoord.y);
-
-}
-
-)zzz";
 
 //copied from https://learnopengl.com/Advanced-OpenGL/Cubemaps
 //used to load in cubemap into gl (Stbi_load)
 
-/*unsigned int loadCubemap(std::vector<std::string> faces)
+unsigned int loadCubemap(std::vector<std::string> faces)
 {
     unsigned int textureID;
     glGenTextures(1, &textureID);
@@ -344,26 +108,11 @@ void generate_skybox(std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec
 
 }
 
+
 void
-CreateTriangle(std::vector<glm::vec4>& vertices,
-        std::vector<glm::uvec3>& indices)
-{
-	vertices.push_back(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f));
-	vertices.push_back(glm::vec4(0.5f, -0.5f, -0.5f, 1.0f));
-	vertices.push_back(glm::vec4(0.0f, 0.5f, -0.5f, 1.0f));
-
-
-	/*vertices.push_back(glm::vec4(0.5f, 1.5f, 0.5f, 1.0f));
-	vertices.push_back(glm::vec4(1.5f, 0.5f, 0.5f, 1.0f));
-	vertices.push_back(glm::vec4(1.0f, 1.5f, 0.5f, 1.0f));*/
-	indices.push_back(glm::uvec3(0, 1, 2));
-	//indices.push_back(glm::uvec3(3, 4, 5));
-}
-
-/*void
-CreateFloor(std::vector<glm::vec4>& vertices,
+CreateFloorTriangles(std::vector<glm::vec4>& vertices,
         std::vector<glm::uvec3>& indices){
-	float inf = 9999999.0f;
+	float inf = 20.0f;
 	vertices.push_back(glm::vec4(0.0f, -2.0f, 0.0f, 1.0f));
 	vertices.push_back(glm::vec4(-inf, -2.0f, -inf, 1.0f));
 	vertices.push_back(glm::vec4(-inf, -2.0f, inf, 1.0f));
@@ -373,7 +122,7 @@ CreateFloor(std::vector<glm::vec4>& vertices,
 	indices.push_back(glm::uvec3(0, 4, 2));
 	indices.push_back(glm::uvec3(0, 3, 4));
 	indices.push_back(glm::uvec3(0, 1, 3));
-}*/
+}
 
 void
 CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
@@ -596,13 +345,18 @@ int main(int argc, char* argv[])
 	const GLubyte* version = glGetString(GL_VERSION);    // version as a string
 
 	std::cout << "OpenGL version supported:" << version << "\n";
-/
+//------------------------------------------------------------------------------
 	std::vector<glm::vec4> obj_vertices;
 	std::vector<glm::uvec3> obj_faces;
 
-	std::vector<glm::vec4> floor_vertices;
-	std::vector<glm::uvec4> floor_faces;
+	std::vector<glm::vec4> floor_quad_vertices;
+	std::vector<glm::uvec4> floor_quad_faces;
 
+	std::vector<glm::vec4> floor_triangle_vertices;
+	std::vector<glm::uvec4> floor_triangle_faces;
+
+//--------------SKYBOX INIT-----------------------------------------------------
+/*
 	std::vector<glm::vec4> skybox_vertices;
 	std::vector<glm::uvec3> skybox_faces;
 
@@ -621,18 +375,18 @@ int main(int argc, char* argv[])
 	    "../../src/front.jpg",
 	    "../../back.jpg"
 	};
-//unsigned int cubemapTexture = loadCubemap(faces);
+unsigned int cubemapTexture = loadCubemap(faces);
 
 	int width, height, nrChannels;
 unsigned char *data;
-/*for(GLuint i = 0; i < faces.size(); i++)
+for(GLuint i = 0; i < faces.size(); i++)
 {
     data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
     glTexImage2D(
         GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
         0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
     );
-}*/
+}
 
 glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -640,16 +394,16 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
+*/
+//--------FLOOR INIT----------------------------------------------------------------------
 
-        //FIXME: Create the geometry from a Menger object.
-        //CreateTriangle(obj_vertices, obj_faces);
+	CreateFloor(floor_quad_vertices, floor_quad_faces);
+  CreateFloorTriangles(floor_triangle_vertices, floor_triangle_faces);
 
-	CreateFloor(floor_vertices, floor_faces);
-    //srand(917);
-    
+//-------WAVE INIT-----------------------------------------------------------------------
     waves = new glm::uvec4[1];
     generate_waves(waves);
-
+//-------------CUBE INIT-----------------------------------------------------------------
 	g_menger->set_nesting_level(1);
 	g_menger->generate_geometry(obj_vertices, obj_faces);
 
@@ -662,6 +416,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	std::cout << "min_bounds = " << glm::to_string(min_bounds) << "\n";
 	std::cout << "max_bounds = " << glm::to_string(max_bounds) << "\n";
 
+	//-------SETUP THE VAO and like VBO SHIT-----------------------------------------------------------------------
+	//TODO AMIT LOOK HERE, IDK WHAT THIS DOES
 	// Setup our VAO array.
 	CHECK_GL_ERROR(glGenVertexArrays(kNumVaos, &g_array_objects[0]));
 
@@ -685,232 +441,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 				sizeof(uint32_t) * obj_faces.size() * 3,
 				obj_faces.data(), GL_STATIC_DRAW));
-/*
-		// Switch to the VAO for Skybox.
-	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kSkyboxVao]));
 
-	// Generate buffer objects
-	CHECK_GL_ERROR(glGenBuffers(kNumVbos, &g_buffer_objects[kSkyboxVao][0]));
-
-	// Setup vertex data in a VBO.
-	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kVertexBuffer]));
-	// NOTE: We do not send anything right now, we just describe it to OpenGL.
-	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-				sizeof(float) * skybox_vertices.size() * 4, skybox_vertices.data(),
-				GL_STATIC_DRAW));
-	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
-	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
-
-	// Setup element array buffer.
-	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kIndexBuffer]));
-	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				sizeof(uint32_t) * skybox_faces.size() * 3,
-				skybox_faces.data(), GL_STATIC_DRAW));
-*/
-	/*
- 	 * By far, the geometry is loaded into g_buffer_objects[kGeometryVao][*].
-	 * These buffers are binded to g_array_objects[kGeometryVao]
-	 */
-
-	// FIXME: load the floor into g_buffer_objects[kFloorVao][*],
-	//        and bind these VBO to g_array_objects[kFloorVao]
-
-	// Setup vertex shader.
-	GLuint vertex_shader_id = 0;
-	const char* vertex_source_pointer = vertex_shader;
-	CHECK_GL_ERROR(vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
-	CHECK_GL_ERROR(glShaderSource(vertex_shader_id, 1, &vertex_source_pointer, nullptr));
-	glCompileShader(vertex_shader_id);
-	CHECK_GL_SHADER_ERROR(vertex_shader_id);
-
-	// Setup geometry shader.
-	GLuint geometry_shader_id = 0;
-	const char* geometry_source_pointer = geometry_shader;
-	CHECK_GL_ERROR(geometry_shader_id = glCreateShader(GL_GEOMETRY_SHADER));
-	CHECK_GL_ERROR(glShaderSource(geometry_shader_id, 1, &geometry_source_pointer, nullptr));
-	glCompileShader(geometry_shader_id);
-	CHECK_GL_SHADER_ERROR(geometry_shader_id);
-
-	// Setup fragment shader.
-	GLuint fragment_shader_id = 0;
-	const char* fragment_source_pointer = fragment_shader;
-	CHECK_GL_ERROR(fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
-	CHECK_GL_ERROR(glShaderSource(fragment_shader_id, 1, &fragment_source_pointer, nullptr));
-	glCompileShader(fragment_shader_id);
-	CHECK_GL_SHADER_ERROR(fragment_shader_id);
-
-	// Let's create our program.
-	GLuint program_id = 0;
-	CHECK_GL_ERROR(program_id = glCreateProgram());
-	CHECK_GL_ERROR(glAttachShader(program_id, vertex_shader_id));
-	CHECK_GL_ERROR(glAttachShader(program_id, fragment_shader_id));
-	CHECK_GL_ERROR(glAttachShader(program_id, geometry_shader_id));
-
-	// Bind attributes.
-	CHECK_GL_ERROR(glBindAttribLocation(program_id, 0, "vertex_position"));
-	CHECK_GL_ERROR(glBindFragDataLocation(program_id, 0, "fragment_color"));
-	glLinkProgram(program_id);
-	CHECK_GL_PROGRAM_ERROR(program_id);
-
-	// Get the uniform locations.
-	GLint projection_matrix_location = 0;
-	CHECK_GL_ERROR(projection_matrix_location =
-			glGetUniformLocation(program_id, "projection"));
-	GLint view_matrix_location = 0;
-	CHECK_GL_ERROR(view_matrix_location =
-			glGetUniformLocation(program_id, "view"));
-	GLint light_position_location = 0;
-	CHECK_GL_ERROR(light_position_location =
-			glGetUniformLocation(program_id, "light_position"));
-	GLint wireframe_location = 0;
-	CHECK_GL_ERROR(wireframe_location =
-		glGetUniformLocation(program_id, "wireframe"));
-    GLint waves_location = 0;
-    CHECK_GL_ERROR(waves_location =
-        glGetUniformLocation(program_id, "waves"));
-	// Setup fragment shader for the floor
-	GLuint floor_fragment_shader_id = 0;
-	const char* floor_fragment_source_pointer = floor_fragment_shader;
-	CHECK_GL_ERROR(floor_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
-	CHECK_GL_ERROR(glShaderSource(floor_fragment_shader_id, 1,
-				&floor_fragment_source_pointer, nullptr));
-	glCompileShader(floor_fragment_shader_id);
-	CHECK_GL_SHADER_ERROR(floor_fragment_shader_id);
-
-	// Setup wireframe shader
-
-	GLuint floor_fragment_wireframe_shader_id = 0;
-	const char* floor_fragment_wireframe_source_pointer = floor_fragment_wireframe_shader;
-	CHECK_GL_ERROR(floor_fragment_wireframe_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
-	CHECK_GL_ERROR(glShaderSource(floor_fragment_wireframe_shader_id, 1,
-				&floor_fragment_wireframe_source_pointer, nullptr));
-	glCompileShader(floor_fragment_wireframe_shader_id);
-	CHECK_GL_SHADER_ERROR(floor_fragment_wireframe_shader_id);
-
-    // set up tesselation control shader
-    GLuint tesselation_control_shader_id = 0;
-    const char* tesselation_control_source_pointer = tesselation_control_shader;
-    CHECK_GL_ERROR(tesselation_control_shader_id = glCreateShader(GL_TESS_CONTROL_SHADER));
-    CHECK_GL_ERROR(glShaderSource(tesselation_control_shader_id, 1,
-                &tesselation_control_source_pointer, nullptr));
-    glCompileShader(tesselation_control_shader_id);
-    CHECK_GL_SHADER_ERROR(tesselation_control_shader_id);
-
-    // set up tesselation evaluation shader
-    GLuint tesselation_evaluation_shader_id = 0;
-    const char* tesselation_evaluation_source_pointer = tesselation_evaluation_shader;
-    CHECK_GL_ERROR(tesselation_evaluation_shader_id = glCreateShader(GL_TESS_EVALUATION_SHADER));
-    CHECK_GL_ERROR(glShaderSource(tesselation_evaluation_shader_id, 1,
-                &tesselation_evaluation_source_pointer, nullptr));
-    glCompileShader(tesselation_evaluation_shader_id);
-    CHECK_GL_SHADER_ERROR(tesselation_control_shader_id);
-
-	// Let's create our program.
-	GLuint floor_program_id = 0;
-	CHECK_GL_ERROR(floor_program_id = glCreateProgram());
-	CHECK_GL_ERROR(glAttachShader(floor_program_id, vertex_shader_id));
-	CHECK_GL_ERROR(glAttachShader(floor_program_id, floor_fragment_shader_id));
-	CHECK_GL_ERROR(glAttachShader(floor_program_id, geometry_shader_id));
-
-	// Bind attributes.
-	CHECK_GL_ERROR(glBindAttribLocation(floor_program_id, 0, "vertex_position"));
-	CHECK_GL_ERROR(glBindFragDataLocation(floor_program_id, 0, "fragment_color"));
-	glLinkProgram(floor_program_id);
-	CHECK_GL_PROGRAM_ERROR(floor_program_id);
-
-
-
-
-	// Get the uniform locations.
-
-	GLint floor_projection_matrix_location = 0;
-	CHECK_GL_ERROR(floor_projection_matrix_location =
-			glGetUniformLocation(floor_program_id, "projection"));
-	GLint floor_view_matrix_location = 0;
-	CHECK_GL_ERROR(floor_view_matrix_location =
-			glGetUniformLocation(floor_program_id, "view"));
-	GLint floor_light_position_location = 0;
-	CHECK_GL_ERROR(floor_light_position_location =
-			glGetUniformLocation(floor_program_id, "light_position"));
-	GLint floor_wireframe_location = 0;
-    CHECK_GL_ERROR(floor_wireframe_location =
-		glGetUniformLocation(floor_program_id, "wireframe"));
-
-	GLuint floor_wireframe_program_id = 0;
-	CHECK_GL_ERROR(floor_wireframe_program_id = glCreateProgram());
-	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, vertex_shader_id));
-    CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, tesselation_control_shader_id));
-    CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, tesselation_evaluation_shader_id));
-	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_fragment_wireframe_shader_id));
-	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, geometry_shader_id));
-
-	CHECK_GL_ERROR(glBindAttribLocation(floor_wireframe_program_id, 0, "vertex_position"));
-	CHECK_GL_ERROR(glBindFragDataLocation(floor_wireframe_program_id, 0, "fragment_color"));
-	glLinkProgram(floor_wireframe_program_id);
-	CHECK_GL_PROGRAM_ERROR(floor_wireframe_program_id);
-
-
-	GLint floor_wireframe_projection_matrix_location = 0;
-	CHECK_GL_ERROR(floor_wireframe_projection_matrix_location =
-			glGetUniformLocation(floor_wireframe_program_id, "projection"));
-	GLint floor_wireframe_view_matrix_location = 0;
-	CHECK_GL_ERROR(floor_wireframe_view_matrix_location =
-			glGetUniformLocation(floor_wireframe_program_id, "view"));
-	GLint floor_wireframe_light_position_location = 0;
-	CHECK_GL_ERROR(floor_wireframe_light_position_location =
-			glGetUniformLocation(floor_wireframe_program_id, "light_position"));
-	GLint floor_wireframe_wireframe_location = 0;
-    CHECK_GL_ERROR(floor_wireframe_wireframe_location =
-		glGetUniformLocation(floor_wireframe_program_id, "wireframe"));
-    GLint outerTess_location = 0;
-    CHECK_GL_ERROR(outerTess_location =
-        glGetUniformLocation(floor_wireframe_program_id, "outerTess"));
-    GLint innerTess_location = 0;
-    CHECK_GL_ERROR(innerTess_location =
-        glGetUniformLocation(floor_wireframe_program_id, "innerTess"));
-	// setup skybox shader
-/*
-	GLuint skybox_vertex_shader_id = 0;
-	const char* skybox_vertex_source_pointer = skybox_vertex_shader;
-	CHECK_GL_ERROR(vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
-	CHECK_GL_ERROR(glShaderSource(skybox_vertex_shader_id, 1, &skybox_vertex_source_pointer, nullptr));
-	glCompileShader(skybox_vertex_shader_id);
-	CHECK_GL_SHADER_ERROR(skybox_vertex_shader_id);
-
-	GLuint skybox_fragment_shader_id = 0;
-	const char* skybox_fragment_shader_source_pointer = skybox_fragment_shader;
-	CHECK_GL_ERROR(skybox_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
-	CHECK_GL_ERROR(glShaderSource(skybox_fragment_shader_id, 1,
-				&skybox_fragment_shader_source_pointer, nullptr));
-	glCompileShader(skybox_fragment_shader_id);
-	CHECK_GL_SHADER_ERROR(skybox_fragment_shader_id);
-
-	GLuint skybox_program_id = 0;
-	CHECK_GL_ERROR(skybox_program_id = glCreateProgram());
-	CHECK_GL_ERROR(glAttachShader(skybox_program_id, skybox_vertex_shader_id));
-	CHECK_GL_ERROR(glAttachShader(skybox_program_id, skybox_fragment_shader_id));
-
-	CHECK_GL_ERROR(glBindAttribLocation(skybox_program_id, 0, "vertex_position"));
-	CHECK_GL_ERROR(glBindFragDataLocation(skybox_program_id, 0, "fragment_color"));
-	glLinkProgram(skybox_program_id);
-	CHECK_GL_PROGRAM_ERROR(skybox_program_id);
-
-	GLint skybox_projection_matrix_location = 0;
-	CHECK_GL_ERROR(skybox_projection_matrix_location =
-		glGetUniformLocation(skybox_program_id, "projection"));
-	GLint skybox_view_matrix_location = 0;
-	CHECK_GL_ERROR(skybox_view_matrix_location =
-		glGetUniformLocation(skybox_program_id, "view"));
-
-*/
-
-
-	//glm::vec4 light_position = glm::vec4(10.0f, 10.0f, 10.0f, 1.0f);
-	//relocated light position
-	glm::vec4 light_position = glm::vec4(-10.0f, 10.0f, 0.0f, 1.0f);
-	float aspect = 0.0f;
-	float theta = 0.0f;
-
+  //floor SHIT
 	// Switch to the VAO for Geometry.
 	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
 
@@ -931,6 +463,212 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 				sizeof(uint32_t) * floor_faces.size() * 4,
 				floor_faces.data(), GL_STATIC_DRAW));
+
+
+	/*
+ 	 * By far, the geometry is loaded into g_buffer_objects[kGeometryVao][*].
+	 * These buffers are binded to g_array_objects[kGeometryVao]
+	 */
+
+
+	//----set up all the shaders--------------------------------------------------------------------------
+	// Setup vertex shader.
+	GLuint vertex_shader_id = 0;
+	const char* vertex_source_pointer = vertex_shader;
+	CHECK_GL_ERROR(vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
+	CHECK_GL_ERROR(glShaderSource(vertex_shader_id, 1, &vertex_source_pointer, nullptr));
+	glCompileShader(vertex_shader_id);
+	CHECK_GL_SHADER_ERROR(vertex_shader_id);
+
+	// Setup geometry shader.
+	GLuint geometry_shader_id = 0;
+	const char* geometry_source_pointer = geometry_shader;
+	CHECK_GL_ERROR(geometry_shader_id = glCreateShader(GL_GEOMETRY_SHADER));
+	CHECK_GL_ERROR(glShaderSource(geometry_shader_id, 1, &geometry_source_pointer, nullptr));
+	glCompileShader(geometry_shader_id);
+	CHECK_GL_SHADER_ERROR(geometry_shader_id);
+
+	// Setup cube_fragment shader.
+	GLuint cube_fragment_shader_id = 0;
+	const char* cube_fragment_source_pointer = cube_fragment_shader;
+	CHECK_GL_ERROR(cube_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
+	CHECK_GL_ERROR(glShaderSource(cube_fragment_shader_id, 1, &cube_fragment_source_pointer, nullptr));
+	glCompileShader(cube_fragment_shader_id);
+	CHECK_GL_SHADER_ERROR(cube_fragment_shader_id);
+
+	// Setup floor_fragment shader.
+	GLuint floor_fragment_shader_id = 0;
+	const char* floor_fragment_source_pointer = floor_fragment_shader;
+	CHECK_GL_ERROR(floor_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
+	CHECK_GL_ERROR(glShaderSource(floor_fragment_shader_id, 1, &floor_fragment_source_pointer, nullptr));
+	glCompileShader(floor_fragment_shader_id);
+	CHECK_GL_SHADER_ERROR(floor_fragment_shader_id);
+
+    // set up tesselation control shader
+    GLuint tesselation_control_shader_id = 0;
+    const char* tesselation_control_source_pointer = tesselation_control_shader;
+    CHECK_GL_ERROR(tesselation_control_shader_id = glCreateShader(GL_TESS_CONTROL_SHADER));
+    CHECK_GL_ERROR(glShaderSource(tesselation_control_shader_id, 1,
+                &tesselation_control_source_pointer, nullptr));
+    glCompileShader(tesselation_control_shader_id);
+    CHECK_GL_SHADER_ERROR(tesselation_control_shader_id);
+
+    // set up wireframe tesselation evaluation shader
+    GLuint floor_wireframe_tesselation_evaluation_shader_id = 0;
+    const char* floor_wireframe_tesselation_evaluation_source_pointer = floor_wireframe_tesselation_evaluation_shader;
+    CHECK_GL_ERROR(floor_wireframe_tesselation_evaluation_shader_id = glCreateShader(GL_TESS_EVALUATION_SHADER));
+    CHECK_GL_ERROR(glShaderSource(floor_wireframe_tesselation_evaluation_shader_id, 1,
+                &floor_wireframe_tesselation_evaluation_source_pointer, nullptr));
+    glCompileShader(floor_wireframe_tesselation_evaluation_shader_id);
+    CHECK_GL_SHADER_ERROR(floor_wireframe_esselation_control_shader_id);
+
+		// Setup floor_wireframe geometry shader.
+		GLuint floor_wireframe_geometry_shader_id = 0;
+		const char* floor_wireframe_geometry_source_pointer = floor_wireframe_geometry_shader;
+		CHECK_GL_ERROR(floor_wireframe_geometry_shader_id = glCreateShader(GL_GEOMETRY_SHADER));
+		CHECK_GL_ERROR(glShaderSource(floor_wireframe_geometry_shader_id, 1, &floor_wireframe_geometry_source_pointer, nullptr));
+		glCompileShader(floor_wireframe_geometry_shader_id);
+		CHECK_GL_SHADER_ERROR(floor_wireframe_geometry_shader_id);
+
+		// Setup floor_wireframe fragment shader.
+		GLuint floor_wireframe_fragment_shader_id = 0;
+		const char* floor_wireframe_fragment_source_pointer = floor_wireframe_fragment_shader;
+		CHECK_GL_ERROR(floor_wireframe_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
+		CHECK_GL_ERROR(glShaderSource(floor_wireframe_fragment_shader_id, 1, &floor_wireframe_fragment_source_pointer, nullptr));
+		glCompileShader(floor_wireframe_fragment_shader_id);
+		CHECK_GL_SHADER_ERROR(floor_wireframe_fragment_shader_id);
+
+		// set up ocean tesselation evaluation shader
+		GLuint ocean_tesselation_evaluation_shader_id = 0;
+		const char* ocean_tesselation_evaluation_source_pointer = ocean_tesselation_evaluation_shader;
+		CHECK_GL_ERROR(ocean_tesselation_evaluation_shader_id = glCreateShader(GL_TESS_EVALUATION_SHADER));
+		CHECK_GL_ERROR(glShaderSource(ocean_tesselation_evaluation_shader_id, 1,
+								&ocean_tesselation_evaluation_source_pointer, nullptr));
+		glCompileShader(ocean_tesselation_evaluation_shader_id);
+		CHECK_GL_SHADER_ERROR(ocean_esselation_control_shader_id);
+
+		// Setup ocean geometry shader.
+		GLuint ocean_geometry_shader_id = 0;
+		const char* ocean_geometry_source_pointer = ocean_geometry_shader;
+		CHECK_GL_ERROR(ocean_geometry_shader_id = glCreateShader(GL_GEOMETRY_SHADER));
+		CHECK_GL_ERROR(glShaderSource(ocean_geometry_shader_id, 1, &ocean_geometry_source_pointer, nullptr));
+		glCompileShader(ocean_geometry_shader_id);
+		CHECK_GL_SHADER_ERROR(ocean_geometry_shader_id);
+
+		// Setup ocean fragment shader.
+		GLuint ocean_fragment_shader_id = 0;
+		const char* ocean_fragment_source_pointer = ocean_fragment_shader;
+		CHECK_GL_ERROR(ocean_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
+		CHECK_GL_ERROR(glShaderSource(ocean_fragment_shader_id, 1, &ocean_fragment_source_pointer, nullptr));
+		glCompileShader(ocean_fragment_shader_id);
+		CHECK_GL_SHADER_ERROR(ocean_fragment_shader_id);
+
+	//----create programs--------------------------------------------------------------------------
+	// create cube program
+	GLuint cube_program_id = 0;
+	CHECK_GL_ERROR(cube_program_id = glCreateProgram());
+	CHECK_GL_ERROR(glAttachShader(cube_program_id, vertex_shader_id));
+	CHECK_GL_ERROR(glAttachShader(cube_program_id, geometry_shader_id));
+	CHECK_GL_ERROR(glAttachShader(cube_program_id, cube_fragment_shader_id));
+
+	//create floor program
+	GLuint floor_program_id = 0;
+	CHECK_GL_ERROR(floor_program_id = glCreateProgram());
+	CHECK_GL_ERROR(glAttachShader(floor_program_id, vertex_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_program_id, geometry_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_program_id, floor_fragment_shader_id));
+
+	//create wireframe program
+	GLuint floor_wireframe_program_id = 0;
+	CHECK_GL_ERROR(floor_wireframe_program_id = glCreateProgram());
+	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, vertex_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, tesselation_control_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_wireframe_tesselation_evaluation_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_wireframe_geometry_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_wireframe_fragment_shader_id));
+
+	//create ocean program
+	GLuint ocean_program_id = 0;
+	CHECK_GL_ERROR(ocean_program_id = glCreateProgram());
+	CHECK_GL_ERROR(glAttachShader(ocean_program_id, vertex_shader_id));
+	CHECK_GL_ERROR(glAttachShader(ocean_program_id, tesselation_control_shader_id));
+	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_tesselation_evaluation_shader_id));
+	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_geometry_shader_id));
+	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_fragment_shader_id));
+
+	//----set up variables and link programs--------------------------------------------------------------------------
+
+	//set up cube program variables-----------------
+	// Bind attributes.
+	CHECK_GL_ERROR(glBindAttribLocation(cube_program_id, 0, "vertex_position"));
+	CHECK_GL_ERROR(glBindFragDataLocation(cube_program_id, 0, "fragment_color"));
+	glLinkProgram(cube_program_id);
+	CHECK_GL_PROGRAM_ERROR(cube_program_id);
+
+	// Get the uniform locations.
+	GLint projection_matrix_location = 0;
+	CHECK_GL_ERROR(projection_matrix_location =	glGetUniformLocation(cube_program_id, "projection"));
+	GLint view_matrix_location = 0;
+	CHECK_GL_ERROR(view_matrix_location = glGetUniformLocation(cube_program_id, "view"));
+	GLint light_position_location = 0;
+	CHECK_GL_ERROR(light_position_location = glGetUniformLocation(cube_program_id, "light_position"));
+
+	//set up floor program variables------------
+	// Bind attributes.
+	CHECK_GL_ERROR(glBindAttribLocation(floor_program_id, 0, "vertex_position"));
+	CHECK_GL_ERROR(glBindFragDataLocation(floor_program_id, 0, "fragment_color"));
+	glLinkProgram(floor_program_id);
+	CHECK_GL_PROGRAM_ERROR(floor_program_id);
+
+	// Get the uniform locations.
+	GLint floor_projection_matrix_location = 0;
+	CHECK_GL_ERROR(floor_projection_matrix_location = glGetUniformLocation(floor_program_id, "projection"));
+	GLint floor_view_matrix_location = 0;
+	CHECK_GL_ERROR(floor_view_matrix_location = glGetUniformLocation(floor_program_id, "view"));
+	GLint floor_light_position_location = 0;
+	CHECK_GL_ERROR(floor_light_position_location = glGetUniformLocation(floor_program_id, "light_position"));
+
+
+	//set up wireframe program variables--------------
+	CHECK_GL_ERROR(glBindAttribLocation(floor_wireframe_program_id, 0, "vertex_position"));
+	CHECK_GL_ERROR(glBindFragDataLocation(floor_wireframe_program_id, 0, "fragment_color"));
+	glLinkProgram(floor_wireframe_program_id);
+	CHECK_GL_PROGRAM_ERROR(floor_wireframe_program_id);
+
+	GLint floor_wireframe_projection_matrix_location = 0;
+	CHECK_GL_ERROR(floor_wireframe_projection_matrix_location =	glGetUniformLocation(floor_wireframe_program_id, "projection"));
+	GLint floor_wireframe_view_matrix_location = 0;
+	CHECK_GL_ERROR(floor_wireframe_view_matrix_location = glGetUniformLocation(floor_wireframe_program_id, "view"));
+	GLint floor_wireframe_light_position_location = 0;
+	CHECK_GL_ERROR(floor_wireframe_light_position_location =	glGetUniformLocation(floor_wireframe_program_id, "light_position"));
+	GLint outerTess_location = 0;
+  CHECK_GL_ERROR(outerTess_location = glGetUniformLocation(floor_wireframe_program_id, "outerTess"));
+  GLint innerTess_location = 0;
+  CHECK_GL_ERROR(innerTess_location = glGetUniformLocation(floor_wireframe_program_id, "innerTess"));
+
+	//set up ocean program variables-----------------
+	// Bind attributes.
+	CHECK_GL_ERROR(glBindAttribLocation(ocean_program_id, 0, "vertex_position"));
+	CHECK_GL_ERROR(glBindFragDataLocation(ocean_program_id, 0, "fragment_color"));
+	glLinkProgram(ocean_program_id);
+	CHECK_GL_PROGRAM_ERROR(ocean_program_id);
+
+	// Get the uniform locations.
+	GLint projection_matrix_location = 0;
+	CHECK_GL_ERROR(projection_matrix_location =	glGetUniformLocation(ocean_program_id, "projection"));
+	GLint view_matrix_location = 0;
+	CHECK_GL_ERROR(view_matrix_location = glGetUniformLocation(ocean_program_id, "view"));
+	GLint light_position_location = 0;
+	CHECK_GL_ERROR(light_position_location = glGetUniformLocation(ocean_program_id, "light_position"));
+
+	//----init some vars we need--------------------------------------------------------------------------
+
+	//relocated light position
+	glm::vec4 light_position = glm::vec4(-10.0f, 10.0f, 0.0f, 1.0f);
+	float aspect = 0.0f;
+	float theta = 0.0f;
+
+	//LOOP DE DOOP
 	while (!glfwWindowShouldClose(window)) {
 		// Setup some basic window stuff.
 		glfwGetFramebufferSize(window, &window_width, &window_height);
@@ -984,25 +722,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		// Draw our triangles.
 		//CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
-/*
-		// render skybox
-		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kSkyboxVao]));
-		// Setup vertex data in a VBO.
-		CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kVertexBuffer]));
-		// NOTE: We do not send anything right now, we just describe it to OpenGL.
-		CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-					sizeof(float) * skybox_vertices.size() * 4, skybox_vertices.data(),
-					GL_STATIC_DRAW));
-		CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
-		CHECK_GL_ERROR(glEnableVertexAttribArray(0));
 
-		// Setup element array buffer.
-		CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kIndexBuffer]));
-		CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-					sizeof(uint32_t) * skybox_faces.size() * 4,
-					skybox_faces.data(), GL_STATIC_DRAW));
-		CHECK_GL_ERROR(glUseProgram(skybox_program_id));			// Setup vertex data in a VBO.
-	*/
 	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kVertexBuffer]));
 	// NOTE: We do not send anything right now, we just describe it to OpenGL.
 	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
@@ -1110,3 +830,80 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
+//----------SKYBOX SHADER SETUP--------------------------------------------------------------------
+/*
+		// Switch to the VAO for Skybox.
+	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kSkyboxVao]));
+
+	// Generate buffer objects
+	CHECK_GL_ERROR(glGenBuffers(kNumVbos, &g_buffer_objects[kSkyboxVao][0]));
+
+	// Setup vertex data in a VBO.
+	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kVertexBuffer]));
+	// NOTE: We do not send anything right now, we just describe it to OpenGL.
+	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
+				sizeof(float) * skybox_vertices.size() * 4, skybox_vertices.data(),
+				GL_STATIC_DRAW));
+	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
+	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
+
+	// Setup element array buffer.
+	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kIndexBuffer]));
+	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+				sizeof(uint32_t) * skybox_faces.size() * 3,
+				skybox_faces.data(), GL_STATIC_DRAW));
+
+				// setup skybox shader
+
+				GLuint skybox_vertex_shader_id = 0;
+				const char* skybox_vertex_source_pointer = skybox_vertex_shader;
+				CHECK_GL_ERROR(vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
+				CHECK_GL_ERROR(glShaderSource(skybox_vertex_shader_id, 1, &skybox_vertex_source_pointer, nullptr));
+				glCompileShader(skybox_vertex_shader_id);
+				CHECK_GL_SHADER_ERROR(skybox_vertex_shader_id);
+
+				GLuint skybox_fragment_shader_id = 0;
+				const char* skybox_fragment_shader_source_pointer = skybox_fragment_shader;
+				CHECK_GL_ERROR(skybox_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
+				CHECK_GL_ERROR(glShaderSource(skybox_fragment_shader_id, 1,
+							&skybox_fragment_shader_source_pointer, nullptr));
+				glCompileShader(skybox_fragment_shader_id);
+				CHECK_GL_SHADER_ERROR(skybox_fragment_shader_id);
+
+				GLuint skybox_program_id = 0;
+				CHECK_GL_ERROR(skybox_program_id = glCreateProgram());
+				CHECK_GL_ERROR(glAttachShader(skybox_program_id, skybox_vertex_shader_id));
+				CHECK_GL_ERROR(glAttachShader(skybox_program_id, skybox_fragment_shader_id));
+
+				CHECK_GL_ERROR(glBindAttribLocation(skybox_program_id, 0, "vertex_position"));
+				CHECK_GL_ERROR(glBindFragDataLocation(skybox_program_id, 0, "fragment_color"));
+				glLinkProgram(skybox_program_id);
+				CHECK_GL_PROGRAM_ERROR(skybox_program_id);
+
+				GLint skybox_projection_matrix_location = 0;
+				CHECK_GL_ERROR(skybox_projection_matrix_location =
+					glGetUniformLocation(skybox_program_id, "projection"));
+				GLint skybox_view_matrix_location = 0;
+				CHECK_GL_ERROR(skybox_view_matrix_location =
+					glGetUniformLocation(skybox_program_id, "view"));
+
+
+		// render skybox
+		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kSkyboxVao]));
+		// Setup vertex data in a VBO.
+		CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kVertexBuffer]));
+		// NOTE: We do not send anything right now, we just describe it to OpenGL.
+		CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
+					sizeof(float) * skybox_vertices.size() * 4, skybox_vertices.data(),
+					GL_STATIC_DRAW));
+		CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
+		CHECK_GL_ERROR(glEnableVertexAttribArray(0));
+
+		// Setup element array buffer.
+		CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kIndexBuffer]));
+		CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+					sizeof(uint32_t) * skybox_faces.size() * 4,
+					skybox_faces.data(), GL_STATIC_DRAW));
+		CHECK_GL_ERROR(glUseProgram(skybox_program_id));			// Setup vertex data in a VBO.
+		CHECK_GL_ERROR(glDrawElements(GL_PATCHES, skybox__faces.size() * 4, GL_UNSIGNED_INT, 0));
+	*/

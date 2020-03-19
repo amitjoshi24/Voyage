@@ -12,7 +12,6 @@ R"zzz(#version 330 core
 in vec4 vertex_position;
 uniform vec4 light_position;
 out vec4 vs_light_direction;
-uniform uvec4 waves[1];
 void main()
 {
 	gl_Position = vertex_position;
@@ -148,7 +147,7 @@ void main()
 )zzz";
 
 //run on tesselated patch
-const char* tesselation_evaluation_shader =
+const char* floor_wireframe_tesselation_evaluation_shader =
 R"zzz(#version 410 core
 layout (quads) in;
 in vec4 vs_light_direction4[];
@@ -231,6 +230,8 @@ fragment shader:
 - changed normal to interpolate (i.e. not be flat)
 */
 //run on tesselated patch
+
+
 const char* ocean_tesselation_evaluation_shader =
 R"zzz(#version 410 core
 layout (quads) in;
