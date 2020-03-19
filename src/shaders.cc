@@ -7,6 +7,7 @@ geometry:
 - removed wifeframe as uniform in
 - removed vertex_id as out
 */
+
 const char* vertex_shader =
 R"zzz(#version 330 core
 in vec4 vertex_position;
@@ -16,7 +17,6 @@ void main()
 {
 	gl_Position = vertex_position;
 	vs_light_direction = -gl_Position + light_position;
-
 }
 )zzz";
 
@@ -131,65 +131,20 @@ out vec4 vs_light_direction4[];
 void main()
 {
 
+	if (gl_InvocationID == 0){
 
-    gl_TessLevelInner[0] = innerTess;
-    gl_TessLevelInner[1] = innerTess;
-    gl_TessLevelOuter[0] = outerTess;
-    gl_TessLevelOuter[1] = outerTess;
-	gl_TessLevelOuter[2] = outerTess;
-    gl_TessLevelOuter[3] = outerTess;
-
-    
-    gl_out[gl_InvocationID].gl_Position =
-        gl_in[gl_InvocationID].gl_Position;
-		vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
-}
-)zzz";
-
-// is similar to the other TCS, but takes in a bool (existence of tidal wave) and int (xcoord of tidal wave)
-const char* ocean_tesselation_control_shader =
-R"zzz(#version 410 core
-layout (vertices = 4) out;
-uniform int outerTess;
-uniform int innerTess;
-uniform bool isTidal;
-uniform int xTidal;
-in vec4 vs_light_direction[];
-out vec4 vs_light_direction4[];
-void main()
-{
-
-	if(gl_InvocationID == 0){
-		float distance = 0;
-		vec3 meanOfTidal = vec3(x, 0, 0);
-		for(int i = 0; i < 4; i++){
-			distance += (float)(distance(meanOfTidal, gl_in[gl_InvocationID].gl_Position));
-		}
-		if(distance < 1){
-			distance = 1;
-		}
-		if(distance > 4){
-			distance = 4;
-		}
-		int multiplier = (int)(4 - distance);
-		int innerVal = innerTess * multiplier;
-		int outerVal = outerTess * multiplier;
-	    gl_TessLevelInner[0] = innerVal;
-	    gl_TessLevelInner[1] = innerVal;
-	    gl_TessLevelOuter[0] = outerVal;
-	    gl_TessLevelOuter[1] = outerVal;
-		gl_TessLevelOuter[2] = outerVal;
-	    gl_TessLevelOuter[3] = outerVal;
+	    gl_TessLevelInner[0] = innerTess;
+	    gl_TessLevelInner[1] = innerTess;
+	    gl_TessLevelOuter[0] = outerTess;
+	    gl_TessLevelOuter[1] = outerTess;
+			gl_TessLevelOuter[2] = outerTess;
+	    gl_TessLevelOuter[3] = outerTess;
 	}
 
-	gl_Position[gl_InvocationID].gl_Position += 2
-
-    gl_out[gl_InvocationID].gl_Position =
-        gl_in[gl_InvocationID].gl_Position;
+    gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 		vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
 }
 )zzz";
-
 
 //run on tesselated patch
 const char* floor_wireframe_tesselation_evaluation_shader =
@@ -229,12 +184,11 @@ void main()
 	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
 
 	for (int n = 0; n < gl_in.length(); n++) {
-
-
 		light_direction = vs_light_direction[n];
 
 		//shift the wireframe, gl_Position is in world cords
-		gl_Position = projection * view * (gl_in[n].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f)); // homogoenous coord
+		gl_Position = projection * view * (gl_in[n].gl_Position);
+		gl_Position[1] += 0.1f;
 
 		if (n == 0){
 			vertex_id = vec3(1.0f, 0.0f, 0.0f);
@@ -261,12 +215,72 @@ void main()
 	if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
 		color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	}
+	color = vec4(1.0, 1.0, 1.0, 1.0);
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
 }
 )zzz";
 //-----------------------------------------------------------------------------
+const char* ocean_tesselation_control_shader =
+R"zzz(#version 410 core
+layout (vertices = 4) out;
+uniform int outerTess;
+uniform int innerTess;
+uniform int tidalX; 
+uniform int tidal;
+
+
+in vec4 vs_light_direction[];
+out vec4 vs_light_direction4[];
+
+
+void main()
+{
+
+
+
+	if(gl_InvocationID == 0){
+
+
+
+		float d = 0.0f;
+
+		float fTidalX = tidalX;
+		fTidalX /= 100.0f;
+
+		vec3 meanOfTidal = vec3(fTidalX, 0.0f, 0.0f);
+
+
+		int multiplier = 1;
+		if(tidal == 1){
+			for(int i = 0; i < 4; i++){
+				d += (distance(meanOfTidal, gl_in[gl_InvocationID].gl_Position.xyz));
+			}
+			if(d < 1){
+				d = 1;
+			}
+			if(d > 4){
+				d = 4;
+			}
+			multiplier =(4 - int(d));
+		}
+		int innerVal = innerTess * multiplier;
+		int outerVal = outerTess * multiplier;
+	    gl_TessLevelInner[0] = innerVal;
+	    gl_TessLevelInner[1] = innerVal;
+	    gl_TessLevelOuter[0] = outerVal;
+	    gl_TessLevelOuter[1] = outerVal;
+		gl_TessLevelOuter[2] = outerVal;
+	    gl_TessLevelOuter[3] = outerVal;
+	}
+
+	// will change
+
+    gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position + 2;
+	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
+}
+)zzz";
 /*
 uses normal vertex, normal tcs
 glDrawElements(GL_PATCHES), run on quad floor
@@ -291,8 +305,6 @@ void main(void)
 		int t = ocean_time;
 
 		//NOTE gl_Position is still in world coords
-
-		//world coordinates
 		vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
 		vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
 		gl_Position = mix(p1, p2, gl_TessCoord.y);
@@ -344,7 +356,6 @@ out vec4 world_coordinates;
 void main()
 {
 
-
 	for (int n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
 		normal = ocean_normal[n];
@@ -356,6 +367,7 @@ void main()
 	EndPrimitive();
 }
 )zzz";
+
 const char* ocean_fragment_shader =
 R"zzz(#version 330 core
 in vec4 normal;
