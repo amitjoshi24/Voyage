@@ -225,11 +225,8 @@ uniform int outerTess;
 uniform int innerTess;
 uniform int tidalX;
 uniform int tidal;
-
-
 in vec4 vs_light_direction[];
 out vec4 vs_light_direction4[];
-
 
 void main()
 {
@@ -241,6 +238,8 @@ void main()
 
 		vec3 meanOfTidal = vec3(fTidalX, 0.0f, 0.0f);
 		int multiplier = 1;
+
+		//if tidal wave
 		if(tidal == 1){
 			for(int i = 0; i < 4; i++){
 				//TODO DORA CHANGED INDEX TO i instead of GL_INVOCATIONID
@@ -254,22 +253,27 @@ void main()
 			}
 			multiplier =(4 - int(d));
 		}
+
+		//control tesselation levels based off of how close to mean
 		int innerVal = innerTess * multiplier;
 		int outerVal = outerTess * multiplier;
-	    gl_TessLevelInner[0] = innerVal;
-	    gl_TessLevelInner[1] = innerVal;
-	    gl_TessLevelOuter[0] = outerVal;
-	    gl_TessLevelOuter[1] = outerVal;
-			gl_TessLevelOuter[2] = outerVal;
-	    gl_TessLevelOuter[3] = outerVal;
+
+	  gl_TessLevelInner[0] = innerVal;
+	  gl_TessLevelInner[1] = innerVal;
+
+	  gl_TessLevelOuter[0] = outerVal;
+	  gl_TessLevelOuter[1] = outerVal;
+		gl_TessLevelOuter[2] = outerVal;
+    gl_TessLevelOuter[3] = outerVal;
 	}
 
-	// will change
-
-    gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position + 2;
+	//TODO offset gl_Position by height of tidal wave
+	//TODO potentially tweak normals here too, to account for the tidal wave
+  gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
 }
 )zzz";
+
 /*
 uses normal vertex, normal tcs
 glDrawElements(GL_PATCHES), run on quad floor
@@ -280,8 +284,6 @@ fragment shader:
 - changed normal to interpolate (i.e. not be flat)
 */
 //run on tesselated patch
-
-
 const char* ocean_tesselation_evaluation_shader =
 R"zzz(#version 410 core
 layout (quads) in;
@@ -314,12 +316,15 @@ void main(void)
 	  float dhdz = 0;
 
 		//hardcode for every wave
+		//TODO triple check these equations
 	  h += (wave1[0] * sin(dot( vec2(wave1[3], wave1[4]), pos) + (t * (wave1[2] * 2.0f/wave1[0]))));
 		dhdx += (wave1[3] * wave1[0] * cos(dot( vec2(wave1[3], wave1[4]), pos) + (t * (wave1[2] * 2.0f/wave1[0]))));
     dhdz += (wave1[4] * wave1[0] * cos(dot( vec2(wave1[3], wave1[4]), pos) + (t * (wave1[2] * 2.0f/wave1[0]))));
 
-	  ocean_normal = vec4(-dhdx, 1, -dhdz,0.0);
+		//TODO make sure this is also reflective of the tidal waves contribution
+	  ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
 
+		//offset gl_Position by height of normal waves
 	  gl_Position[1] += h;
 
 		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
@@ -358,7 +363,7 @@ void main()
 
 const char* ocean_fragment_shader =
 R"zzz(#version 330 core
-in vec4 normal;
+in vec4 normal; //interpolated to ensure smooth water
 in vec4 light_direction;
 in vec4 world_coordinates;
 out vec4 fragment_color;

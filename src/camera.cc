@@ -36,10 +36,8 @@ void print_matrix(glm::mat4 mat){
 
 void Camera::init(){
 	eye = glm::vec3(0.0f, 10.0f, 10.0f);
-
 	look = glm::vec3(0.0f, -10.0f, -10.0f);
 	cam_up = glm::vec3(0.0f, 1.0f, 0.0f);
-
 	update();
 
 
@@ -54,7 +52,7 @@ void Camera::update(){
 void Camera::left(){
 	eye += -cam_right * pan_speed;
 	update();
-	//update camera private variables 
+	//update camera private variables
 } // a
 void Camera::right(){
 	eye += cam_right * pan_speed;
@@ -147,12 +145,10 @@ glm::mat4 Camera::get_view_matrix() const
     eye, // the position of your camera, in world space
     center,   // where you want to look at, in world space
     cam_up        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
-); 
+);
 
 	return temp;
 	*/
-	
-	
+
+
 }
-
-

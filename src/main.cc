@@ -98,8 +98,8 @@ CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
 			}
 		}
 	}
+	//SaveObj4("../../thefloor.obj", vertices, indices);
 }
-
 
 
 void
@@ -365,9 +365,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	// Setup vertex data in a VBO.
 	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kGeometryVao][kVertexBuffer]));
 	// NOTE: We do not send anything right now, we just describe it to OpenGL.
-	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-				sizeof(float) * obj_vertices.size() * 4, obj_vertices.data(),
-				GL_STATIC_DRAW));
+	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * obj_vertices.size() * 4, obj_vertices.data(), GL_STATIC_DRAW));
 	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
 	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
 
@@ -376,7 +374,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * obj_faces.size() * 3, obj_faces.data(), GL_STATIC_DRAW));
 
 	//-----------setup floor VAO shit------------------
-	// Switch to the VAO for Geometry.
+	// Switch to the VAO for Floor
 	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
 
 		// Generate buffer objects
@@ -448,8 +446,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     GLuint tesselation_control_shader_id = 0;
     const char* tesselation_control_source_pointer = tesselation_control_shader;
     CHECK_GL_ERROR(tesselation_control_shader_id = glCreateShader(GL_TESS_CONTROL_SHADER));
-    CHECK_GL_ERROR(glShaderSource(tesselation_control_shader_id, 1,
-                &tesselation_control_source_pointer, nullptr));
+    CHECK_GL_ERROR(glShaderSource(tesselation_control_shader_id, 1, &tesselation_control_source_pointer, nullptr));
     glCompileShader(tesselation_control_shader_id);
     CHECK_GL_SHADER_ERROR(tesselation_control_shader_id);
 
@@ -457,8 +454,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     GLuint floor_wireframe_tesselation_evaluation_shader_id = 0;
     const char* floor_wireframe_tesselation_evaluation_source_pointer = floor_wireframe_tesselation_evaluation_shader;
     CHECK_GL_ERROR(floor_wireframe_tesselation_evaluation_shader_id = glCreateShader(GL_TESS_EVALUATION_SHADER));
-    CHECK_GL_ERROR(glShaderSource(floor_wireframe_tesselation_evaluation_shader_id, 1,
-                &floor_wireframe_tesselation_evaluation_source_pointer, nullptr));
+    CHECK_GL_ERROR(glShaderSource(floor_wireframe_tesselation_evaluation_shader_id, 1, &floor_wireframe_tesselation_evaluation_source_pointer, nullptr));
     glCompileShader(floor_wireframe_tesselation_evaluation_shader_id);
     CHECK_GL_SHADER_ERROR(floor_wireframe_tesselation_evaluation_shader_id);
 
@@ -482,8 +478,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		GLuint ocean_tesselation_control_shader_id = 0;
 		const char* ocean_tesselation_control_source_pointer = ocean_tesselation_control_shader;
 		CHECK_GL_ERROR(ocean_tesselation_control_shader_id = glCreateShader(GL_TESS_CONTROL_SHADER));
-		CHECK_GL_ERROR(glShaderSource(ocean_tesselation_control_shader_id, 1,
-								&ocean_tesselation_control_source_pointer, nullptr));
+		CHECK_GL_ERROR(glShaderSource(ocean_tesselation_control_shader_id, 1, &ocean_tesselation_control_source_pointer, nullptr));
 		glCompileShader(ocean_tesselation_control_shader_id);
 		CHECK_GL_SHADER_ERROR(ocean_tesselation_control_shader_id);
 
@@ -491,8 +486,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		GLuint ocean_tesselation_evaluation_shader_id = 0;
 		const char* ocean_tesselation_evaluation_source_pointer = ocean_tesselation_evaluation_shader;
 		CHECK_GL_ERROR(ocean_tesselation_evaluation_shader_id = glCreateShader(GL_TESS_EVALUATION_SHADER));
-		CHECK_GL_ERROR(glShaderSource(ocean_tesselation_evaluation_shader_id, 1,
-								&ocean_tesselation_evaluation_source_pointer, nullptr));
+		CHECK_GL_ERROR(glShaderSource(ocean_tesselation_evaluation_shader_id, 1, &ocean_tesselation_evaluation_source_pointer, nullptr));
 		glCompileShader(ocean_tesselation_evaluation_shader_id);
 		CHECK_GL_SHADER_ERROR(ocean_tesselation_evaluation_shader_id);
 
@@ -655,6 +649,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		//----------------RENDER THE CUBE------------------------------------------
 		// Switch to the Geometry VAO.
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kGeometryVao]));
+		CHECK_GL_ERROR(glUseProgram(cube_program_id));
 
 		//update geometry if it's wrong
 		if (g_menger && g_menger->is_dirty()) {
@@ -669,9 +664,6 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		}
 
-		//Use cube program
-		CHECK_GL_ERROR(glUseProgram(cube_program_id));
-
 		//Update cube uniforms
 		CHECK_GL_ERROR(glUniformMatrix4fv(cube_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(cube_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
@@ -683,7 +675,6 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		//----------------RENDER THE FLOOR (CHECKERS)------------------------------------------
 		// Poll and swap.
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
-
 		CHECK_GL_ERROR(glUseProgram(floor_program_id));
 
 		//Update floor uniforms
@@ -697,8 +688,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		//----------------RENDER THE WIREFRAME------------------------------------------
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
-
 		CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
+
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
 		CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
@@ -707,7 +698,6 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		if(showWireframe){
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			//draw wireframe
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -715,9 +705,9 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		//TODO if showing ocean have wireframe render with a pipeline that uses the ocean TES
 		//----------------RENDER THE WIREFRAME------------------------------------------
-		CHECK_GL_ERROR(glUseProgram(ocean_program_id));
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
-		
+		CHECK_GL_ERROR(glUseProgram(ocean_program_id));
+
 		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
 		CHECK_GL_ERROR(glUniform4fv(ocean_light_position_location, 1, &light_position[0]));
@@ -735,6 +725,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			tidalX = 0;
 			tidal = 0;
 		}
+		
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 	}
