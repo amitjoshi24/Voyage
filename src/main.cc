@@ -66,9 +66,7 @@ CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
 	}
 }
 
-void generate_waves(glm::uvec4* waves){
-    waves[0] = glm::uvec4(2, 4, 1, 7);
-}
+
 // FIXME: Save geometry to OBJ file
 void
 SaveObj(const std::string& file,
@@ -106,7 +104,8 @@ int innerTess = 5;
 bool showOcean = false;
 bool showWireframe = true;
 bool showFloor = true;
-glm::uvec4* waves;
+int ocean_time;
+std::chrono::steady_clock ocean_clock;
 
 void
 KeyCallback(GLFWwindow* window,
@@ -265,6 +264,8 @@ int main(int argc, char* argv[])
 	std::vector<glm::vec4> floor_triangle_vertices;
 	std::vector<glm::uvec3> floor_triangle_faces;
 
+	auto start_time = ocean_clock.now();
+
 //--------------SKYBOX INIT-----------------------------------------------------
 /*
 	std::vector<glm::vec4> skybox_vertices;
@@ -310,9 +311,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CreateFloor(floor_quad_vertices, floor_quad_faces);
   CreateFloorTriangles(floor_triangle_vertices, floor_triangle_faces);
 
-//-------WAVE INIT-----------------------------------------------------------------------
-    waves = new glm::uvec4[1];
-    generate_waves(waves);
+
 //-------------CUBE INIT-----------------------------------------------------------------
 	g_menger->set_nesting_level(1);
 	g_menger->generate_geometry(obj_vertices, obj_faces);
@@ -576,6 +575,12 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(ocean_view_matrix_location = glGetUniformLocation(ocean_program_id, "view"));
 	GLint ocean_light_position_location = 0;
 	CHECK_GL_ERROR(ocean_light_position_location = glGetUniformLocation(ocean_program_id, "light_position"));
+	GLint ocean_outerTess_location = 0;
+	CHECK_GL_ERROR(ocean_outerTess_location = glGetUniformLocation(ocean_program_id, "outerTess"));
+	GLint ocean_innerTess_location = 0;
+	CHECK_GL_ERROR(ocean_innerTess_location = glGetUniformLocation(ocean_program_id, "innerTess"));
+	GLint time_location = 0;
+	CHECK_GL_ERROR(time_location = glGetUniformLocation(ocean_program_id, "ocean_time"));
 
 	//----init some vars we need--------------------------------------------------------------------------
 
@@ -603,6 +608,10 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		// Compute the view matrix
 		glm::mat4 view_matrix = g_camera.get_view_matrix();
+
+		//TODO divide by some number
+		auto current_time = ocean_clock.now() - start_time;
+		ocean_time = (int) current_time.count() / 1000000000000;
 
 
 		//----------------RENDER THE CUBE------------------------------------------
@@ -663,12 +672,23 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		}
-
-		else{
+		} else{
 			std::cout << "didn't use wireframe" << std::endl;
-
 		}
+
+		//TODO if showing ocean have wireframe render with a pipeline that uses the ocean TES
+		//----------------RENDER THE WIREFRAME------------------------------------------
+		CHECK_GL_ERROR(glUseProgram(ocean_program_id));
+		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
+		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
+		CHECK_GL_ERROR(glUniform4fv(ocean_light_position_location, 1, &light_position[0]));
+		CHECK_GL_ERROR(glUniform1i(ocean_outerTess_location, outerTess));
+		CHECK_GL_ERROR(glUniform1i(ocean_innerTess_location, innerTess));
+		CHECK_GL_ERROR(glUniform1i(time_location, ocean_time));
+
+		if (showOcean)
+			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
+
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 	}
