@@ -696,6 +696,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_triangle_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
 		//----------------RENDER THE WIREFRAME------------------------------------------
+		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
+
 		CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
@@ -714,6 +716,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		//TODO if showing ocean have wireframe render with a pipeline that uses the ocean TES
 		//----------------RENDER THE WIREFRAME------------------------------------------
 		CHECK_GL_ERROR(glUseProgram(ocean_program_id));
+		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
+		
 		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
 		CHECK_GL_ERROR(glUniform4fv(ocean_light_position_location, 1, &light_position[0]));

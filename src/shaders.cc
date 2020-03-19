@@ -153,11 +153,11 @@ void main(void)
 {
 		//world coordinates
     vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
-    vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
+    vec4 p2 = mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x);
     gl_Position = mix(p1, p2, gl_TessCoord.y);
 
 		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
-		vec4 light2 = mix(vs_light_direction4[2], vs_light_direction4[3], gl_TessCoord.x);
+		vec4 light2 = mix(vs_light_direction4[3], vs_light_direction4[2], gl_TessCoord.x);
 		vs_light_direction = mix(light1, light2, gl_TessCoord.y);
 
 }
@@ -216,6 +216,7 @@ void main()
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
 }
 )zzz";
+
 //-----------------------------------------------------------------------------
 const char* ocean_tesselation_control_shader =
 R"zzz(#version 410 core
@@ -232,21 +233,13 @@ out vec4 vs_light_direction4[];
 
 void main()
 {
-
-
-
 	if(gl_InvocationID == 0){
-
-
-
 		float d = 0.0f;
 
 		float fTidalX = tidalX;
 		fTidalX /= 100.0f;
 
 		vec3 meanOfTidal = vec3(fTidalX, 0.0f, 0.0f);
-
-
 		int multiplier = 1;
 		if(tidal == 1){
 			for(int i = 0; i < 4; i++){
@@ -267,7 +260,7 @@ void main()
 	    gl_TessLevelInner[1] = innerVal;
 	    gl_TessLevelOuter[0] = outerVal;
 	    gl_TessLevelOuter[1] = outerVal;
-		gl_TessLevelOuter[2] = outerVal;
+			gl_TessLevelOuter[2] = outerVal;
 	    gl_TessLevelOuter[3] = outerVal;
 	}
 
@@ -302,7 +295,7 @@ void main(void)
 
 		//NOTE gl_Position is still in world coords
 		vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
-		vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
+		vec4 p2 = mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x);
 		gl_Position = mix(p1, p2, gl_TessCoord.y);
 
 		float x = gl_Position[0];
@@ -325,13 +318,12 @@ void main(void)
 		dhdx += (wave1[3] * wave1[0] * cos(dot( vec2(wave1[3], wave1[4]), pos) + (t * (wave1[2] * 2.0f/wave1[0]))));
     dhdz += (wave1[4] * wave1[0] * cos(dot( vec2(wave1[3], wave1[4]), pos) + (t * (wave1[2] * 2.0f/wave1[0]))));
 
-
 	  ocean_normal = vec4(-dhdx, 1, -dhdz,0.0);
 
 	  gl_Position[1] += h;
 
 		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
-		vec4 light2 = mix(vs_light_direction4[2], vs_light_direction4[3], gl_TessCoord.x);
+		vec4 light2 = mix(vs_light_direction4[3], vs_light_direction4[2], gl_TessCoord.x);
 		vs_light_direction = mix(light1, light2, gl_TessCoord.y);
 }
 
