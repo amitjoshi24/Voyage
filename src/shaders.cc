@@ -243,14 +243,30 @@ out vec4 ocean_normal;
 void main(void)
 {
 
-		//TODO switch with whatever calculations you need for the normal
 		//NOTE gl_Position is still in world coords
-		ocean_normal = vec4(0.0, 0.0, 0.0, 0.0);
 
 		//world coordinates
 		vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
 		vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
 		gl_Position = mix(p1, p2, gl_TessCoord.y);
+
+		float x = gl_Position[0]
+	    float z = gl_Position[2]
+	    vec2 pos = vec2(x, z);
+	    vec5[1] waves;
+	    waves[0] = vec5(2.0f, 4.0f, 1.0f, 7.0f, 2.0f);
+	    float h = 0;
+	    float dhdx = 0;
+	    float dhdz = 0;
+	    for(int i = 0; i < 1; i++){
+	    	h += (waves[i][0] * sin(dot( vec2(waves[i][3], waves[i][4]), pos) + (t * (waves[i][2] * 2.0f/waves[i][0]))));
+	    	dhdx += (waves[3] * waves[i][0] * cos(dot( vec2(waves[i][3], waves[i][4]), pos) + (t * (waves[i][2] * 2.0f/waves[i][0]))));
+	    	dhdz += (waves[4] * waves[i][0] * cos(dot( vec2(waves[i][3], waves[i][4]), pos) + (t * (waves[i][2] * 2.0f/waves[i][0]))));
+	    }    
+	    
+	    ocean_normal = vec4(-dhdx, 1, -dhdz,0.0);
+
+	    gl_Position[1] += h;
 
 		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
 		vec4 light2 = mix(vs_light_direction4[2], vs_light_direction4[3], gl_TessCoord.x);

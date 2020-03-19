@@ -167,7 +167,7 @@ KeyCallback(GLFWwindow* window,
 		showWireframe = !showWireframe;
 
 	}
-	else if (key == GLFW_KEY_F && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
+	else if (key == GLFW_KEY_O && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
 		//turn on ocean
 		showOcean = !showOcean;
 	}
@@ -185,6 +185,7 @@ KeyCallback(GLFWwindow* window,
   else if(key == GLFW_KEY_PERIOD && action != GLFW_RELEASE){
       innerTess++;
   }
+
 }
 
 int g_current_button;
