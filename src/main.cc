@@ -97,9 +97,7 @@ ErrorCallback(int error, const char* description)
 std::shared_ptr<Menger> g_menger;
 void updateMengerStuff(int level){
 	g_menger->set_nesting_level(level);
-	g_menger->dirty_ = true;
-	//g_menger->generate_geometry(g_menger->obj_vertices, g_menger->obj_faces);
-
+	g_menger->set_dirty();
 }
 
 Camera g_camera;
@@ -264,7 +262,7 @@ int main(int argc, char* argv[])
 	std::vector<glm::uvec4> floor_quad_faces;
 
 	std::vector<glm::vec4> floor_triangle_vertices;
-	std::vector<glm::uvec4> floor_triangle_faces;
+	std::vector<glm::uvec3> floor_triangle_faces;
 
 //--------------SKYBOX INIT-----------------------------------------------------
 /*
@@ -437,7 +435,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     CHECK_GL_ERROR(glShaderSource(floor_wireframe_tesselation_evaluation_shader_id, 1,
                 &floor_wireframe_tesselation_evaluation_source_pointer, nullptr));
     glCompileShader(floor_wireframe_tesselation_evaluation_shader_id);
-    CHECK_GL_SHADER_ERROR(floor_wireframe_esselation_control_shader_id);
+    CHECK_GL_SHADER_ERROR(floor_wireframe_tesselation_evaluation_shader_id);
 
 		// Setup floor_wireframe geometry shader.
 		GLuint floor_wireframe_geometry_shader_id = 0;
@@ -462,7 +460,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		CHECK_GL_ERROR(glShaderSource(ocean_tesselation_evaluation_shader_id, 1,
 								&ocean_tesselation_evaluation_source_pointer, nullptr));
 		glCompileShader(ocean_tesselation_evaluation_shader_id);
-		CHECK_GL_SHADER_ERROR(ocean_esselation_control_shader_id);
+		CHECK_GL_SHADER_ERROR(ocean_tesselation_evaluation_shader_id);
 
 		// Setup ocean geometry shader.
 		GLuint ocean_geometry_shader_id = 0;
@@ -635,8 +633,6 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
 		//----------------RENDER THE FLOOR (CHECKERS)------------------------------------------
-
-
 		// Poll and swap.
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
 
@@ -660,20 +656,10 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		CHECK_GL_ERROR(glUniform1i(outerTess_location, outerTess));
 		CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
 
-		//TODO true whenever tesselation level changes
-		if(wireframe_dirty){
-			//update wireframe geometries
-			CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kWireframeVao][kVertexBuffer]));
-			CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * floor_quad_vertices.size() * 4, floor_quad_vertices.data(),GL_STATIC_DRAW));
-
-			CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kWireframeVao][kIndexBuffer]));
-			CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * floor_quad_faces.size() * 4, floor_quad_faces.data(), GL_STATIC_DRAW));
-			wireframe_dirty = false;
-		}
-
 		if(showWireframe){
 			std::cout << "used wireframe" << std::endl;
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			//draw wireframe
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

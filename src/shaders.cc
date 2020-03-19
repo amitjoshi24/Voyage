@@ -33,8 +33,8 @@ out vec4 world_coordinates;
 void main()
 {
 
-	vec3 nhn = normalize(cross( gl_Position[2].xyz - gl_Position[0].xyz, gl_Position[1].xyz - gl_Position[0].xyz));
-	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0);
+	vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
+	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
 
 	for (int n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
@@ -95,7 +95,6 @@ R"zzz(#version 330 core
 flat in vec4 normal;
 in vec4 light_direction;
 in vec4 world_coordinates;
-in vec3 vertex_id;
 out vec4 fragment_color;
 void main()
 {
@@ -116,13 +115,14 @@ void main()
 glDrawElements(GL_PATCHES), run on quad floor
 can be used with normal vertex shader
 -took out world_coordinates
+geometry shader:
+- changed normal to be interpolated
 fragment shader:
 -changed normal to be interpolated (i.e. not flat)
 */
 //sets up the constants for tesselation for each patch
 const char* tesselation_control_shader =
 R"zzz(#version 410 core
-
 layout (vertices = 4) out;
 uniform int outerTess;
 uniform int innerTess;
@@ -174,27 +174,28 @@ layout (triangle_strip, max_vertices = 3) out;
 uniform mat4 projection;
 uniform mat4 view;
 in vec4 vs_light_direction[];
-flat out vec4 normal;
+out vec4 normal;
 out vec4 light_direction;
 out vec3 vertex_id;
 void main()
 {
-	//normal is in global coordinates
-	vec3 nhn = normalize(cross( gl_Position[2].xyz - gl_Position[0].xyz, gl_Position[1].xyz - gl_Position[0].xyz));
-	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0);
 
 	for (int n = 0; n < gl_in.length(); n++) {
+		//normal is in global coordinates
+		vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
+		normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
+		
 		light_direction = vs_light_direction[n];
 
 		//shift the wireframe, gl_Position is in world cords
 		gl_Position = projection * view * (gl_in[n].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f)); // homogoenous coord
 
 		if (n == 0){
-			vertex_id = vec3(1, 0, 0);
+			vertex_id = vec3(1.0f, 0.0f, 0.0f);
 		} else if (n == 1){
-			vertex_id = vec3(0,1, 0);
+			vertex_id = vec3(0.0f, 1.0f, 0.0f);
 		} else {
-			vertex_id = vec3(0, 0, 1);
+			vertex_id = vec3(0.0f, 0.0f, 1.0f);
 		}
 		EmitVertex();
 	}
@@ -289,7 +290,6 @@ R"zzz(#version 330 core
 in vec4 normal;
 in vec4 light_direction;
 in vec4 world_coordinates;
-in vec3 vertex_id;
 out vec4 fragment_color;
 void main(){
 	//TODO replace with proper lighting model
