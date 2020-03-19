@@ -244,24 +244,49 @@ in vec4 world_vertex_position4[];
 out vec4 world_vertex_position;
 in vec4 vs_light_direction4[];
 out vec4 vs_light_direction;
-
+uniform int t;
+flat out vec4 normal;
 void main(void)
 {
 
 		//TODO is it okay to interpolate between coords in camera system
 
+	// below assumes all the gl_Positions are in world coords
+
     vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
     vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
+    
+   
+
     gl_Position = mix(p1, p2, gl_TessCoord.y);
 
+    float x = gl_Position[0]
+    float z = gl_Position[2]
+    vec2 pos = vec2(x, z);
+    vec5[1] waves;
+    waves[0] = vec5(2.0f, 4.0f, 1.0f, 7.0f, 2.0f);
+
+    float h = 0;
+    float dhdx = 0;
+    float dhdz = 0;
+    for(int i = 0; i < 1; i++){
+    	h += (waves[i][0] * sin(dot( vec2(waves[i][3], waves[i][4]), pos) + (t * (waves[i][2] * 2.0f/waves[i][0]))));
+    	dhdx += (waves[3] * waves[i][0] * cos(dot( vec2(waves[i][3], waves[i][4]), pos) + (t * (waves[i][2] * 2.0f/waves[i][0]))));
+    	dhdz += (waves[4] * waves[i][0] * cos(dot( vec2(waves[i][3], waves[i][4]), pos) + (t * (waves[i][2] * 2.0f/waves[i][0]))));
+    }
 		//this needs to be updated to be setting world coords for every new point
 		world_vertex_position = world_vertex_position4[gl_PrimitiveID];
+
+		
+
+
+    
+    	normal = vec4(-dhdx, 1, -dhdz,0.0);
 
 		//recompute this as well
 		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
 		vec4 light2 = mix(vs_light_direction4[2], vs_light_direction4[3], gl_TessCoord.x);
 		vs_light_direction = mix(light1, light2, gl_TessCoord.y);
-
 }
 
 )zzz";
@@ -596,7 +621,7 @@ int main(int argc, char* argv[])
 	const GLubyte* version = glGetString(GL_VERSION);    // version as a string
 
 	std::cout << "OpenGL version supported:" << version << "\n";
-/
+
 	std::vector<glm::vec4> obj_vertices;
 	std::vector<glm::uvec3> obj_faces;
 
@@ -982,7 +1007,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		CHECK_GL_ERROR(glUniform1i(wireframe_location, zeroInt));
 		// Draw our triangles.
-		//CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
+		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
 /*
 		// render skybox
@@ -1072,12 +1097,12 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			CHECK_GL_ERROR(glUniform1i(floor_wireframe_location, zeroInt));
 
 //okay what is up here???
-			//CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
+			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
 		}
-		if(wireframe){
+		if(wireframe && false){
 			//TODO: PROLLY WRONG LOWKEY
 			std::cout << "used wireframe" << std::endl;
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 			CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
