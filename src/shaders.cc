@@ -334,8 +334,8 @@ void main(void)
 		//TODO triple check these equations
 	  float w = 1;
 	  h += (wave1[1] * sin((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
-		dhdx += (wave1[3] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
-    dhdz += (wave1[4] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+	  dhdx += (w * wave1[3] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+      dhdz += (w * wave1[4] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
 
 		//TODO make sure this is also reflective of the tidal waves contribution
 	  ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
