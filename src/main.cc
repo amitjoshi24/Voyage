@@ -106,6 +106,7 @@ bool showWireframe = true;
 bool showFloor = true;
 int ocean_time;
 std::chrono::steady_clock ocean_clock;
+int tidal;
 
 void
 KeyCallback(GLFWwindow* window,
@@ -170,19 +171,26 @@ KeyCallback(GLFWwindow* window,
 		//turn on ocean
 		showOcean = !showOcean;
 	}
+	else if (key == GLFW_KEY_T && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
+		tidal = 1;
+	}
   else if(key == GLFW_KEY_MINUS && action != GLFW_RELEASE){
 		outerTess--;
-		if (outerTess < 0) outerTess = 1;
+		if (outerTess <= 0) outerTess = 1;
+				std::cout<<outerTess<<std::endl;
   }
   else if(key == GLFW_KEY_EQUAL && action != GLFW_RELEASE){
     outerTess++;
+		std::cout<<outerTess<<std::endl;
   }
   else if(key == GLFW_KEY_COMMA && action != GLFW_RELEASE){
       innerTess--;
-			if (innerTess < 0) innerTess = 1;
+			if (innerTess <= 0) innerTess = 1;
+			std::cout<<innerTess<<std::endl;
   }
   else if(key == GLFW_KEY_PERIOD && action != GLFW_RELEASE){
       innerTess++;
+			std::cout<<innerTess<<std::endl;
   }
 
 }
@@ -453,6 +461,15 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		glCompileShader(floor_wireframe_fragment_shader_id);
 		CHECK_GL_SHADER_ERROR(floor_wireframe_fragment_shader_id);
 
+		// set up tesselation control shader
+		GLuint ocean_tesselation_control_shader_id = 0;
+		const char* ocean_tesselation_control_source_pointer = ocean_tesselation_control_shader;
+		CHECK_GL_ERROR(ocean_tesselation_control_shader_id = glCreateShader(GL_TESS_CONTROL_SHADER));
+		CHECK_GL_ERROR(glShaderSource(ocean_tesselation_control_shader_id, 1,
+								&ocean_tesselation_control_source_pointer, nullptr));
+		glCompileShader(ocean_tesselation_control_shader_id);
+		CHECK_GL_SHADER_ERROR(ocean_tesselation_control_shader_id);
+
 		// set up ocean tesselation evaluation shader
 		GLuint ocean_tesselation_evaluation_shader_id = 0;
 		const char* ocean_tesselation_evaluation_source_pointer = ocean_tesselation_evaluation_shader;
@@ -506,7 +523,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	GLuint ocean_program_id = 0;
 	CHECK_GL_ERROR(ocean_program_id = glCreateProgram());
 	CHECK_GL_ERROR(glAttachShader(ocean_program_id, vertex_shader_id));
-	CHECK_GL_ERROR(glAttachShader(ocean_program_id, tesselation_control_shader_id));
+	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_tesselation_control_shader_id));
 	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_tesselation_evaluation_shader_id));
 	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_geometry_shader_id));
 	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_fragment_shader_id));
@@ -581,6 +598,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(ocean_innerTess_location = glGetUniformLocation(ocean_program_id, "innerTess"));
 	GLint time_location = 0;
 	CHECK_GL_ERROR(time_location = glGetUniformLocation(ocean_program_id, "ocean_time"));
+	GLint tidal_location = 0;
+	CHECK_GL_ERROR(tidal_location = glGetUniformLocation(ocean_program_id, "tidal"));
 
 	//----init some vars we need--------------------------------------------------------------------------
 
@@ -611,7 +630,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		//TODO divide by some number
 		auto current_time = ocean_clock.now() - start_time;
-		ocean_time = (int) current_time.count() / 1000000000000;
+		ocean_time = (int) current_time.count() / 100000000000000000;
 
 
 		//----------------RENDER THE CUBE------------------------------------------
@@ -666,14 +685,11 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
 
 		if(showWireframe){
-			std::cout << "used wireframe" << std::endl;
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			//draw wireframe
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		} else{
-			std::cout << "didn't use wireframe" << std::endl;
 		}
 
 		//TODO if showing ocean have wireframe render with a pipeline that uses the ocean TES
@@ -685,6 +701,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		CHECK_GL_ERROR(glUniform1i(ocean_outerTess_location, outerTess));
 		CHECK_GL_ERROR(glUniform1i(ocean_innerTess_location, innerTess));
 		CHECK_GL_ERROR(glUniform1i(time_location, ocean_time));
+		CHECK_GL_ERROR(glUniform1i(tidal_location, ocean_time));
+		tidal = 0; //since tidal should only happen once
 
 		if (showOcean)
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
