@@ -264,7 +264,7 @@ void main()
 			if(multiplier > 4){
 				multiplier = 4;
 			}
-			
+
 		}
 		//multiplier = 1;
 
@@ -320,11 +320,11 @@ void main(void)
 	  vec2 pos = vec2(x, z);
 
 		float wave1 [5];
-		wave1[0] = 8.0f;
- 		wave1[1] = 0.5f;
-		wave1[2] =  0.5f;
-		wave1[3] =  7.0f;
-		wave1[4] =  2.0f;
+		wave1[0] = 8.0f; //wavelength
+ 		wave1[1] = 0.5f; //amplitude
+		wave1[2] =  0.5f; //speed
+		wave1[3] =  7.0f; //x
+		wave1[4] =  2.0f; //z
 
     float h = 2.5;
 		float dhdx = 0;
