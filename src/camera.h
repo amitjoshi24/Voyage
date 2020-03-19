@@ -23,12 +23,12 @@ public:
 	void clockwise();
 	void counterclockwise();
 	void swivel(glm::vec2); //with mouse delta ROTATE
+	glm::vec3 eye; //pos of camera in space
 private:
 	float camera_distance_ = 3.0;
 	glm::vec3 look;
 	glm::vec3 cam_up;
 	glm::vec3 cam_right;
-	glm::vec3 eye; //pos of camera in space
 	glm::vec3 center;
 	glm::vec3 abs_up;
 	glm::vec3 abs_right;

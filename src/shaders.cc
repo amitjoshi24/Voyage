@@ -363,6 +363,7 @@ void main()
 
 const char* ocean_fragment_shader =
 R"zzz(#version 330 core
+uniform vec4 camera_pos; //homogenous point, (xyzw) w= 1
 in vec4 normal; //interpolated to ensure smooth water
 in vec4 light_direction;
 in vec4 world_coordinates;

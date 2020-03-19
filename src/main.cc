@@ -613,6 +613,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_ERROR(tidal_location = glGetUniformLocation(ocean_program_id, "tidal"));
 	GLint tidalX_location = 0;
 	CHECK_GL_ERROR(tidalX_location = glGetUniformLocation(ocean_program_id, "tidalX"));
+	GLint camera_pos_location = 0;
+	CHECK_GL_ERROR(camera_pos_location = glGetUniformLocation(ocean_program_id, "camera_pos"));
 
 	//----init some vars we need--------------------------------------------------------------------------
 
@@ -716,6 +718,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		CHECK_GL_ERROR(glUniform1i(time_location, ocean_time));
 		CHECK_GL_ERROR(glUniform1i(tidal_location, tidal));
 		CHECK_GL_ERROR(glUniform1i(tidalX_location, tidalX));
+		glm::vec4 temp_eye = glm::vec4(g_camera.eye[0], g_camera.eye[1], g_camera.eye[2], 1.0f);
+		CHECK_GL_ERROR(glUniform4fv(camera_pos_location, 1, &temp_eye[0]));
 
 
 		if (showOcean)
@@ -725,7 +729,7 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			tidalX = 0;
 			tidal = 0;
 		}
-		
+
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 	}
