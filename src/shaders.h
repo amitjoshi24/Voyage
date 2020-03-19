@@ -2,6 +2,7 @@
 extern const char* vertex_shader;
 extern const char* geometry_shader;
 extern const char* tesselation_control_shader;
+extern const char* fragment_shader;
 //-----------------------------------------------------------------------
 extern const char* cube_fragment_shader;
 //-----------------------------------------------------------------------------
@@ -18,3 +19,5 @@ extern const char* ocean_fragment_shader;
 //-----------------------------------------------------------------------------
 extern const char* skybox_vertex_shader;
 extern const char* skybox_fragment_shader;
+//------------------------------------------------------------------------------
+extern const char* orb_vertex_shader;

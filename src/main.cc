@@ -15,6 +15,8 @@
 #include "menger.h"
 #include "camera.h"
 #include "shaders.h"
+#include <cmath>
+
 //#include "stb_image.h"
 int window_width = 800, window_height = 600;
 
@@ -22,7 +24,7 @@ int window_width = 800, window_height = 600;
 enum { kVertexBuffer, kIndexBuffer, kNumVbos };
 
 // These are our VAOs.
-enum { kGeometryVao, kFloorVao, kWireframeVao, kSkyboxVao, kNumVaos };
+enum { kGeometryVao, kFloorVao, kWireframeVao, kOrbVao, kSkyboxVao, kNumVaos };
 
 GLuint g_array_objects[kNumVaos];  // This will store the VAO descriptors.
 GLuint g_buffer_objects[kNumVaos][kNumVbos];  // These will store VBO descriptors.
@@ -42,6 +44,53 @@ CreateFloorTriangles(std::vector<glm::vec4>& vertices,
 	indices.push_back(glm::uvec3(0, 4, 2));
 	indices.push_back(glm::uvec3(0, 3, 4));
 	indices.push_back(glm::uvec3(0, 1, 3));
+}
+
+void CreateSphere(std::vector<glm::vec4>& vertices,
+        std::vector<glm::uvec3>& faces){
+
+    float t = (1.0 + sqrt(5.0)) / 2.0;
+    float k = 4;
+
+    vertices.push_back((1/k)*glm::vec4(-1,  t, 0.0, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4( 1,  t, 0.0, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4(-1, -t, 0.0, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4( 1, -t, 0.0, k * 1.0f));
+
+    vertices.push_back((1/k)*glm::vec4( 0, -1, t, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4( 0,  1, t, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4( 0, -1, -t, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4( 0,  1, -t, k * 1.0f));
+
+    vertices.push_back((1/k)*glm::vec4( t,  0, -1, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4( t,  0, 1, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4(-t,  0, -1, k * 1.0f));
+    vertices.push_back((1/k)*glm::vec4(-t,  0, 1, k * 1.0f));
+
+//create faces
+    faces.push_back(glm::uvec3(0, 11, 5));
+    faces.push_back(glm::uvec3(0, 5, 1));
+    faces.push_back(glm::uvec3(0, 1, 7));
+    faces.push_back(glm::uvec3(0, 7, 10));
+    faces.push_back(glm::uvec3(0, 10, 11));
+
+  faces.push_back(glm::uvec3(1, 5, 9));
+  faces.push_back(glm::uvec3(5, 11, 4));
+  faces.push_back(glm::uvec3(11, 10, 2));
+  faces.push_back(glm::uvec3(10, 7, 6));
+  faces.push_back(glm::uvec3(7, 1, 8));
+
+  faces.push_back(glm::uvec3(3, 9, 4));
+  faces.push_back(glm::uvec3(3, 4, 2));
+  faces.push_back(glm::uvec3(3, 2, 6));
+  faces.push_back(glm::uvec3(3, 6, 8));
+  faces.push_back(glm::uvec3(3, 8, 9));
+  
+  faces.push_back(glm::uvec3(4, 9, 5));
+  faces.push_back(glm::uvec3(2, 4, 11));
+  faces.push_back(glm::uvec3(6, 2, 10));
+  faces.push_back(glm::uvec3(8, 6, 7));
+  faces.push_back(glm::uvec3(9, 8, 1));
 }
 
 // FIXME: Save geometry to OBJ file
@@ -85,20 +134,20 @@ SaveObj4(const std::string& file,
 
 void
 CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
-	float aids = 20.0f;
+	float inf = 20.0f;
 	float inc = 40.0f/16.0f;
 	int dotCounter = 0;
-	for(float j = -aids; j <= aids; j+=inc){
-		for(float i = -aids; i <= aids; i+=inc){
+	for(float j = -inf; j <= inf; j+=inc){
+		for(float i = -inf; i <= inf; i+=inc){
 			vertices.push_back(glm::vec4(i, -2.0f, j, 1.0f));
 			dotCounter++; //one indexed
-			if((dotCounter % 17) != 0 && j!= aids){ //not the right most dot, not the top most row
+			if((dotCounter % 17) != 0 && j!= inf){ //not the right most dot, not the top most row
 				auto temp = glm::uvec4(dotCounter - 1, dotCounter, dotCounter + 17, dotCounter + 16);
 				indices.push_back(temp);
 			}
 		}
 	}
-	//SaveObj4("../../thefloor.obj", vertices, indices);
+	SaveObj4("../../thefloor.obj", vertices, indices);
 }
 
 
@@ -289,6 +338,9 @@ int main(int argc, char* argv[])
 	std::vector<glm::vec4> floor_triangle_vertices;
 	std::vector<glm::uvec3> floor_triangle_faces;
 
+  std::vector<glm::vec4> sphere_vertices;
+	std::vector<glm::uvec3> sphere_faces;
+
 	auto start_time = ocean_clock.now();
 
 
@@ -296,6 +348,9 @@ int main(int argc, char* argv[])
 
 	CreateFloor(floor_quad_vertices, floor_quad_faces);
   CreateFloorTriangles(floor_triangle_vertices, floor_triangle_faces);
+
+//-------ORB INIT-------------------------------------------------------------------------
+CreateSphere(sphere_vertices, sphere_faces);
 
 
 //-------------CUBE INIT-----------------------------------------------------------------
@@ -368,6 +423,21 @@ int main(int argc, char* argv[])
 	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kWireframeVao][kIndexBuffer]));
 	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * floor_quad_faces.size() * 4, floor_quad_faces.data(), GL_STATIC_DRAW));
 
+  //---------setup orb VAO-----------
+	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kOrbVao]));
+
+		// Generate buffer objects
+	CHECK_GL_ERROR(glGenBuffers(kNumVbos, &g_buffer_objects[kOrbVao][0]));
+
+	// Setup vertex data in a VBO.
+	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kOrbVao][kVertexBuffer]));
+	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * sphere_vertices.size() * 4, sphere_vertices.data(),GL_STATIC_DRAW));
+	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
+	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
+
+	// Setup element array buffer.
+	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kOrbVao][kIndexBuffer]));
+	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * sphere_faces.size() * 3, sphere_faces.data(), GL_STATIC_DRAW));
 
 
 	//----set up all the shaders--------------------------------------------------------------------------
@@ -386,6 +456,14 @@ int main(int argc, char* argv[])
 	CHECK_GL_ERROR(glShaderSource(geometry_shader_id, 1, &geometry_source_pointer, nullptr));
 	glCompileShader(geometry_shader_id);
 	CHECK_GL_SHADER_ERROR(geometry_shader_id);
+
+  // Setup fragment shader.
+  GLuint fragment_shader_id = 0;
+  const char* fragment_source_pointer = fragment_shader;
+  CHECK_GL_ERROR(fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
+  CHECK_GL_ERROR(glShaderSource(fragment_shader_id, 1, &fragment_source_pointer, nullptr));
+  glCompileShader(fragment_shader_id);
+  CHECK_GL_SHADER_ERROR(fragment_shader_id);
 
 	// Setup cube_fragment shader.
 	GLuint cube_fragment_shader_id = 0;
@@ -467,6 +545,14 @@ int main(int argc, char* argv[])
 		glCompileShader(ocean_fragment_shader_id);
 		CHECK_GL_SHADER_ERROR(ocean_fragment_shader_id);
 
+    // Setup vertex shader.
+    GLuint orb_vertex_shader_id = 0;
+    const char* orb_vertex_source_pointer = orb_vertex_shader;
+    CHECK_GL_ERROR(orb_vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
+    CHECK_GL_ERROR(glShaderSource(orb_vertex_shader_id, 1, &orb_vertex_source_pointer, nullptr));
+    glCompileShader(orb_vertex_shader_id);
+    CHECK_GL_SHADER_ERROR(orb_vertex_shader_id);
+
 	//----create programs--------------------------------------------------------------------------
 	// create cube program
 	GLuint cube_program_id = 0;
@@ -499,6 +585,13 @@ int main(int argc, char* argv[])
 	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_tesselation_evaluation_shader_id));
 	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_geometry_shader_id));
 	CHECK_GL_ERROR(glAttachShader(ocean_program_id, ocean_fragment_shader_id));
+
+  //create orb program
+  GLuint orb_program_id = 0;
+  CHECK_GL_ERROR(orb_program_id = glCreateProgram());
+  CHECK_GL_ERROR(glAttachShader(orb_program_id, orb_vertex_shader_id));
+  CHECK_GL_ERROR(glAttachShader(orb_program_id, geometry_shader_id));
+  CHECK_GL_ERROR(glAttachShader(orb_program_id, fragment_shader_id));
 
 	//----set up variables and link programs--------------------------------------------------------------------------
 
@@ -576,6 +669,20 @@ int main(int argc, char* argv[])
 	CHECK_GL_ERROR(tidalX_location = glGetUniformLocation(ocean_program_id, "tidalX"));
 	GLint camera_pos_location = 0;
 	CHECK_GL_ERROR(camera_pos_location = glGetUniformLocation(ocean_program_id, "camera_pos"));
+  //set up orb program variables------------
+	// Bind attributes.
+	CHECK_GL_ERROR(glBindAttribLocation(orb_program_id, 0, "vertex_position"));
+	CHECK_GL_ERROR(glBindFragDataLocation(orb_program_id, 0, "fragment_color"));
+	glLinkProgram(orb_program_id);
+	CHECK_GL_PROGRAM_ERROR(orb_program_id);
+
+	// Get the uniform locations.
+	GLint orb_projection_matrix_location = 0;
+	CHECK_GL_ERROR(orb_projection_matrix_location = glGetUniformLocation(orb_program_id, "projection"));
+	GLint orb_view_matrix_location = 0;
+	CHECK_GL_ERROR(orb_view_matrix_location = glGetUniformLocation(orb_program_id, "view"));
+	GLint orb_light_position_location = 0;
+	CHECK_GL_ERROR(orb_light_position_location = glGetUniformLocation(orb_program_id, "light_position"));
 
 	//----init some vars we need--------------------------------------------------------------------------
 
@@ -697,6 +804,16 @@ int main(int argc, char* argv[])
 			tidalX = 0;
 			tidal = 0;
 		}
+
+    //----------------RENDER THE ORB------------------------------------------
+    CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kOrbVao]));
+		CHECK_GL_ERROR(glUseProgram(orb_program_id));
+
+    CHECK_GL_ERROR(glUniformMatrix4fv(orb_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
+    CHECK_GL_ERROR(glUniformMatrix4fv(orb_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
+    CHECK_GL_ERROR(glUniform4fv(orb_light_position_location, 1, &light_position[0]));
+
+    CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, sphere_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
 		glfwPollEvents();
 		glfwSwapBuffers(window);

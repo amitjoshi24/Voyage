@@ -47,6 +47,17 @@ void main()
 }
 )zzz";
 
+const char* fragment_shader =
+R"zzz(#version 330 core
+flat in vec4 normal;
+in vec4 light_direction;
+out vec4 fragment_color;
+void main()
+{
+	fragment_color = vec4(1.0, 1.0, 1.0, 1.0);
+}
+)zzz";
+
 const char* cube_fragment_shader =
 R"zzz(#version 330 core
 flat in vec4 normal;
@@ -183,7 +194,7 @@ void main()
 		light_direction = vs_light_direction[n];
 
 		//shift the wireframe, gl_Position is in world cords
-		gl_Position = projection * view * (gl_in[n].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f));
+		gl_Position = projection * view * (gl_in[n].gl_Position + vec4(0.0f, 0.5f, 0.0f, 0.0f));
 		//gl_Position is in !!!!!!NDC!!!!!!
 
 		if (n == 0){
@@ -418,7 +429,22 @@ void main(){
 	fragment_color = clamp(color, 0.0, 1.0);
 }
 )zzz";
-
+//-----------------------------------------------------------------------------
+const char* orb_vertex_shader =
+R"zzz(#version 330 core
+in vec4 vertex_position;
+uniform vec4 light_position;
+out vec4 vs_light_direction;
+void main()
+{
+	//multiply by model matrix
+	gl_Position[0] = vertex_position[0] + light_position[0];
+	gl_Position[1] = vertex_position[1] + light_position[1];
+	gl_Position[2] = vertex_position[2] + light_position[2];
+	gl_Position[3] = vertex_position[3];
+	vs_light_direction = -gl_Position + light_position;
+}
+)zzz";
 //-----------------------------------------------------------------------------
 const char* skybox_vertex_shader =
 R"zzz(#version 330 core
