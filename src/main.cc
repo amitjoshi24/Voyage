@@ -85,14 +85,14 @@ SaveObj4(const std::string& file,
 
 void
 CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
-	float inf = 20.0f;
+	float aids = 20.0f;
 	float inc = 40.0f/16.0f;
 	int dotCounter = 0;
-	for(float j = -inf; j <= inf; j+=inc){
-		for(float i = -inf; i <= inf; i+=inc){
+	for(float j = -aids; j <= aids; j+=inc){
+		for(float i = -aids; i <= aids; i+=inc){
 			vertices.push_back(glm::vec4(i, -2.0f, j, 1.0f));
 			dotCounter++; //one indexed
-			if((dotCounter % 17) != 0 && j!= inf){ //not the right most dot, not the top most row
+			if((dotCounter % 17) != 0 && j!= aids){ //not the right most dot, not the top most row
 				auto temp = glm::uvec4(dotCounter - 1, dotCounter, dotCounter + 17, dotCounter + 16);
 				indices.push_back(temp);
 			}
@@ -650,8 +650,9 @@ int main(int argc, char* argv[])
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_triangle_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
 		//----------------RENDER THE WIREFRAME------------------------------------------
-		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
 		CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
+		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
+		
 
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
@@ -661,6 +662,10 @@ int main(int argc, char* argv[])
 
 		if(showWireframe){
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			/*for(int i = 0; i < floor_quad_vertices.size(); i++){
+				glm::vec4 vertex = floor_quad_vertices.at(i);
+				std::cout << vertex[0] << "," << vertex[1] << "," << vertex[2] << std::endl;
+			}*/
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
