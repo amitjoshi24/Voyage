@@ -386,7 +386,7 @@ void main(){
 	if(normalLightDot < 0){
 		normalLightDot = 0;
 	}
-	
+
 	vec4 diffuse_component = k_d*normalLightDot*light_color;
 
 
@@ -399,7 +399,7 @@ void main(){
 	}
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	
+
 	vec4 specular_component = dot_nl*(k_s*pow(cameraReflectDot, alpha)*light_color);
 
 	vec4 color = ambient_component + diffuse_component + specular_component;

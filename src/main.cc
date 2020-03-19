@@ -606,7 +606,7 @@ int main(int argc, char* argv[])
 
 		//TODO divide by some number
 		auto current_time = ocean_clock.now() - start_time;
-		ocean_time = (int) current_time.count() / 100000000000000000;
+		ocean_time = (int) current_time.count() / 100000000;
 
 
 		//----------------RENDER THE CUBE------------------------------------------
@@ -638,6 +638,7 @@ int main(int argc, char* argv[])
 		//----------------RENDER THE FLOOR (CHECKERS)------------------------------------------
 		// Poll and swap.
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
+    CHECK_GL_ERROR(glPatchParameteri(GL_PATCH_VERTICES, 4));
 		CHECK_GL_ERROR(glUseProgram(floor_program_id));
 
 		//Update floor uniforms
@@ -651,8 +652,9 @@ int main(int argc, char* argv[])
 
 		//----------------RENDER THE WIREFRAME------------------------------------------
 		CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
+    CHECK_GL_ERROR(glPatchParameteri(GL_PATCH_VERTICES, 4));
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
-		
+
 
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
