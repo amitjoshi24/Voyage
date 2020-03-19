@@ -44,29 +44,6 @@ CreateFloorTriangles(std::vector<glm::vec4>& vertices,
 	indices.push_back(glm::uvec3(0, 1, 3));
 }
 
-void
-CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
-	float inf = 20.0f;
-	float inc = 40.0f/16.0f;
-	int dotCounter = 0;
-	for(float j = -inf; j <= inf; j+=inc){
-		for(float i = -inf; i <= inf; i+=inc){
-			vertices.push_back(glm::vec4(i, -2.0f, j, 1.0f));
-			dotCounter += 1;
-			int lastDotPlacedIndex = dotCounter - 1;
-			if(lastDotPlacedIndex > 16 && (lastDotPlacedIndex % 17) != 0){
-				indices.push_back(glm::uvec4(lastDotPlacedIndex, lastDotPlacedIndex - 1, lastDotPlacedIndex - 17, lastDotPlacedIndex-18));
-				// only if its not in the lowermost row and leftmost column, then you can make triangle
-				//indices.push_back(glm::uvec3(lastDotPlacedIndex-18, lastDotPlacedIndex, lastDotPlacedIndex-1));
-				//indices.push_back(glm::uvec3(lastDotPlacedIndex-18, lastDotPlacedIndex-17, lastDotPlacedIndex));
-			}
-
-		}
-		std::cout << "dotCounter: " << dotCounter << std::endl;
-	}
-}
-
-
 // FIXME: Save geometry to OBJ file
 void
 SaveObj(const std::string& file,
@@ -86,6 +63,44 @@ SaveObj(const std::string& file,
 	}
 	outputFile.close();
 }
+
+void
+SaveObj4(const std::string& file,
+        const std::vector<glm::vec4>& vertices,
+        const std::vector<glm::uvec4>& indices)
+{
+	std::ofstream outputFile(file);
+	for(unsigned int i = 0; i < vertices.size(); i++){
+		glm::vec4 curVertex = vertices.at(i);
+		outputFile << "v " << curVertex[0] << " " << curVertex[1] << " " << curVertex[2]<< std::endl;
+	}
+
+	for(unsigned int i = 0; i < indices.size(); i++){
+		glm::uvec4 curFace = indices.at(i);
+		outputFile << "f " << curFace[0] + 1<< " " << curFace[1] + 1<< " " << curFace[2] + 1 << " "<<curFace[3] + 1 <<std::endl;
+	}
+	outputFile.close();
+}
+
+
+void
+CreateFloor(std::vector<glm::vec4>& vertices, std::vector<glm::uvec4>& indices){
+	float inf = 20.0f;
+	float inc = 40.0f/16.0f;
+	int dotCounter = 0;
+	for(float j = -inf; j <= inf; j+=inc){
+		for(float i = -inf; i <= inf; i+=inc){
+			vertices.push_back(glm::vec4(i, -2.0f, j, 1.0f));
+			dotCounter++; //one indexed
+			if((dotCounter % 17) != 0 && j!= inf){ //not the right most dot, not the top most row
+				auto temp = glm::uvec4(dotCounter - 1, dotCounter, dotCounter + 17, dotCounter + 16);
+				indices.push_back(temp);
+			}
+		}
+	}
+}
+
+
 
 void
 ErrorCallback(int error, const char* description)

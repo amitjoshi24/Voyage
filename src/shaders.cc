@@ -27,7 +27,7 @@ layout (triangle_strip, max_vertices = 3) out;
 uniform mat4 projection;
 uniform mat4 view;
 in vec4 vs_light_direction[];
-flat out vec4 normal; //if interpolate normal, do it here by taking out flat
+flat out vec4 normal;
 out vec4 light_direction;
 out vec4 world_coordinates;
 void main()
@@ -46,8 +46,6 @@ void main()
 	EndPrimitive();
 }
 )zzz";
-
-
 
 const char* cube_fragment_shader =
 R"zzz(#version 330 core
@@ -88,8 +86,6 @@ use with normal vertex shader and geometry shader
 must be run using the normal TRIANGLE FLOOR faces
 */
 
-
-// FIXME: Implement shader effects with an alternative shader.
 const char* floor_fragment_shader =
 R"zzz(#version 330 core
 flat in vec4 normal;
@@ -139,6 +135,7 @@ void main()
 	    gl_TessLevelOuter[1] = outerTess;
 			gl_TessLevelOuter[2] = outerTess;
 	    gl_TessLevelOuter[3] = outerTess;
+
 	}
 
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
@@ -149,7 +146,7 @@ void main()
 //run on tesselated patch
 const char* floor_wireframe_tesselation_evaluation_shader =
 R"zzz(#version 410 core
-layout (quads) in;
+layout (quads, equal_spacing) in;
 in vec4 vs_light_direction4[];
 out vec4 vs_light_direction;
 void main(void)
@@ -186,8 +183,8 @@ void main()
 		light_direction = vs_light_direction[n];
 
 		//shift the wireframe, gl_Position is in world cords
-		gl_Position = projection * view * (gl_in[n].gl_Position);
-		gl_Position[1] += 0.1f;
+		gl_Position = projection * view * (gl_in[n].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f));
+		//gl_Position is in !!!!!!NDC!!!!!!
 
 		if (n == 0){
 			vertex_id = vec3(1.0f, 0.0f, 0.0f);
@@ -214,7 +211,6 @@ void main()
 	if (vertex_id [0] < thres || vertex_id [ 1 ] < thres || vertex_id[2] < thres){
 		color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	}
-	color = vec4(1.0, 1.0, 1.0, 1.0);
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
@@ -226,7 +222,7 @@ R"zzz(#version 410 core
 layout (vertices = 4) out;
 uniform int outerTess;
 uniform int innerTess;
-uniform int tidalX; 
+uniform int tidalX;
 uniform int tidal;
 
 
@@ -254,7 +250,8 @@ void main()
 		int multiplier = 1;
 		if(tidal == 1){
 			for(int i = 0; i < 4; i++){
-				d += (distance(meanOfTidal, gl_in[gl_InvocationID].gl_Position.xyz));
+				//TODO DORA CHANGED INDEX TO i instead of GL_INVOCATIONID
+				d += (distance(meanOfTidal, gl_in[i].gl_Position.xyz));
 			}
 			if(d < 1){
 				d = 1;
