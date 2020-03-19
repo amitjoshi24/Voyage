@@ -132,12 +132,12 @@ void main()
 {
 
 
-        gl_TessLevelInner[0] = innerTess;
-        gl_TessLevelInner[1] = innerTess;
-        gl_TessLevelOuter[0] = outerTess;
-        gl_TessLevelOuter[1] = outerTess;
-        gl_TessLevelOuter[2] = outerTess;
-        gl_TessLevelOuter[3] = outerTess;
+    gl_TessLevelInner[0] = innerTess;
+    gl_TessLevelInner[1] = innerTess;
+    gl_TessLevelOuter[0] = outerTess;
+    gl_TessLevelOuter[1] = outerTess;
+		gl_TessLevelOuter[2] = outerTess;
+    gl_TessLevelOuter[3] = outerTess;
 
 
     gl_out[gl_InvocationID].gl_Position =
@@ -174,17 +174,18 @@ layout (triangle_strip, max_vertices = 3) out;
 uniform mat4 projection;
 uniform mat4 view;
 in vec4 vs_light_direction[];
-out vec4 normal;
+flat out vec4 normal;
 out vec4 light_direction;
 out vec3 vertex_id;
 void main()
 {
+	//normal is in global coordinates
+	vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
+	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
 
 	for (int n = 0; n < gl_in.length(); n++) {
-		//normal is in global coordinates
-		vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
-		normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
-		
+
+
 		light_direction = vs_light_direction[n];
 
 		//shift the wireframe, gl_Position is in world cords
@@ -204,7 +205,7 @@ void main()
 )zzz";
 const char* floor_wireframe_fragment_shader =
 R"zzz(#version 330 core
-in vec4 normal;
+flat in vec4 normal;
 in vec4 light_direction;
 in vec3 vertex_id;
 out vec4 fragment_color;

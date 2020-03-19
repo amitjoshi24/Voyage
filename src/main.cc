@@ -649,7 +649,6 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		//----------------RENDER THE WIREFRAME------------------------------------------
 		CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
-						// Pass uniforms in.
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
 		CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
