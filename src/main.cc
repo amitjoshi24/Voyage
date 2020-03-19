@@ -22,91 +22,11 @@ int window_width = 800, window_height = 600;
 enum { kVertexBuffer, kIndexBuffer, kNumVbos };
 
 // These are our VAOs.
-enum { kGeometryVao, kFloorVao, kSkyboxVao, kNumVaos };
+enum { kGeometryVao, kFloorVao, kWireframeVao, kSkyboxVao, kNumVaos };
 
 GLuint g_array_objects[kNumVaos];  // This will store the VAO descriptors.
 GLuint g_buffer_objects[kNumVaos][kNumVbos];  // These will store VBO descriptors.
 
-/*
-
-
-//copied from https://learnopengl.com/Advanced-OpenGL/Cubemaps
-//used to load in cubemap into gl (Stbi_load)
-
-unsigned int loadCubemap(std::vector<std::string> faces)
-{
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-    int width, height, nrChannels;
-    for (unsigned int i = 0; i < faces.size(); i++)
-    {
-        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-        if (data)
-        {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                         0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-            );
-            stbi_image_free(data);
-        }
-        else
-        {
-            std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
-            stbi_image_free(data);
-        }
-    }
-    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
-
-    return textureID;
-} */
-
-// FIXME generate skybox
-void generate_skybox(std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces){
-	float s = 40.0f;
-	glm::vec3 min(-20.0f, -20.0f, -20.0f);
-	glm::vec3 sVec(s, s, s);
-
-	glm::vec3 max = min + sVec;
-	int pastSize = obj_vertices.size();
-
-	obj_vertices.push_back(glm::vec4(min[0], max[1], min[2], 1.0f));
-	obj_vertices.push_back(glm::vec4(min[0], min[1], min[2], 1.0f));
-
-	obj_vertices.push_back(glm::vec4(max[0], max[1], min[2], 1.0f));
-	obj_vertices.push_back(glm::vec4(max[0], min[1], min[2], 1.0f));
-
-	obj_vertices.push_back(glm::vec4(min[0], max[1], max[2], 1.0f));
-	obj_vertices.push_back(glm::vec4(min[0], min[1], max[2], 1.0f));
-
-	obj_vertices.push_back(glm::vec4(max[0], max[1], max[2], 1.0f));
-	obj_vertices.push_back(glm::vec4(max[0], min[1], max[2], 1.0f));
-
-
-
-	obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 1, pastSize + 0));
-	obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 3, pastSize + 1));
-
-	obj_faces.push_back(glm::uvec3(pastSize + 6, pastSize + 7, pastSize + 3));
-	obj_faces.push_back(glm::uvec3(pastSize + 3, pastSize + 2, pastSize + 6));
-
-	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 6, pastSize + 2));
-	obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 0, pastSize + 4));
-
-	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 0, pastSize + 1));
-	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 5, pastSize + 4));
-
-	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 6, pastSize + 4));
-	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 5, pastSize + 7));
-
-	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 5, pastSize + 1));
-	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 3, pastSize + 7));
-
-}
 
 
 void
@@ -183,14 +103,11 @@ void updateMengerStuff(int level){
 }
 
 Camera g_camera;
-int wireframe = 0;
-int zeroInt = 0;
-int oneInt = 1;
 int outerTess = 5;
 int innerTess = 5;
-bool ocean = false;
+bool showOcean = false;
+bool showWireframe = true;
 bool showFloor = true;
-bool floor_dirty = false;
 glm::uvec4* waves;
 
 void
@@ -243,39 +160,33 @@ KeyCallback(GLFWwindow* window,
 	} else if (key == GLFW_KEY_4 && action != GLFW_RELEASE) {
 		updateMengerStuff(4);
 	}
-	if (key == GLFW_KEY_F && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
-		// for faces as well
-		floor_dirty = true;
+	else if (key == GLFW_KEY_F && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
+		//show checkers or don't show checkers
 		showFloor = !showFloor;
 	}
 	else if(key == GLFW_KEY_F && action == GLFW_RELEASE){
-		//std::cout<<"Turning on wireframe"<<std::endl;
-		floor_dirty = true;
-		if(wireframe == 0){
-			wireframe = 1;
-		}
-		else{
-			wireframe = 0;
-		}
-		//wireframe = !wireframe;
-		//std::cout << "wireframe is now: " << wireframe << std::endl;
-	}
+		//turn on wireframe
+		showWireframe = !showWireframe;
 
-	if (key == GLFW_KEY_F && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
-		ocean = !ocean;
 	}
-    if(key == GLFW_KEY_MINUS && action != GLFW_RELEASE){
-        outerTess--;
-    }
-    else if(key == GLFW_KEY_EQUAL && action != GLFW_RELEASE){
-        outerTess++;
-    }
-    else if(key == GLFW_KEY_COMMA && action != GLFW_RELEASE){
-        outerTess--;
-    }
-    else if(key == GLFW_KEY_PERIOD && action != GLFW_RELEASE){
-        outerTess++;
-    }
+	else if (key == GLFW_KEY_F && mods == GLFW_MOD_CONTROL && action == GLFW_RELEASE){
+		//turn on ocean
+		showOcean = !showOcean;
+	}
+  else if(key == GLFW_KEY_MINUS && action != GLFW_RELEASE){
+		outerTess--;
+		if (outerTess < 0) outerTess = 1;
+  }
+  else if(key == GLFW_KEY_EQUAL && action != GLFW_RELEASE){
+    outerTess++;
+  }
+  else if(key == GLFW_KEY_COMMA && action != GLFW_RELEASE){
+      innerTess--;
+			if (innerTess < 0) innerTess = 1;
+  }
+  else if(key == GLFW_KEY_PERIOD && action != GLFW_RELEASE){
+      innerTess++;
+  }
 }
 
 int g_current_button;
@@ -417,9 +328,10 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	std::cout << "max_bounds = " << glm::to_string(max_bounds) << "\n";
 
 	//-------SETUP THE VAO and like VBO SHIT-----------------------------------------------------------------------
-	//TODO AMIT LOOK HERE, IDK WHAT THIS DOES
 	// Setup our VAO array.
 	CHECK_GL_ERROR(glGenVertexArrays(kNumVaos, &g_array_objects[0]));
+
+	//-----------setup cube VAO shit------------------
 
 	// Switch to the VAO for Geometry.
 	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kGeometryVao]));
@@ -438,11 +350,9 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	// Setup element array buffer.
 	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kGeometryVao][kIndexBuffer]));
-	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				sizeof(uint32_t) * obj_faces.size() * 3,
-				obj_faces.data(), GL_STATIC_DRAW));
+	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * obj_faces.size() * 3, obj_faces.data(), GL_STATIC_DRAW));
 
-  //floor SHIT
+	//-----------setup floor VAO shit------------------
 	// Switch to the VAO for Geometry.
 	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
 
@@ -451,24 +361,31 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	// Setup vertex data in a VBO.
 	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kVertexBuffer]));
-	// NOTE: We do not send anything right now, we just describe it to OpenGL.
-	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-				sizeof(float) * floor_vertices.size() * 4, floor_vertices.data(),
-				GL_STATIC_DRAW));
-	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0)); //TODO modify this to account for the per vertex vectors
+	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * floor_triangle_vertices.size() * 4, floor_triangle_vertices.data(),GL_STATIC_DRAW));
+	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
 	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
 
 	// Setup element array buffer.
 	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kIndexBuffer]));
-	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				sizeof(uint32_t) * floor_faces.size() * 4,
-				floor_faces.data(), GL_STATIC_DRAW));
+	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * floor_triangle_faces.size() * 3, floor_triangle_faces.data(), GL_STATIC_DRAW));
 
+	//-----------setup wireframe VAO shit------------------
+	// Switch to the VAO for Geometry.
+	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
 
-	/*
- 	 * By far, the geometry is loaded into g_buffer_objects[kGeometryVao][*].
-	 * These buffers are binded to g_array_objects[kGeometryVao]
-	 */
+		// Generate buffer objects
+	CHECK_GL_ERROR(glGenBuffers(kNumVbos, &g_buffer_objects[kWireframeVao][0]));
+
+	// Setup vertex data in a VBO.
+	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kWireframeVao][kVertexBuffer]));
+	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * floor_quad_vertices.size() * 4, floor_quad_vertices.data(),GL_STATIC_DRAW));
+	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
+	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
+
+	// Setup element array buffer.
+	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kWireframeVao][kIndexBuffer]));
+	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * floor_quad_faces.size() * 4, floor_quad_faces.data(), GL_STATIC_DRAW));
+
 
 
 	//----set up all the shaders--------------------------------------------------------------------------
@@ -606,12 +523,12 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_PROGRAM_ERROR(cube_program_id);
 
 	// Get the uniform locations.
-	GLint projection_matrix_location = 0;
-	CHECK_GL_ERROR(projection_matrix_location =	glGetUniformLocation(cube_program_id, "projection"));
-	GLint view_matrix_location = 0;
-	CHECK_GL_ERROR(view_matrix_location = glGetUniformLocation(cube_program_id, "view"));
-	GLint light_position_location = 0;
-	CHECK_GL_ERROR(light_position_location = glGetUniformLocation(cube_program_id, "light_position"));
+	GLint cube_projection_matrix_location = 0;
+	CHECK_GL_ERROR(cube_projection_matrix_location =	glGetUniformLocation(cube_program_id, "projection"));
+	GLint cube_view_matrix_location = 0;
+	CHECK_GL_ERROR(cube_view_matrix_location = glGetUniformLocation(cube_program_id, "view"));
+	GLint cube_light_position_location = 0;
+	CHECK_GL_ERROR(cube_light_position_location = glGetUniformLocation(cube_program_id, "light_position"));
 
 	//set up floor program variables------------
 	// Bind attributes.
@@ -654,12 +571,12 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	CHECK_GL_PROGRAM_ERROR(ocean_program_id);
 
 	// Get the uniform locations.
-	GLint projection_matrix_location = 0;
-	CHECK_GL_ERROR(projection_matrix_location =	glGetUniformLocation(ocean_program_id, "projection"));
-	GLint view_matrix_location = 0;
-	CHECK_GL_ERROR(view_matrix_location = glGetUniformLocation(ocean_program_id, "view"));
-	GLint light_position_location = 0;
-	CHECK_GL_ERROR(light_position_location = glGetUniformLocation(ocean_program_id, "light_position"));
+	GLint ocean_projection_matrix_location = 0;
+	CHECK_GL_ERROR(ocean_projection_matrix_location =	glGetUniformLocation(ocean_program_id, "projection"));
+	GLint ocean_view_matrix_location = 0;
+	CHECK_GL_ERROR(ocean_view_matrix_location = glGetUniformLocation(ocean_program_id, "view"));
+	GLint ocean_light_position_location = 0;
+	CHECK_GL_ERROR(ocean_light_position_location = glGetUniformLocation(ocean_program_id, "light_position"));
 
 	//----init some vars we need--------------------------------------------------------------------------
 
@@ -668,7 +585,8 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	float aspect = 0.0f;
 	float theta = 0.0f;
 
-	//LOOP DE DOOP
+
+	//LOOP DE DOOP----------------------------------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
 		// Setup some basic window stuff.
 		glfwGetFramebufferSize(window, &window_width, &window_height);
@@ -678,144 +596,86 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDepthFunc(GL_LESS);
 
-		// Switch to the Geometry VAO.
-		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kGeometryVao]));
-
-		if (g_menger && g_menger->is_dirty()) {
-
-			g_menger->generate_geometry(obj_vertices, obj_faces);
-			g_menger->set_clean();
-			CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kGeometryVao][kVertexBuffer]));
-			CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-				sizeof(float) * obj_vertices.size() * 4, obj_vertices.data(),
-				GL_STATIC_DRAW));
-
-			CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kGeometryVao][kIndexBuffer]));
-			CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				sizeof(uint32_t) * obj_faces.size() * 3,
-				obj_faces.data(), GL_STATIC_DRAW));
-
-
-		}
-
-
+		//UPDATE MATRICES-----------------------------------------------------------
 
 		// Compute the projection matrix.
 		aspect = static_cast<float>(window_width) / window_height;
-		glm::mat4 projection_matrix =
-			glm::perspective(glm::radians(45.0f), aspect, 0.0001f, 1000.0f);
+		glm::mat4 projection_matrix = glm::perspective(glm::radians(45.0f), aspect, 0.0001f, 1000.0f);
 
 		// Compute the view matrix
 		glm::mat4 view_matrix = g_camera.get_view_matrix();
 
-		// Use our program.
-		CHECK_GL_ERROR(glUseProgram(program_id));
 
-		// Pass uniforms in.
-		CHECK_GL_ERROR(glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE,
-					&projection_matrix[0][0]));
-		CHECK_GL_ERROR(glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE,
-					&view_matrix[0][0]));
-		CHECK_GL_ERROR(glUniform4fv(light_position_location, 1, &light_position[0]));
+		//----------------RENDER THE CUBE------------------------------------------
+		// Switch to the Geometry VAO.
+		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kGeometryVao]));
 
-		CHECK_GL_ERROR(glUniform1i(wireframe_location, zeroInt));
-		// Draw our triangles.
-		//CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
+		//update geometry if it's wrong
+		if (g_menger && g_menger->is_dirty()) {
+			g_menger->generate_geometry(obj_vertices, obj_faces);
+			g_menger->set_clean();
 
+			CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kGeometryVao][kVertexBuffer]));
+			CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * obj_vertices.size() * 4, obj_vertices.data(), GL_STATIC_DRAW));
 
-	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kVertexBuffer]));
-	// NOTE: We do not send anything right now, we just describe it to OpenGL.
-	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-				sizeof(float) * floor_vertices.size() * 4, floor_vertices.data(),
-				GL_STATIC_DRAW));
-	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
-	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
+			CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kGeometryVao][kIndexBuffer]));
+			CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * obj_faces.size() * 3, obj_faces.data(), GL_STATIC_DRAW));
 
-	// Setup element array buffer.
-	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kIndexBuffer]));
-	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				sizeof(uint32_t) * floor_faces.size() * 4,
-				floor_faces.data(), GL_STATIC_DRAW));
+		}
 
-/*
-		// Pass uniforms in.
-		CHECK_GL_ERROR(glUniformMatrix4fv(skybox_projection_matrix_location, 1, GL_FALSE,
-					&projection_matrix[0][0]));
-		CHECK_GL_ERROR(glUniformMatrix4fv(skybox_view_matrix_location, 1, GL_FALSE,
-					&view_matrix[0][0]));
+		//Use cube program
+		CHECK_GL_ERROR(glUseProgram(cube_program_id));
 
-		// Draw our triangles.
-		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, skybox_faces.size() * 3, GL_UNSIGNED_INT, 0));
-*/
-		// FIXME: Render the floor
-		// Note: What you need to do is
-		// 	1. Switch VAO
-		// 	2. Switch Program
-		// 	3. Pass Uniforms
-		// 	4. Call glDrawElements, since input geometry is
-		// 	indicated by VAO.
+		//Update cube uniforms
+		CHECK_GL_ERROR(glUniformMatrix4fv(cube_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
+		CHECK_GL_ERROR(glUniformMatrix4fv(cube_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
+		CHECK_GL_ERROR(glUniform4fv(cube_light_position_location, 1, &light_position[0]));
+
+		//draw the CUBE
+		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
+
+		//----------------RENDER THE FLOOR (CHECKERS)------------------------------------------
 
 
 		// Poll and swap.
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
-		if(floor_dirty){
-					CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
-			// Setup vertex data in a VBO.
-	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kVertexBuffer]));
-	// NOTE: We do not send anything right now, we just describe it to OpenGL.
-	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-				sizeof(float) * floor_vertices.size() * 4, floor_vertices.data(),
-				GL_STATIC_DRAW));
-	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
-	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
 
-	// Setup element array buffer.
-	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kFloorVao][kIndexBuffer]));
-	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				sizeof(uint32_t) * floor_faces.size() * 4,
-				floor_faces.data(), GL_STATIC_DRAW));
-			floor_dirty = false;
+		CHECK_GL_ERROR(glUseProgram(floor_program_id));
+
+		//Update floor uniforms
+		CHECK_GL_ERROR(glUniformMatrix4fv(floor_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
+		CHECK_GL_ERROR(glUniformMatrix4fv(floor_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
+		CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
+
+		// draw the FLOOR (checkers)
+		if (showFloor)
+			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_triangle_faces.size() * 3, GL_UNSIGNED_INT, 0));
+
+		//----------------RENDER THE WIREFRAME------------------------------------------
+		CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
+						// Pass uniforms in.
+		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
+		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
+		CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
+		CHECK_GL_ERROR(glUniform1i(outerTess_location, outerTess));
+		CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
+
+		//TODO true whenever tesselation level changes
+		if(wireframe_dirty){
+			//update wireframe geometries
+			CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kWireframeVao][kVertexBuffer]));
+			CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * floor_quad_vertices.size() * 4, floor_quad_vertices.data(),GL_STATIC_DRAW));
+
+			CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kWireframeVao][kIndexBuffer]));
+			CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * floor_quad_faces.size() * 4, floor_quad_faces.data(), GL_STATIC_DRAW));
+			wireframe_dirty = false;
 		}
 
-		if(showFloor){
-			CHECK_GL_ERROR(glUseProgram(floor_program_id));
-
-
-			// Draw our triangles.
-
-			// Pass uniforms in.
-			CHECK_GL_ERROR(glUniformMatrix4fv(floor_projection_matrix_location, 1, GL_FALSE,
-						&projection_matrix[0][0]));
-			CHECK_GL_ERROR(glUniformMatrix4fv(floor_view_matrix_location, 1, GL_FALSE,
-						&view_matrix[0][0]));
-			CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
-			CHECK_GL_ERROR(glUniform1i(floor_wireframe_location, zeroInt));
-
-//okay what is up here???
-			//CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
-		}
-		if(wireframe){
-			//TODO: PROLLY WRONG LOWKEY
+		if(showWireframe){
 			std::cout << "used wireframe" << std::endl;
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-			CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
-							// Pass uniforms in.
-			CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE,
-						&projection_matrix[0][0]));
-			CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE,
-						&view_matrix[0][0]));
-			CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
-			CHECK_GL_ERROR(glUniform1i(floor_wireframe_wireframe_location, oneInt));
-            CHECK_GL_ERROR(glUniform1i(outerTess_location, outerTess));
-            CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
-
-
-//why is this different from the 1050 range???
-			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_faces.size() * 4, GL_UNSIGNED_INT, 0));
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
 
 		}
 
@@ -906,4 +766,82 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 					skybox_faces.data(), GL_STATIC_DRAW));
 		CHECK_GL_ERROR(glUseProgram(skybox_program_id));			// Setup vertex data in a VBO.
 		CHECK_GL_ERROR(glDrawElements(GL_PATCHES, skybox__faces.size() * 4, GL_UNSIGNED_INT, 0));
+
+	//copied from https://learnopengl.com/Advanced-OpenGL/Cubemaps
+	//used to load in cubemap into gl (Stbi_load)
+
+	unsigned int loadCubemap(std::vector<std::string> faces)
+	{
+	    unsigned int textureID;
+	    glGenTextures(1, &textureID);
+	    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	    int width, height, nrChannels;
+	    for (unsigned int i = 0; i < faces.size(); i++)
+	    {
+	        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+	        if (data)
+	        {
+	            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+	                         0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+	            );
+	            stbi_image_free(data);
+	        }
+	        else
+	        {
+	            std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+	            stbi_image_free(data);
+	        }
+	    }
+	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
+
+	    return textureID;
+	}
+
+	// FIXME generate skybox
+	void generate_skybox(std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces){
+		float s = 40.0f;
+		glm::vec3 min(-20.0f, -20.0f, -20.0f);
+		glm::vec3 sVec(s, s, s);
+
+		glm::vec3 max = min + sVec;
+		int pastSize = obj_vertices.size();
+
+		obj_vertices.push_back(glm::vec4(min[0], max[1], min[2], 1.0f));
+		obj_vertices.push_back(glm::vec4(min[0], min[1], min[2], 1.0f));
+
+		obj_vertices.push_back(glm::vec4(max[0], max[1], min[2], 1.0f));
+		obj_vertices.push_back(glm::vec4(max[0], min[1], min[2], 1.0f));
+
+		obj_vertices.push_back(glm::vec4(min[0], max[1], max[2], 1.0f));
+		obj_vertices.push_back(glm::vec4(min[0], min[1], max[2], 1.0f));
+
+		obj_vertices.push_back(glm::vec4(max[0], max[1], max[2], 1.0f));
+		obj_vertices.push_back(glm::vec4(max[0], min[1], max[2], 1.0f));
+
+
+
+		obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 1, pastSize + 0));
+		obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 3, pastSize + 1));
+
+		obj_faces.push_back(glm::uvec3(pastSize + 6, pastSize + 7, pastSize + 3));
+		obj_faces.push_back(glm::uvec3(pastSize + 3, pastSize + 2, pastSize + 6));
+
+		obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 6, pastSize + 2));
+		obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 0, pastSize + 4));
+
+		obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 0, pastSize + 1));
+		obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 5, pastSize + 4));
+
+		obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 6, pastSize + 4));
+		obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 5, pastSize + 7));
+
+		obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 5, pastSize + 1));
+		obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 3, pastSize + 7));
+
+	}
 	*/

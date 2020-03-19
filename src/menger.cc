@@ -39,6 +39,12 @@ Menger::set_clean()
 	dirty_ = false;
 }
 
+void
+Menger::set_dirty()
+{
+	dirty_ = true;
+}
+
 
 // FIXME generate Menger sponge geometry
 void generate_cube(float s, glm::vec3 min, std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces){
@@ -58,26 +64,26 @@ void generate_cube(float s, glm::vec3 min, std::vector<glm::vec4>& obj_vertices,
 
 	obj_vertices.push_back(glm::vec4(max[0], max[1], max[2], 1.0f));
 	obj_vertices.push_back(glm::vec4(max[0], min[1], max[2], 1.0f));
-	
+
 
 	obj_faces.push_back(glm::uvec3(pastSize + 0, pastSize + 1, pastSize + 2));
 	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 3, pastSize + 2));
 
 	obj_faces.push_back(glm::uvec3(pastSize + 3, pastSize + 7, pastSize + 6));
 	obj_faces.push_back(glm::uvec3(pastSize + 6, pastSize + 2, pastSize + 3));
-	
+
 	obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 6, pastSize + 4));
-	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 0, pastSize + 2));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 0, pastSize + 2));
+
 	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 0, pastSize + 4));
-	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 5, pastSize + 1));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 5, pastSize + 1));
+
 	obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 6, pastSize + 7));
-	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 5, pastSize + 4));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 5, pastSize + 4));
+
 	obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 5, pastSize + 7));
-	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 3, pastSize + 1));  
-	
+	obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 3, pastSize + 1));
+
 }
 void check(std::vector<glm::vec4>& obj_vertices){
 	for(unsigned int i = 0; i < obj_vertices.size(); i++){
@@ -117,7 +123,7 @@ void Menger::generate_geometry_helper(float s, glm::dvec3 min, std::vector<glm::
 	}
 }
 void Menger::generate_geometry(std::vector<glm::vec4>& obj_vertices,
-                          std::vector<glm::uvec3>& obj_faces) 
+                          std::vector<glm::uvec3>& obj_faces)
 {
 	obj_vertices.clear();
 	obj_faces.clear();
@@ -134,9 +140,3 @@ void Menger::generate_geometry(std::vector<glm::vec4>& obj_vertices,
 
 
 }
-
-
-
-
-
-
