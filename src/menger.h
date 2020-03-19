@@ -11,6 +11,7 @@ public:
 	void set_nesting_level(int);
 	bool is_dirty() const;
 	void set_clean();
+	void set_dirty();
 	void generate_geometry(std::vector<glm::vec4>& obj_vertices,
 	                       std::vector<glm::uvec3>& obj_faces) ;
 	void generate_geometry_helper(float s, glm::dvec3 min, std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces, int curDepth) const;

@@ -1,6 +1,0 @@
-/Users/amitjoshi/Desktop/LocalGraphics/graphics_menger_sponge/build/CMakeFiles/rebuild_cache.dir
-/Users/amitjoshi/Desktop/LocalGraphics/graphics_menger_sponge/build/CMakeFiles/edit_cache.dir
-/Users/amitjoshi/Desktop/LocalGraphics/graphics_menger_sponge/build/CMakeFiles/utgraphicsutil.dir
-/Users/amitjoshi/Desktop/LocalGraphics/graphics_menger_sponge/build/src/CMakeFiles/rebuild_cache.dir
-/Users/amitjoshi/Desktop/LocalGraphics/graphics_menger_sponge/build/src/CMakeFiles/edit_cache.dir
-/Users/amitjoshi/Desktop/LocalGraphics/graphics_menger_sponge/build/src/CMakeFiles/menger.dir
