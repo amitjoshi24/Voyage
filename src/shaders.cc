@@ -340,10 +340,12 @@ layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 uniform mat4 projection;
 uniform mat4 view;
+uniform vec4 camera_pos; //homogenous point, (xyzw) w= 1
 in vec4 vs_light_direction[];
 in vec4 ocean_normal[];
 out vec4 normal;
 out vec4 light_direction;
+out vec4 camera_direction;
 out vec4 world_coordinates;
 
 void main()
@@ -353,8 +355,8 @@ void main()
 		light_direction = vs_light_direction[n];
 		normal = ocean_normal[n];
 		world_coordinates = gl_Position;
+		camera_direction = -gl_Position + camera_pos;
 		gl_Position = projection * view * gl_in[n].gl_Position;
-
 		EmitVertex();
 	}
 	EndPrimitive();
@@ -363,9 +365,9 @@ void main()
 
 const char* ocean_fragment_shader =
 R"zzz(#version 330 core
-uniform vec4 camera_pos; //homogenous point, (xyzw) w= 1
 in vec4 normal; //interpolated to ensure smooth water
 in vec4 light_direction;
+in vec4 camera_direction;
 in vec4 world_coordinates;
 out vec4 fragment_color;
 void main(){
