@@ -15,7 +15,7 @@
 #include "menger.h"
 #include "camera.h"
 #include "shaders.h"
-#include "stb_image.h"
+//#include "stb_image.h"
 int window_width = 800, window_height = 600;
 
 // VBO and VAO descriptors.
@@ -291,46 +291,7 @@ int main(int argc, char* argv[])
 
 	auto start_time = ocean_clock.now();
 
-//--------------SKYBOX INIT-----------------------------------------------------
-/*
-	std::vector<glm::vec4> skybox_vertices;
-	std::vector<glm::uvec3> skybox_faces;
 
-	generate_skybox(skybox_vertices, skybox_faces);
-
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-	std::vector<std::string> faces
-	{
-	    "../../src/skybox/right.jpg",
-	    "../../src/skybox/left.jpg",
-	    "../../src/skybox/top.jpg",
-	    "../../src/bottom.jpg",
-	    "../../src/front.jpg",
-	    "../../back.jpg"
-	};
-unsigned int cubemapTexture = loadCubemap(faces);
-
-	int width, height, nrChannels;
-unsigned char *data;
-for(GLuint i = 0; i < faces.size(); i++)
-{
-    data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-    glTexImage2D(
-        GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-        0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-    );
-}
-
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-*/
 //--------FLOOR INIT----------------------------------------------------------------------
 
 	CreateFloor(floor_quad_vertices, floor_quad_faces);
@@ -737,6 +698,46 @@ glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
+//--------------SKYBOX INIT-----------------------------------------------------
+/*
+	std::vector<glm::vec4> skybox_vertices;
+	std::vector<glm::uvec3> skybox_faces;
+
+	generate_skybox(skybox_vertices, skybox_faces);
+
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	std::vector<std::string> faces
+	{
+	    "../../src/skybox/right.jpg",
+	    "../../src/skybox/left.jpg",
+	    "../../src/skybox/top.jpg",
+	    "../../src/bottom.jpg",
+	    "../../src/front.jpg",
+	    "../../back.jpg"
+	};
+unsigned int cubemapTexture = loadCubemap(faces);
+
+	int width, height, nrChannels;
+unsigned char *data;
+for(GLuint i = 0; i < faces.size(); i++)
+{
+    data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+    glTexImage2D(
+        GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+        0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+    );
+}
+
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+*/
 //----------SKYBOX SHADER SETUP--------------------------------------------------------------------
 /*
 		// Switch to the VAO for Skybox.

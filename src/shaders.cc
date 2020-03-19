@@ -354,8 +354,8 @@ void main()
 	for (int n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
 		normal = ocean_normal[n];
-		world_coordinates = gl_Position;
-		camera_direction = -gl_Position + camera_pos;
+		world_coordinates = gl_in[n].gl_Position;
+		camera_direction = -gl_in[n].gl_Position + camera_pos;
 		gl_Position = projection * view * gl_in[n].gl_Position;
 		EmitVertex();
 	}
