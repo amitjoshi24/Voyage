@@ -152,7 +152,6 @@ R"zzz(#version 410 core
 layout (quads) in;
 in vec4 vs_light_direction4[];
 out vec4 vs_light_direction;
-
 void main(void)
 {
 		//world coordinates
