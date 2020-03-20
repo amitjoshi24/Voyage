@@ -239,6 +239,8 @@ uniform int tidal;
 in vec4 vs_light_direction[];
 out vec4 vs_light_direction4[];
 
+out vec4 tidal_normals[]; 
+
 void main()
 {
 	if(gl_InvocationID == 0){
@@ -278,11 +280,16 @@ void main()
 		gl_TessLevelOuter[2] = outerVal;
     gl_TessLevelOuter[3] = outerVal;
 	}
-
-	//TODO offset gl_Position by height of tidal wave
-	//float x = gl
+	float A = 5;
+	float c = 1;
+	float x = gl[gl_InvocationID].gl_Position[0];
+	float z = gl[gl_InvocationID].gl_Position[2];
+	
+	//done: offset gl_Position by height of tidal wave 
+	
 	//TODO potentially tweak normals here too, to account for the tidal wave
   gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
+  gl_out[gl_InvocationID].gl_Position += height_increase;
 	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
 }
 )zzz";
