@@ -457,7 +457,9 @@ void main(){
 	vec4 ncamera_direction = normalize(camera_direction);
 	vec4 nnormal = normalize(normal);
 	float shadowMultiplier = 1.0f;
-	if((abs(global_coords[0]) < 0.5 && abs(global_coords[2]) < 0.5) && (abs(global_coords[0]) > 0.5/3 || abs(global_coords[2]) > 0.5/3)){
+	float x = global_coords[0] - 0.5;
+	float z = global_coords[2];
+	if((abs(x) < 0.5 && abs(z) < 0.5) && (abs(x) > 0.5/3 || abs(z) > 0.5/3)){
 		shadowMultiplier = 0.7f;
 	}
 	float k_a = 0.5f; //random number
