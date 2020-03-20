@@ -301,6 +301,8 @@ layout (quads) in;
 in vec4 vs_light_direction4[];
 uniform int ocean_time;
 uniform int showOcean;
+uniform int tidalX;
+uniform int tidal;
 out vec4 vs_light_direction;
 out vec4 ocean_normal;
 void main(void)
