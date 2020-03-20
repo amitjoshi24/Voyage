@@ -27,7 +27,7 @@ int window_width = 800, window_height = 600;
 enum { kVertexBuffer, kIndexBuffer, kNumVbos };
 
 // These are our VAOs.
-enum { kGeometryVao, kFloorVao, kWireframeVao, kOrbVao, kSkyboxVao, kNumVaos };
+enum { kGeometryVao, kFloorVao, kWireframeVao, kOrbVao, KBoatVao, kSkyboxVao, kNumVaos };
 
 GLuint g_array_objects[kNumVaos];  // This will store the VAO descriptors.
 GLuint g_buffer_objects[kNumVaos][kNumVbos];  // These will store VBO descriptors.
@@ -100,37 +100,41 @@ ReadObj(const std::string& file_name,
          std::vector<glm::vec4>& vertices,
          std::vector<glm::uvec4>& faces){
 
-      std::cout<<"inside";
       std::string line;
       std::string v;
       std::string num;
 
       std::ifstream my_file(file_name);
-      float k = 1;
+      float k = 100;
           while(std::getline(my_file, line))
           {
 
               if (line.length() && line[0] == 'v')
               {
-                std::cout<<line;
 
                 std::istringstream get_indices(line);
-                /*
+
                 float temp[3];
                 int i =0;
                 std::getline(get_indices, num, ' '); //skip the v
 
                 while (std::getline(get_indices, num, ' ')){
-                    temp[i++] = std::atof(num.c_str());
+                    if ( i == 0)
+                      i++;
+                    else{
+                      temp[i - 1] = std::atof(num.c_str());
+                      i++;
+                      //std::cout<<num<<std::endl;
+                    }
+
                 }
-                vertices.push_back((1/k)*glm::vec4(temp[0],temp[1], temp[2], k * 1.0f));
-                */
+                vertices.push_back((1/k)*glm::vec4(temp[0], temp[2], temp[1],  k * 1.0f));
+
               }
               else if (line.length() && line[0] == 'f'){
-                  std::cout<<line;
 
                 std::istringstream get_indices(line);
-                /*
+
                 int temp[4];
                 int i = 0;
                 int j = 0;
@@ -145,12 +149,15 @@ ReadObj(const std::string& file_name,
                   //get first v
                   while (std::getline(get_num, num, '/')){
                     //skipping the texture and normals
-                    if (j++ % 3 == 0)
-                      temp[i++] = std::atoi(num.c_str());
+                    if (j++ % 3 == 0){
+                      temp[i++] = std::atoi(num.c_str()) - 1;
+                      //std::cout<<num<<std::endl;
+                    }
+
                     }
                 }
                 faces.push_back(glm::uvec4(temp[0], temp[1], temp[2], temp[3]));
-                */
+
               }
         }
 }
@@ -417,7 +424,7 @@ int main(int argc, char* argv[])
 CreateSphere(sphere_vertices, sphere_faces);
 
 //-----------------------BOAT INIT----------------------------------------------
-  ReadObj("../../myobj.obj", boat_vertices, boat_faces);
+  ReadObj("../../wakeboard.obj", boat_vertices, boat_faces);
   //SaveObj4("../../myobj_save.obj", boat_vertices, boat_faces);
 //-------------CUBE INIT-----------------------------------------------------------------
 	g_menger->set_nesting_level(1);
@@ -505,6 +512,21 @@ CreateSphere(sphere_vertices, sphere_faces);
 	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kOrbVao][kIndexBuffer]));
 	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * sphere_faces.size() * 3, sphere_faces.data(), GL_STATIC_DRAW));
 
+  //---------setup boat VAO-----------
+  CHECK_GL_ERROR(glBindVertexArray(g_array_objects[KBoatVao]));
+
+    // Generate buffer objects
+  CHECK_GL_ERROR(glGenBuffers(kNumVbos, &g_buffer_objects[KBoatVao][0]));
+
+  // Setup vertex data in a VBO.
+  CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[KBoatVao][kVertexBuffer]));
+  CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * boat_vertices.size() * 4, boat_vertices.data(),GL_STATIC_DRAW));
+  CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
+  CHECK_GL_ERROR(glEnableVertexAttribArray(0));
+
+  // Setup element array buffer.
+  CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[KBoatVao][kIndexBuffer]));
+  CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * boat_faces.size() * 4, boat_faces.data(), GL_STATIC_DRAW));
 
 	//----set up all the shaders--------------------------------------------------------------------------
 	// Setup vertex shader.
@@ -611,13 +633,29 @@ CreateSphere(sphere_vertices, sphere_faces);
 		glCompileShader(ocean_fragment_shader_id);
 		CHECK_GL_SHADER_ERROR(ocean_fragment_shader_id);
 
-    // Setup vertex shader.
+    // Setup orb vertex shader.
     GLuint orb_vertex_shader_id = 0;
     const char* orb_vertex_source_pointer = orb_vertex_shader;
     CHECK_GL_ERROR(orb_vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
     CHECK_GL_ERROR(glShaderSource(orb_vertex_shader_id, 1, &orb_vertex_source_pointer, nullptr));
     glCompileShader(orb_vertex_shader_id);
     CHECK_GL_SHADER_ERROR(orb_vertex_shader_id);
+
+    // Setup boat vertex shader.
+    GLuint boat_vertex_shader_id = 0;
+    const char* boat_vertex_source_pointer = boat_vertex_shader;
+    CHECK_GL_ERROR(boat_vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
+    CHECK_GL_ERROR(glShaderSource(boat_vertex_shader_id, 1, &boat_vertex_source_pointer, nullptr));
+    glCompileShader(boat_vertex_shader_id);
+    CHECK_GL_SHADER_ERROR(boat_vertex_shader_id);
+
+    // Setup ocean fragment shader.
+    GLuint boat_fragment_shader_id = 0;
+    const char* boat_fragment_source_pointer = boat_fragment_shader;
+    CHECK_GL_ERROR(boat_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
+    CHECK_GL_ERROR(glShaderSource(boat_fragment_shader_id, 1, &boat_fragment_source_pointer, nullptr));
+    glCompileShader(boat_fragment_shader_id);
+    CHECK_GL_SHADER_ERROR(boat_fragment_shader_id);
 
 	//----create programs--------------------------------------------------------------------------
 	// create cube program
@@ -658,6 +696,15 @@ CreateSphere(sphere_vertices, sphere_faces);
   CHECK_GL_ERROR(glAttachShader(orb_program_id, orb_vertex_shader_id));
   CHECK_GL_ERROR(glAttachShader(orb_program_id, geometry_shader_id));
   CHECK_GL_ERROR(glAttachShader(orb_program_id, fragment_shader_id));
+
+  //create boat program
+  GLuint boat_program_id= 0;
+  CHECK_GL_ERROR(boat_program_id = glCreateProgram());
+  CHECK_GL_ERROR(glAttachShader(boat_program_id, boat_vertex_shader_id));
+  CHECK_GL_ERROR(glAttachShader(boat_program_id, ocean_tesselation_control_shader_id));
+  CHECK_GL_ERROR(glAttachShader(boat_program_id, ocean_tesselation_evaluation_shader_id));
+  CHECK_GL_ERROR(glAttachShader(boat_program_id, geometry_shader_id));
+  CHECK_GL_ERROR(glAttachShader(boat_program_id, boat_fragment_shader_id));
 
 	//----set up variables and link programs--------------------------------------------------------------------------
 
@@ -762,10 +809,41 @@ CreateSphere(sphere_vertices, sphere_faces);
 	GLint orb_light_position_location = 0;
 	CHECK_GL_ERROR(orb_light_position_location = glGetUniformLocation(orb_program_id, "light_position"));
 
+  //------------set up boat
+  //set up wireframe program variables--------------
+  CHECK_GL_ERROR(glBindAttribLocation(boat_program_id, 0, "vertex_position"));
+  CHECK_GL_ERROR(glBindFragDataLocation(boat_program_id, 0, "fragment_color"));
+  glLinkProgram(boat_program_id);
+  CHECK_GL_PROGRAM_ERROR(boat_program_id);
+
+  GLint boat_projection_matrix_location = 0;
+  CHECK_GL_ERROR(boat_projection_matrix_location =	glGetUniformLocation(boat_program_id, "projection"));
+  GLint boat_view_matrix_location = 0;
+  CHECK_GL_ERROR(boat_view_matrix_location = glGetUniformLocation(boat_program_id, "view"));
+  GLint boat_light_position_location = 0;
+  CHECK_GL_ERROR(boat_light_position_location =	glGetUniformLocation(boat_program_id, "light_position"));
+  GLint boat_translate_by_location = 0;
+  CHECK_GL_ERROR(boat_translate_by_location =	glGetUniformLocation(boat_program_id, "translate_by"));
+  GLint boat_outerTess_location = 0;
+  CHECK_GL_ERROR(boat_outerTess_location = glGetUniformLocation(boat_program_id, "outerTess"));
+  GLint boat_innerTess_location = 0;
+  CHECK_GL_ERROR(boat_innerTess_location = glGetUniformLocation(boat_program_id, "innerTess"));
+  GLint boat_showOcean_location = 0;
+  CHECK_GL_ERROR(boat_showOcean_location = glGetUniformLocation(boat_program_id, "showOcean"));
+  GLint boat_time_location = 0;
+  CHECK_GL_ERROR(boat_time_location = glGetUniformLocation(boat_program_id, "ocean_time"));
+  GLint boat_tidal_location = 0;
+  CHECK_GL_ERROR(boat_tidal_location = glGetUniformLocation(boat_program_id, "tidal"));
+  GLint boat_tidalX_location = 0;
+  CHECK_GL_ERROR(boat_tidalX_location = glGetUniformLocation(boat_program_id, "tidalX"));
+  GLint boat_camera_pos_location = 0;
+  CHECK_GL_ERROR(boat_camera_pos_location = glGetUniformLocation(boat_program_id, "camera_pos"));
+
 	//----init some vars we need--------------------------------------------------------------------------
 
 	//relocated light position
 	glm::vec4 light_position = glm::vec4(-10.0f, 10.0f, 0.0f, 1.0f);
+  glm::vec4 boat_position = glm::vec4(10.f, 1.0f, 0.0f, 1.0f);
 	float aspect = 0.0f;
 	float theta = 0.0f;
 
@@ -838,6 +916,15 @@ CreateSphere(sphere_vertices, sphere_faces);
 		if (showFloor)
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_triangle_faces.size() * 3, GL_UNSIGNED_INT, 0));
 
+      //----------------RENDER THE ORB------------------------------------------
+      CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kOrbVao]));
+  		CHECK_GL_ERROR(glUseProgram(orb_program_id));
+
+      CHECK_GL_ERROR(glUniformMatrix4fv(orb_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
+      CHECK_GL_ERROR(glUniformMatrix4fv(orb_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
+      CHECK_GL_ERROR(glUniform4fv(orb_light_position_location, 1, &light_position[0]));
+
+      CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, sphere_faces.size() * 3, GL_UNSIGNED_INT, 0));
 		//----------------RENDER THE WIREFRAME------------------------------------------
 		CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
     CHECK_GL_ERROR(glPatchParameteri(GL_PATCH_VERTICES, 4));
@@ -866,6 +953,8 @@ CreateSphere(sphere_vertices, sphere_faces);
 
 		}
 
+
+
 		//TODO if showing ocean have wireframe render with a pipeline that uses the ocean TES
 		//----------------RENDER THE WIREFRAME------------------------------------------
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
@@ -892,15 +981,28 @@ CreateSphere(sphere_vertices, sphere_faces);
 			tidal = 0;
 		}
 
-    //----------------RENDER THE ORB------------------------------------------
-    CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kOrbVao]));
-		CHECK_GL_ERROR(glUseProgram(orb_program_id));
 
-    CHECK_GL_ERROR(glUniformMatrix4fv(orb_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
-    CHECK_GL_ERROR(glUniformMatrix4fv(orb_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
-    CHECK_GL_ERROR(glUniform4fv(orb_light_position_location, 1, &light_position[0]));
 
-    CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, sphere_faces.size() * 3, GL_UNSIGNED_INT, 0));
+    //----------------RENDER THE BOAT------------------------------------------
+    CHECK_GL_ERROR(glBindVertexArray(g_array_objects[KBoatVao]));
+		CHECK_GL_ERROR(glUseProgram(boat_program_id));
+
+    CHECK_GL_ERROR(glUniformMatrix4fv(boat_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
+    CHECK_GL_ERROR(glUniformMatrix4fv(boat_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
+    CHECK_GL_ERROR(glUniform4fv(boat_light_position_location, 1, &light_position[0]));
+    //MODIFY BOAT POSITION TO HAVE THE HEIGHT FOR THIS GIVEN TIME
+
+    CHECK_GL_ERROR(glUniform4fv(boat_translate_by_location, 1, &boat_position[0]));
+    CHECK_GL_ERROR(glUniform1i(boat_outerTess_location, 1));
+    CHECK_GL_ERROR(glUniform1i(boat_innerTess_location, 1));
+    CHECK_GL_ERROR(glUniform1i(boat_time_location, ocean_time));
+    CHECK_GL_ERROR(glUniform1i(boat_tidal_location, 0));
+    CHECK_GL_ERROR(glUniform1i(boat_tidalX_location, tidalX));
+    CHECK_GL_ERROR(glUniform1i(boat_showOcean_location, 0));
+    CHECK_GL_ERROR(glUniform4fv(boat_camera_pos_location, 1, &temp_eye[0]));
+
+
+    CHECK_GL_ERROR(glDrawElements(GL_PATCHES, boat_faces.size() * 4, GL_UNSIGNED_INT, 0));
 
 		glfwPollEvents();
 		glfwSwapBuffers(window);
@@ -909,198 +1011,3 @@ CreateSphere(sphere_vertices, sphere_faces);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
-//--------------SKYBOX INIT-----------------------------------------------------
-/*
-	std::vector<glm::vec4> skybox_vertices;
-	std::vector<glm::uvec3> skybox_faces;
-
-	generate_skybox(skybox_vertices, skybox_faces);
-
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-	std::vector<std::string> faces
-	{
-	    "../../src/skybox/right.jpg",
-	    "../../src/skybox/left.jpg",
-	    "../../src/skybox/top.jpg",
-	    "../../src/bottom.jpg",
-	    "../../src/front.jpg",
-	    "../../back.jpg"
-	};
-unsigned int cubemapTexture = loadCubemap(faces);
-
-	int width, height, nrChannels;
-unsigned char *data;
-for(GLuint i = 0; i < faces.size(); i++)
-{
-    data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-    glTexImage2D(
-        GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-        0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-    );
-}
-
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-*/
-//----------SKYBOX SHADER SETUP--------------------------------------------------------------------
-/*
-		// Switch to the VAO for Skybox.
-	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kSkyboxVao]));
-
-	// Generate buffer objects
-	CHECK_GL_ERROR(glGenBuffers(kNumVbos, &g_buffer_objects[kSkyboxVao][0]));
-
-	// Setup vertex data in a VBO.
-	CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kVertexBuffer]));
-	// NOTE: We do not send anything right now, we just describe it to OpenGL.
-	CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-				sizeof(float) * skybox_vertices.size() * 4, skybox_vertices.data(),
-				GL_STATIC_DRAW));
-	CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
-	CHECK_GL_ERROR(glEnableVertexAttribArray(0));
-
-	// Setup element array buffer.
-	CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kIndexBuffer]));
-	CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				sizeof(uint32_t) * skybox_faces.size() * 3,
-				skybox_faces.data(), GL_STATIC_DRAW));
-
-				// setup skybox shader
-
-				GLuint skybox_vertex_shader_id = 0;
-				const char* skybox_vertex_source_pointer = skybox_vertex_shader;
-				CHECK_GL_ERROR(vertex_shader_id = glCreateShader(GL_VERTEX_SHADER));
-				CHECK_GL_ERROR(glShaderSource(skybox_vertex_shader_id, 1, &skybox_vertex_source_pointer, nullptr));
-				glCompileShader(skybox_vertex_shader_id);
-				CHECK_GL_SHADER_ERROR(skybox_vertex_shader_id);
-
-				GLuint skybox_fragment_shader_id = 0;
-				const char* skybox_fragment_shader_source_pointer = skybox_fragment_shader;
-				CHECK_GL_ERROR(skybox_fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER));
-				CHECK_GL_ERROR(glShaderSource(skybox_fragment_shader_id, 1,
-							&skybox_fragment_shader_source_pointer, nullptr));
-				glCompileShader(skybox_fragment_shader_id);
-				CHECK_GL_SHADER_ERROR(skybox_fragment_shader_id);
-
-				GLuint skybox_program_id = 0;
-				CHECK_GL_ERROR(skybox_program_id = glCreateProgram());
-				CHECK_GL_ERROR(glAttachShader(skybox_program_id, skybox_vertex_shader_id));
-				CHECK_GL_ERROR(glAttachShader(skybox_program_id, skybox_fragment_shader_id));
-
-				CHECK_GL_ERROR(glBindAttribLocation(skybox_program_id, 0, "vertex_position"));
-				CHECK_GL_ERROR(glBindFragDataLocation(skybox_program_id, 0, "fragment_color"));
-				glLinkProgram(skybox_program_id);
-				CHECK_GL_PROGRAM_ERROR(skybox_program_id);
-
-				GLint skybox_projection_matrix_location = 0;
-				CHECK_GL_ERROR(skybox_projection_matrix_location =
-					glGetUniformLocation(skybox_program_id, "projection"));
-				GLint skybox_view_matrix_location = 0;
-				CHECK_GL_ERROR(skybox_view_matrix_location =
-					glGetUniformLocation(skybox_program_id, "view"));
-
-
-		// render skybox
-		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kSkyboxVao]));
-		// Setup vertex data in a VBO.
-		CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kVertexBuffer]));
-		// NOTE: We do not send anything right now, we just describe it to OpenGL.
-		CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER,
-					sizeof(float) * skybox_vertices.size() * 4, skybox_vertices.data(),
-					GL_STATIC_DRAW));
-		CHECK_GL_ERROR(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0));
-		CHECK_GL_ERROR(glEnableVertexAttribArray(0));
-
-		// Setup element array buffer.
-		CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_buffer_objects[kSkyboxVao][kIndexBuffer]));
-		CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-					sizeof(uint32_t) * skybox_faces.size() * 4,
-					skybox_faces.data(), GL_STATIC_DRAW));
-		CHECK_GL_ERROR(glUseProgram(skybox_program_id));			// Setup vertex data in a VBO.
-		CHECK_GL_ERROR(glDrawElements(GL_PATCHES, skybox__faces.size() * 4, GL_UNSIGNED_INT, 0));
-
-	//copied from https://learnopengl.com/Advanced-OpenGL/Cubemaps
-	//used to load in cubemap into gl (Stbi_load)
-
-	unsigned int loadCubemap(std::vector<std::string> faces)
-	{
-	    unsigned int textureID;
-	    glGenTextures(1, &textureID);
-	    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-	    int width, height, nrChannels;
-	    for (unsigned int i = 0; i < faces.size(); i++)
-	    {
-	        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-	        if (data)
-	        {
-	            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-	                         0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-	            );
-	            stbi_image_free(data);
-	        }
-	        else
-	        {
-	            std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
-	            stbi_image_free(data);
-	        }
-	    }
-	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-	    CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
-
-	    return textureID;
-	}
-
-	// FIXME generate skybox
-	void generate_skybox(std::vector<glm::vec4>& obj_vertices, std::vector<glm::uvec3>& obj_faces){
-		float s = 40.0f;
-		glm::vec3 min(-20.0f, -20.0f, -20.0f);
-		glm::vec3 sVec(s, s, s);
-
-		glm::vec3 max = min + sVec;
-		int pastSize = obj_vertices.size();
-
-		obj_vertices.push_back(glm::vec4(min[0], max[1], min[2], 1.0f));
-		obj_vertices.push_back(glm::vec4(min[0], min[1], min[2], 1.0f));
-
-		obj_vertices.push_back(glm::vec4(max[0], max[1], min[2], 1.0f));
-		obj_vertices.push_back(glm::vec4(max[0], min[1], min[2], 1.0f));
-
-		obj_vertices.push_back(glm::vec4(min[0], max[1], max[2], 1.0f));
-		obj_vertices.push_back(glm::vec4(min[0], min[1], max[2], 1.0f));
-
-		obj_vertices.push_back(glm::vec4(max[0], max[1], max[2], 1.0f));
-		obj_vertices.push_back(glm::vec4(max[0], min[1], max[2], 1.0f));
-
-
-
-		obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 1, pastSize + 0));
-		obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 3, pastSize + 1));
-
-		obj_faces.push_back(glm::uvec3(pastSize + 6, pastSize + 7, pastSize + 3));
-		obj_faces.push_back(glm::uvec3(pastSize + 3, pastSize + 2, pastSize + 6));
-
-		obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 6, pastSize + 2));
-		obj_faces.push_back(glm::uvec3(pastSize + 2, pastSize + 0, pastSize + 4));
-
-		obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 0, pastSize + 1));
-		obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 5, pastSize + 4));
-
-		obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 6, pastSize + 4));
-		obj_faces.push_back(glm::uvec3(pastSize + 4, pastSize + 5, pastSize + 7));
-
-		obj_faces.push_back(glm::uvec3(pastSize + 7, pastSize + 5, pastSize + 1));
-		obj_faces.push_back(glm::uvec3(pastSize + 1, pastSize + 3, pastSize + 7));
-
-	}
-	*/

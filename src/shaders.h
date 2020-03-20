@@ -21,3 +21,7 @@ extern const char* skybox_vertex_shader;
 extern const char* skybox_fragment_shader;
 //------------------------------------------------------------------------------
 extern const char* orb_vertex_shader;
+//------------------------------------------------------------------------------
+extern const char* boat_vertex_shader;
+
+extern const char* boat_fragment_shader;

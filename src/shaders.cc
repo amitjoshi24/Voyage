@@ -506,28 +506,35 @@ void main()
 	vs_light_direction = -gl_Position + light_position;
 }
 )zzz";
-//-----------------------------------------------------------------------------
-const char* skybox_vertex_shader =
+
+
+const char* boat_vertex_shader =
 R"zzz(#version 330 core
-layout (location = 0) in vec3 aPos;
-out vec3 TexCoords;
-uniform mat4 projection;
-uniform mat4 view;
+in vec4 vertex_position;
+uniform vec4 light_position;
+uniform vec4 translate_by;
+out vec4 vs_light_direction;
 void main()
 {
-    TexCoords = aPos;
-    gl_Position = projection * view * vec4(aPos, 1.0);
+	//multiply by model matrix
+	gl_Position[0] = vertex_position[0] + translate_by[0];
+	gl_Position[1] = vertex_position[1] + translate_by[1];
+	gl_Position[2] = vertex_position[2] + translate_by[2];
+	gl_Position[3] = vertex_position[3];
+	vs_light_direction = -gl_Position + light_position;
 }
 )zzz";
 
-const char* skybox_fragment_shader =
-R"zzz(#version 330in vec3 textureDir;
-#version 330 core
-out vec4 FragColor;
-in vec3 TexCoords;
-uniform samplerCube skybox;
+const char* boat_fragment_shader =
+R"zzz(#version 330 core
+flat in vec4 normal;
+in vec4 light_direction;
+out vec4 fragment_color;
 void main()
 {
-    FragColor = texture(skybox, TexCoords);
+	vec4 color = vec4(1.0f, 0.0, 0.0, 1.0);
+	float dot_nl = dot(normalize(light_direction), normalize(normal));
+	dot_nl = clamp(dot_nl, 0.0, 1.0);
+	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
 }
 )zzz";
