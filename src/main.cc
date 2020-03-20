@@ -843,7 +843,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 
 	//relocated light position
 	glm::vec4 light_position = glm::vec4(-10.0f, 10.0f, 0.0f, 1.0f);
-  glm::vec4 boat_position = glm::vec4(10.f, 1.0f, 0.0f, 1.0f);
+  
 	float aspect = 0.0f;
 	float theta = 0.0f;
 
@@ -870,6 +870,9 @@ CreateSphere(sphere_vertices, sphere_faces);
 		//TODO divide by some number
 		auto current_time = ocean_clock.now() - start_time;
 		ocean_time = (int) current_time.count() / 100000000;
+
+		glm::vec4 boat_position = glm::vec4(10.f, 1.0f, 0.0f, 1.0f);
+
 
     int ugh = showOcean? 1 : 0;
     glm::vec4 temp_eye = glm::vec4(g_camera.eye[0], g_camera.eye[1], g_camera.eye[2], 1.0f);
@@ -991,6 +994,74 @@ CreateSphere(sphere_vertices, sphere_faces);
     CHECK_GL_ERROR(glUniformMatrix4fv(boat_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
     CHECK_GL_ERROR(glUniform4fv(boat_light_position_location, 1, &light_position[0]));
     //MODIFY BOAT POSITION TO HAVE THE HEIGHT FOR THIS GIVEN TIME
+
+    //Finding height
+    float h = 0.0f;
+    if (showOcean == 1){
+    		int t = ocean_time;
+    		float x = boat_position[0];
+    		float z = boat_position[1];
+	  		glm::vec2 pos = glm::vec2(x, z);
+
+			float wave1 [6];
+			wave1[0] = 8.0f; //wavelength
+ 			wave1[1] = 0.3f; //amplitude
+			wave1[2] =  0.5f; //speed
+			wave1[3] =  5.0f; //x
+			wave1[4] =  0.0f; //z
+			wave1[5] = 0.25; //w
+
+
+			float wave2 [6];
+			wave2[0] = 25.0f; //wavelength
+ 			wave2[1] = 0.3f; //amplitude
+			wave2[2] =  0.25f; //speed
+			wave2[3] = 1.0f; //x
+			wave2[4] =  1.0f; //z
+			wave2[5] = 0.5; //w
+
+			float wave3 [6];
+			wave3[0] = 1.0f; //wavelength
+			wave3[1] = 0.05f; //amplitude
+			wave3[2] =  0.5f; //speed
+			wave3[3] = 0.0f; //x
+			wave3[4] =  5.0f; //z
+			wave3[5] = 0.5; //w
+
+    	h = 0;
+
+			float* wave;
+			float w = 0;
+
+    	wave = wave1;
+			w = wave1[5];
+
+	  	h += (wave[1] * glm::sin((glm::dot( glm::vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+
+			wave = wave2;
+			w = wave2[5];
+
+			h += (wave[1] * glm::sin((glm::dot( glm::vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+
+			wave = wave3;
+			w = wave3[5];
+
+			h += (wave[1] * glm::sin((glm::dot( glm::vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+	
+		float e = 2.71828f;
+		float A = 4;
+		float c = 0.5;
+		float tidal_height_increase = 0;
+	    float fTidalX = tidalX;
+		fTidalX /= 10.0f;
+		float thePower = (0 - c) * ( ((x - fTidalX)*(x-fTidalX)) + (z*z) );
+		float theBase = e;
+		if(tidal == 1){
+			tidal_height_increase = A * glm::pow(theBase, thePower);
+		}
+		h += tidal_height_increase;
+	}
+		boat_position[1] += h;
 
     CHECK_GL_ERROR(glUniform4fv(boat_translate_by_location, 1, &boat_position[0]));
     CHECK_GL_ERROR(glUniform1i(boat_outerTess_location, 1));
