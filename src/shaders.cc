@@ -232,6 +232,7 @@ R"zzz(#version 410 core
 layout (vertices = 4) out;
 uniform int outerTess;
 uniform int innerTess;
+uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
 in vec4 vs_light_direction[];
@@ -251,7 +252,7 @@ void main()
 		int multiplier = 1;
 
 		//if tidal wave
-		if(tidal == 1){
+		if(tidal == 1 && showOcean == 1){
 			for(int i = 0; i < 4; i++){
 				d += (distance(meanOfTidal, gl_in[i].gl_Position.xyz));
 			}
@@ -310,8 +311,8 @@ out vec4 vs_light_direction;
 out vec4 ocean_normal;
 void main(void)
 {
-		
-		
+
+
 		int t = ocean_time;
 
 		//NOTE gl_Position is still in world coords
@@ -397,7 +398,7 @@ void main(void)
 	      	}
 		  	ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
 				//offset gl_Position by height of normal waves
-		  	
+
 		  	gl_Position[1] += h + tidal_height_increase;
 		} else{
 			vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));

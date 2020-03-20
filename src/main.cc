@@ -1,8 +1,11 @@
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <memory>
+#include <cmath>
+#include <stdlib.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,7 +18,7 @@
 #include "menger.h"
 #include "camera.h"
 #include "shaders.h"
-#include <cmath>
+
 
 //#include "stb_image.h"
 int window_width = 800, window_height = 600;
@@ -92,7 +95,65 @@ void CreateSphere(std::vector<glm::vec4>& vertices,
   faces.push_back(glm::uvec3(8, 6, 7));
   faces.push_back(glm::uvec3(9, 8, 1));
 }
+void
+ReadObj(const std::string& file_name,
+         std::vector<glm::vec4>& vertices,
+         std::vector<glm::uvec4>& faces){
 
+      std::cout<<"inside";
+      std::string line;
+      std::string v;
+      std::string num;
+
+      std::ifstream my_file(file_name);
+      float k = 1;
+          while(std::getline(my_file, line))
+          {
+
+              if (line.length() && line[0] == 'v')
+              {
+                std::cout<<line;
+
+                std::istringstream get_indices(line);
+                /*
+                float temp[3];
+                int i =0;
+                std::getline(get_indices, num, ' '); //skip the v
+
+                while (std::getline(get_indices, num, ' ')){
+                    temp[i++] = std::atof(num.c_str());
+                }
+                vertices.push_back((1/k)*glm::vec4(temp[0],temp[1], temp[2], k * 1.0f));
+                */
+              }
+              else if (line.length() && line[0] == 'f'){
+                  std::cout<<line;
+
+                std::istringstream get_indices(line);
+                /*
+                int temp[4];
+                int i = 0;
+                int j = 0;
+
+                std::string thing;
+                std::getline(get_indices, thing, ' '); //skip the f
+
+                //get the v/v/v portions
+                while (std::getline(get_indices, thing, ' ')){
+                  std::istringstream get_num(thing);
+
+                  //get first v
+                  while (std::getline(get_num, num, '/')){
+                    //skipping the texture and normals
+                    if (j++ % 3 == 0)
+                      temp[i++] = std::atoi(num.c_str());
+                    }
+                }
+                faces.push_back(glm::uvec4(temp[0], temp[1], temp[2], temp[3]));
+                */
+              }
+        }
+}
 // FIXME: Save geometry to OBJ file
 void
 SaveObj(const std::string& file,
@@ -341,6 +402,9 @@ int main(int argc, char* argv[])
   std::vector<glm::vec4> sphere_vertices;
 	std::vector<glm::uvec3> sphere_faces;
 
+  std::vector<glm::vec4> boat_vertices;
+  std::vector<glm::uvec4> boat_faces;
+
 	auto start_time = ocean_clock.now();
 
 
@@ -352,7 +416,9 @@ int main(int argc, char* argv[])
 //-------ORB INIT-------------------------------------------------------------------------
 CreateSphere(sphere_vertices, sphere_faces);
 
-
+//-----------------------BOAT INIT----------------------------------------------
+  ReadObj("../../myobj.obj", boat_vertices, boat_faces);
+  //SaveObj4("../../myobj_save.obj", boat_vertices, boat_faces);
 //-------------CUBE INIT-----------------------------------------------------------------
 	g_menger->set_nesting_level(1);
 	g_menger->generate_geometry(obj_vertices, obj_faces);
@@ -819,7 +885,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 
 		if (showOcean)
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
-		
+
 		tidalX += 1;
 		if(tidalX > 2000){
 			tidalX = 0;
