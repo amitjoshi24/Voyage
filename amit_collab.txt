@@ -1,0 +1,38 @@
+Relocate camera: dora
+
+Green wireframes: both, but mainly dora
+
+Replacing the floor: amit did it initially but wrong, dora debugged
+
+TCS: Amit
+
+TES: Amit
+
+Shader/General code setup: Dora
+
+Toggling Ocean mode: dora
+
+Displacement Mapping: Amit
+
+Adaptive Tesselation: Amit
+
+Illumination of Water: Amit
+
+All-around debugger: Dora (spent 8 hours debugging tesselation last night)
+
+Extra credit:
+
+Glowing sphere light source: Dora
+
+Simple projected shadow: Amit
+
+Boat Mesh existence: Dora
+
+Boat bobbing: Amit
+
+55%: Dora
+45%: Amit
+
+Thanks to Dr. Vouga who helped us debug.
+
+
