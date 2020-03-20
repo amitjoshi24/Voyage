@@ -181,20 +181,18 @@ layout (triangle_strip, max_vertices = 3) out;
 uniform mat4 projection;
 uniform mat4 view;
 in vec4 vs_light_direction[];
-flat out vec4 normal;
+in vec4 ocean_normal[];
+out vec4 normal;
 out vec4 light_direction;
 out vec3 vertex_id;
 void main()
 {
-	//normal is in global coordinates
-	vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
-	normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
 
 	for (int n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
-
+		normal = ocean_normal[n];
 		//shift the wireframe, gl_Position is in world cords
-		gl_Position = projection * view * (gl_in[n].gl_Position + vec4(0.0f, 0.5f, 0.0f, 0.0f));
+		gl_Position = projection * view * (gl_in[n].gl_Position + vec4(0.0f, 0.25f, 0.0f, 0.0f));
 		//gl_Position is in !!!!!!NDC!!!!!!
 
 		if (n == 0){
@@ -211,7 +209,7 @@ void main()
 )zzz";
 const char* floor_wireframe_fragment_shader =
 R"zzz(#version 330 core
-flat in vec4 normal;
+in vec4 normal;
 in vec4 light_direction;
 in vec3 vertex_id;
 out vec4 fragment_color;
@@ -309,6 +307,9 @@ R"zzz(#version 410 core
 layout (quads) in;
 in vec4 vs_light_direction4[];
 uniform int ocean_time;
+uniform int showOcean;
+uniform int tidalX;
+uniform int tidal;
 out vec4 vs_light_direction;
 out vec4 ocean_normal;
 void main(void)
@@ -320,31 +321,36 @@ void main(void)
 		vec4 p2 = mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x);
 		gl_Position = mix(p1, p2, gl_TessCoord.y);
 
-		float x = gl_Position[0];
-	  float z = gl_Position[2];
-	  vec2 pos = vec2(x, z);
+		if (showOcean == 1){
+			float x = gl_Position[0];
+	  	float z = gl_Position[2];
+	  	vec2 pos = vec2(x, z);
 
-		float wave1 [5];
-		wave1[0] = 8.0f; //wavelength
- 		wave1[1] = 0.5f; //amplitude
-		wave1[2] =  0.5f; //speed
-		wave1[3] =  7.0f; //x
-		wave1[4] =  2.0f; //z
+			float wave1 [5];
+			wave1[0] = 8.0f; //wavelength
+ 			wave1[1] = 0.5f; //amplitude
+			wave1[2] =  0.5f; //speed
+			wave1[3] =  7.0f; //x
+			wave1[4] =  2.0f; //z
 
-    float h = 2.5;
-		float dhdx = 0;
-	  float dhdz = 0;
+    	float h = 2.5;
+			float dhdx = 0;
+	  	float dhdz = 0;
 
-		//hardcode for every wave
-	  float w = 0.25;
-	  h += (wave1[1] * sin((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
-	  dhdx += (w * wave1[3] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+			//hardcode for every wave
+	  	float w = 0.25;
+	  	h += (wave1[1] * sin((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+	  	dhdx += (w * wave1[3] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
       dhdz += (w * wave1[4] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
 
-		//TODO make sure this is also reflective of the tidal waves contribution
-	  ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
-		//offset gl_Position by height of normal waves
-	  gl_Position[1] += h;
+			//TODO make sure this is also reflective of the tidal waves contribution
+	  	ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
+			//offset gl_Position by height of normal waves
+	  	gl_Position[1] += h;
+		} else{
+			vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
+			ocean_normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
+		}
 
 		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
 		vec4 light2 = mix(vs_light_direction4[3], vs_light_direction4[2], gl_TessCoord.x);

@@ -85,7 +85,7 @@ void CreateSphere(std::vector<glm::vec4>& vertices,
   faces.push_back(glm::uvec3(3, 2, 6));
   faces.push_back(glm::uvec3(3, 6, 8));
   faces.push_back(glm::uvec3(3, 8, 9));
-  
+
   faces.push_back(glm::uvec3(4, 9, 5));
   faces.push_back(glm::uvec3(2, 4, 11));
   faces.push_back(glm::uvec3(6, 2, 10));
@@ -572,8 +572,8 @@ CreateSphere(sphere_vertices, sphere_faces);
 	GLuint floor_wireframe_program_id = 0;
 	CHECK_GL_ERROR(floor_wireframe_program_id = glCreateProgram());
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, vertex_shader_id));
-	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, tesselation_control_shader_id));
-	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_wireframe_tesselation_evaluation_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, ocean_tesselation_control_shader_id));
+	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, ocean_tesselation_evaluation_shader_id));
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_wireframe_geometry_shader_id));
 	CHECK_GL_ERROR(glAttachShader(floor_wireframe_program_id, floor_wireframe_fragment_shader_id));
 
@@ -642,6 +642,16 @@ CreateSphere(sphere_vertices, sphere_faces);
   CHECK_GL_ERROR(outerTess_location = glGetUniformLocation(floor_wireframe_program_id, "outerTess"));
   GLint innerTess_location = 0;
   CHECK_GL_ERROR(innerTess_location = glGetUniformLocation(floor_wireframe_program_id, "innerTess"));
+  GLint floor_wireframe_showOcean_location = 0;
+  CHECK_GL_ERROR(floor_wireframe_showOcean_location = glGetUniformLocation(floor_wireframe_program_id, "showOcean"));
+  GLint floor_wireframe_time_location = 0;
+	CHECK_GL_ERROR(floor_wireframe_time_location = glGetUniformLocation(floor_wireframe_program_id, "ocean_time"));
+	GLint floor_wireframe_tidal_location = 0;
+	CHECK_GL_ERROR(floor_wireframe_tidal_location = glGetUniformLocation(floor_wireframe_program_id, "tidal"));
+	GLint floor_wireframe_tidalX_location = 0;
+	CHECK_GL_ERROR(floor_wireframe_tidalX_location = glGetUniformLocation(floor_wireframe_program_id, "tidalX"));
+	GLint floor_wireframe_camera_pos_location = 0;
+	CHECK_GL_ERROR(floor_wireframe_camera_pos_location = glGetUniformLocation(floor_wireframe_program_id, "camera_pos"));
 
 	//set up ocean program variables-----------------
 	// Bind attributes.
@@ -669,6 +679,8 @@ CreateSphere(sphere_vertices, sphere_faces);
 	CHECK_GL_ERROR(tidalX_location = glGetUniformLocation(ocean_program_id, "tidalX"));
 	GLint camera_pos_location = 0;
 	CHECK_GL_ERROR(camera_pos_location = glGetUniformLocation(ocean_program_id, "camera_pos"));
+  GLint ocean_showOcean_location = 0;
+	CHECK_GL_ERROR(ocean_showOcean_location = glGetUniformLocation(ocean_program_id, "showOcean"));
   //set up orb program variables------------
 	// Bind attributes.
 	CHECK_GL_ERROR(glBindAttribLocation(orb_program_id, 0, "vertex_position"));
@@ -714,6 +726,9 @@ CreateSphere(sphere_vertices, sphere_faces);
 		//TODO divide by some number
 		auto current_time = ocean_clock.now() - start_time;
 		ocean_time = (int) current_time.count() / 100000000;
+
+    int ugh = showOcean? 1 : 0;
+    glm::vec4 temp_eye = glm::vec4(g_camera.eye[0], g_camera.eye[1], g_camera.eye[2], 1.0f);
 
 
 		//----------------RENDER THE CUBE------------------------------------------
@@ -768,6 +783,11 @@ CreateSphere(sphere_vertices, sphere_faces);
 		CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
 		CHECK_GL_ERROR(glUniform1i(outerTess_location, outerTess));
 		CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
+    CHECK_GL_ERROR(glUniform1i(floor_wireframe_time_location, ocean_time));
+		CHECK_GL_ERROR(glUniform1i(floor_wireframe_tidal_location, tidal));
+		CHECK_GL_ERROR(glUniform1i(floor_wireframe_tidalX_location, tidalX));
+    CHECK_GL_ERROR(glUniform4fv(floor_wireframe_camera_pos_location, 1, &temp_eye[0]));
+    CHECK_GL_ERROR(glUniform1i(floor_wireframe_showOcean_location, ugh));
 
 		if(showWireframe){
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -793,7 +813,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 		CHECK_GL_ERROR(glUniform1i(time_location, ocean_time));
 		CHECK_GL_ERROR(glUniform1i(tidal_location, tidal));
 		CHECK_GL_ERROR(glUniform1i(tidalX_location, tidalX));
-		glm::vec4 temp_eye = glm::vec4(g_camera.eye[0], g_camera.eye[1], g_camera.eye[2], 1.0f);
+    CHECK_GL_ERROR(glUniform1i(ocean_showOcean_location, ugh));
 		CHECK_GL_ERROR(glUniform4fv(camera_pos_location, 1, &temp_eye[0]));
 
 
