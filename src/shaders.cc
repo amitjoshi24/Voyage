@@ -237,6 +237,8 @@ uniform int tidal;
 in vec4 vs_light_direction[];
 out vec4 vs_light_direction4[];
 
+out vec4 tidal_normals[];
+
 void main()
 {
 	if(gl_InvocationID == 0){
@@ -277,8 +279,9 @@ void main()
     gl_TessLevelOuter[3] = outerVal;
 	}
 
-	//TODO offset gl_Position by height of tidal wave
-	//float x = gl
+
+	//done: offset gl_Position by height of tidal wave
+
 	//TODO potentially tweak normals here too, to account for the tidal wave
   gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
@@ -307,6 +310,18 @@ out vec4 vs_light_direction;
 out vec4 ocean_normal;
 void main(void)
 {
+		float e = 2.71828f;
+		float A = 5;
+		float c = 1;
+		float x = gl_Position[0];
+		float z = gl_Position[2];
+		float tidal_height_increase = 0;
+		if(tidal == 1){
+			float thePower = (0 - c) * ( ((x - tidalX)*(x-tidalX)) + (z*z) );
+			float theBase = e;
+			tidal_height_increase = A * pow(theBase, thePower);
+		}
+
 		int t = ocean_time;
 
 		//NOTE gl_Position is still in world coords
