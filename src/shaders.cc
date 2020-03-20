@@ -245,7 +245,7 @@ void main()
 		float d = 0.0f;
 
 		float fTidalX = tidalX;
-		fTidalX /= 100.0f;
+		fTidalX /= 10.0f;
 
 		vec3 meanOfTidal = vec3(fTidalX, 0.0f, 0.0f);
 		int multiplier = 1;
@@ -275,8 +275,8 @@ void main()
 
 	  gl_TessLevelOuter[0] = outerVal;
 	  gl_TessLevelOuter[1] = outerVal;
-		gl_TessLevelOuter[2] = outerVal;
-    gl_TessLevelOuter[3] = outerVal;
+	  gl_TessLevelOuter[2] = outerVal;
+      gl_TessLevelOuter[3] = outerVal;
 	}
 
 	
@@ -310,17 +310,7 @@ out vec4 vs_light_direction;
 out vec4 ocean_normal;
 void main(void)
 {
-		float e = 2.71828f;
-		float A = 5;
-		float c = 1;
-		float x = gl_Position[0];
-		float z = gl_Position[2];
-		float tidal_height_increase = 0;
-		if(tidal == 1){
-			float thePower = (0 - c) * ( ((x - tidalX)*(x-tidalX)) + (z*z) );
-			float theBase = e;
-			tidal_height_increase = A * pow(theBase, thePower);
-		}
+		
 		
 		int t = ocean_time;
 
@@ -328,6 +318,21 @@ void main(void)
 		vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
 		vec4 p2 = mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x);
 		gl_Position = mix(p1, p2, gl_TessCoord.y);
+
+		float e = 2.71828f;
+		float A = 5;
+		float c = 0.5;
+		float x = gl_Position[0];
+		float z = gl_Position[2];
+		float tidal_height_increase = 0;
+		vec4 tidalNormal = vec4(0,0,0,0);
+	    float fTidalX = tidalX;
+		fTidalX /= 10.0f;
+		float thePower = (0 - c) * ( ((x - fTidalX)*(x-fTidalX)) + (z*z) );
+		float theBase = e;
+		if(tidal == 1){
+			tidal_height_increase = A * pow(theBase, thePower);
+		}
 
 		if (showOcean == 1){
 			float x = gl_Position[0];
@@ -352,9 +357,17 @@ void main(void)
 	      dhdz += (w * wave1[4] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
 
 				//TODO make sure this is also reflective of the tidal waves contribution
+		  	
+
+	      	if(tidal == 1){
+	      		dhdx += A*(-2*c)*(x-fTidalX)*pow(theBase, thePower);
+	      		dhdz += A*(-2*c)*(z)*pow(theBase, thePower);
+	      	}
 		  	ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
 				//offset gl_Position by height of normal waves
-		  	gl_Position[1] += h;
+		  	
+		  	gl_Position[1] += h + tidal_height_increase;
+
 		} else{
 			vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
 			ocean_normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
