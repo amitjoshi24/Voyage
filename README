@@ -1,18 +1,18 @@
-Team: Amit Joshi and Dora Gurifnkel
+Team: Amit Joshi and Dora Gurfinkel
 
 Required Features:
 
 Menger Sponge:
 
-We define the vertices and faces for a square of variable side length s. We then use a recursive formula, that recurses to the given depth layer (0-4), and determines the location of all the cubes that will exist at the final recursion depth. If a square is in the middle of at least two axis (x, y or z, x or y, z etc.), then we know that that particular cube should not be rendered in the menger sponge. We then exclude it. 
+We define the vertices and faces for a square of variable side length s. We then use a recursive formula, that recurses to the given depth layer (0-4), and determines the location of all the cubes that will exist at the final recursion depth. If a square is in the middle of at least two axis (x, y or z, x or y, z etc.), then we know that that particular cube should not be rendered in the menger sponge. We then exclude it.
 
 Camera Operations:
-We initialize camera vectors to the values dictated by the spec. 
+We initialize camera vectors to the values dictated by the spec.
 
-We then fill in the view matrix element by element, as would be expected from the product of the translation and transformation matrices. 
+We then fill in the view matrix element by element, as would be expected from the product of the translation and transformation matrices.
 
 Translations simply modify the eye's location and then update center accordingly.
-Rotation by the mouse keeps track of the delta between two mouse locations, translates that into the camera's basis, and then calculates an axis of rotation orthonormal to this vector and the look vector. Both look and camera up are rotated around this axis. 
+Rotation by the mouse keeps track of the delta between two mouse locations, translates that into the camera's basis, and then calculates an axis of rotation orthonormal to this vector and the look vector. Both look and camera up are rotated around this axis.
 
 For rotating in place, controlled by left and right arrows, we simply rotate the camera_up vector around look. Rotate takes in radians so no conversion was necessary for the given speeds.
 
@@ -26,6 +26,3 @@ Shading of floor: To shade floor, we passed in world coordinates through the ent
 
 Floor: to do the floor, we created 4 triangles.  All triangles had a point at (0, -2, 0).  The other 4 points used to create 4
 triangles were (+- inf, -2, +- inf).
-
-
-
