@@ -397,7 +397,7 @@ void main(void)
 	      	}
 		  	ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
 				//offset gl_Position by height of normal waves
-		  	
+
 		  	gl_Position[1] += h + tidal_height_increase;
 		} else{
 			vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
@@ -421,6 +421,7 @@ uniform vec4 camera_pos; //homogenous point, (xyzw) w= 1
 in vec4 vs_light_direction[];
 in vec4 ocean_normal[];
 out vec4 normal;
+out vec4 global_coords;
 out vec4 light_direction;
 out vec4 camera_direction;
 out vec4 world_coordinates;
@@ -431,6 +432,7 @@ void main()
 	for (int n = 0; n < gl_in.length(); n++) {
 		light_direction = vs_light_direction[n];
 		normal = ocean_normal[n];
+		global_coords = gl_in[n].gl_Position;
 		world_coordinates = gl_in[n].gl_Position;
 		camera_direction = -gl_in[n].gl_Position + camera_pos;
 		gl_Position = projection * view * gl_in[n].gl_Position;
@@ -443,6 +445,7 @@ void main()
 const char* ocean_fragment_shader =
 R"zzz(#version 330 core
 in vec4 normal; //interpolated to ensure smooth water
+in vec4 global_coords;
 in vec4 light_direction;
 in vec4 camera_direction;
 in vec4 world_coordinates;
@@ -452,7 +455,10 @@ void main(){
 	vec4 nlight_direction = normalize(light_direction);
 	vec4 ncamera_direction = normalize(camera_direction);
 	vec4 nnormal = normalize(normal);
-
+	float shadowMultiplier = 1.0f;
+	if((abs(global_coords[0]) < 0.5 && abs(global_coords[2]) < 0.5) && (abs(global_coords[0]) > 0.5/3 || abs(global_coords[2]) > 0.5/3)){
+		shadowMultiplier = 0.7f;
+	}
 	float k_a = 0.5f; //random number
 	vec4 water_ambient = vec4(0.0f, 1.0f, 1.0f, 1.0f); //bg contribution
 
@@ -484,7 +490,7 @@ void main(){
 	vec4 specular_component = dot_nl*(k_s*pow(cameraReflectDot, alpha)*light_color);
 
 	vec4 color = ambient_component + diffuse_component + specular_component;
-
+	color = shadowMultiplier * color;
 	//made it so dot_nl only multiplies specular comp
 	fragment_color = clamp(color, 0.0, 1.0);
 }
