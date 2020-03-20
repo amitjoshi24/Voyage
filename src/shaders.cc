@@ -319,24 +319,60 @@ void main(void)
 	  	float z = gl_Position[2];
 	  	vec2 pos = vec2(x, z);
 
-			float wave1 [5];
+			float wave1 [6];
 			wave1[0] = 8.0f; //wavelength
- 			wave1[1] = 0.5f; //amplitude
+ 			wave1[1] = 0.3f; //amplitude
 			wave1[2] =  0.5f; //speed
-			wave1[3] =  7.0f; //x
-			wave1[4] =  2.0f; //z
+			wave1[3] =  5.0f; //x
+			wave1[4] =  0.0f; //z
+			wave1[5] = 0.25; //w
+
+
+			float wave2 [6];
+			wave2[0] = 25.0f; //wavelength
+ 			wave2[1] = 0.3f; //amplitude
+			wave2[2] =  0.25f; //speed
+			wave2[3] = 1.0f; //x
+			wave2[4] =  1.0f; //z
+			wave2[5] = 0.5; //w
+
+			float wave3 [6];
+			wave3[0] = 1.0f; //wavelength
+			wave3[1] = 0.05f; //amplitude
+			wave3[2] =  0.5f; //speed
+			wave3[3] = 0.0f; //x
+			wave3[4] =  5.0f; //z
+			wave3[5] = 0.5; //w
 
     	float h = 2.5;
 			float dhdx = 0;
 	  	float dhdz = 0;
 
-			//hardcode for every wave
-	  	float w = 0.25;
-	  	h += (wave1[1] * sin((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
-	  	dhdx += (w * wave1[3] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
-      dhdz += (w * wave1[4] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+			float wave [6];
+			float w = 0;
 
-			//TODO make sure this is also reflective of the tidal waves contribution
+    	wave = wave1;
+			w = wave1[5];
+
+	  	h += (wave[1] * sin((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+	  	dhdx += (w * wave[3] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+      dhdz += (w * wave[4] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+
+			wave = wave2;
+			w = wave2[5];
+
+			h += (wave[1] * sin((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+			dhdx += (w * wave[3] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+			dhdz += (w * wave[4] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+
+			wave = wave3;
+			w = wave3[5];
+
+			h += (wave[1] * sin((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+			dhdx += (w * wave[3] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+			dhdz += (w * wave[4] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+
+
 	  	ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
 			//offset gl_Position by height of normal waves
 	  	gl_Position[1] += h;
