@@ -821,11 +821,8 @@ CreateSphere(sphere_vertices, sphere_faces);
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
 		
 		tidalX += 1;
-		std::cout << tidal << std::endl;
-		std::cout << tidalX << std::endl;
 		if(tidalX > 2000){
 			tidalX = 0;
-			std::cout << "it got set to 0" << std::endl;
 			tidal = 0;
 		}
 
