@@ -278,16 +278,12 @@ void main()
 		gl_TessLevelOuter[2] = outerVal;
     gl_TessLevelOuter[3] = outerVal;
 	}
-	float A = 5;
-	float c = 1;
-	float x = gl[gl_InvocationID].gl_Position[0];
-	float z = gl[gl_InvocationID].gl_Position[2];
+
 	
 	//done: offset gl_Position by height of tidal wave 
 	
 	//TODO potentially tweak normals here too, to account for the tidal wave
   gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
-  gl_out[gl_InvocationID].gl_Position += height_increase;
 	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
 }
 )zzz";
@@ -314,6 +310,18 @@ out vec4 vs_light_direction;
 out vec4 ocean_normal;
 void main(void)
 {
+		float e = 2.71828f;
+		float A = 5;
+		float c = 1;
+		float x = gl_Position[0];
+		float z = gl_Position[2];
+		float tidal_height_increase = 0;
+		if(tidal == 1){
+			float thePower = (0 - c) * ( ((x - tidalX)*(x-tidalX)) + (z*z) );
+			float theBase = e;
+			tidal_height_increase = A * pow(theBase, thePower);
+		}
+		
 		int t = ocean_time;
 
 		//NOTE gl_Position is still in world coords
@@ -323,30 +331,30 @@ void main(void)
 
 		if (showOcean == 1){
 			float x = gl_Position[0];
-	  	float z = gl_Position[2];
-	  	vec2 pos = vec2(x, z);
+		  	float z = gl_Position[2];
+		  	vec2 pos = vec2(x, z);
 
-			float wave1 [5];
-			wave1[0] = 8.0f; //wavelength
- 			wave1[1] = 0.5f; //amplitude
-			wave1[2] =  0.5f; //speed
-			wave1[3] =  7.0f; //x
-			wave1[4] =  2.0f; //z
+				float wave1 [5];
+				wave1[0] = 8.0f; //wavelength
+	 			wave1[1] = 0.5f; //amplitude
+				wave1[2] =  0.5f; //speed
+				wave1[3] =  7.0f; //x
+				wave1[4] =  2.0f; //z
 
-    	float h = 2.5;
-			float dhdx = 0;
-	  	float dhdz = 0;
+	    	float h = 1;
+				float dhdx = 0;
+		  	float dhdz = 0;
 
-			//hardcode for every wave
-	  	float w = 0.25;
-	  	h += (wave1[1] * sin((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
-	  	dhdx += (w * wave1[3] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
-      dhdz += (w * wave1[4] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+				//hardcode for every wave
+		  	float w = 0.25;
+		  	h += (wave1[1] * sin((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+		  	dhdx += (w * wave1[3] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
+	      dhdz += (w * wave1[4] * wave1[1] * cos((dot( vec2(wave1[3], wave1[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave1[0]))));
 
-			//TODO make sure this is also reflective of the tidal waves contribution
-	  	ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
-			//offset gl_Position by height of normal waves
-	  	gl_Position[1] += h;
+				//TODO make sure this is also reflective of the tidal waves contribution
+		  	ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
+				//offset gl_Position by height of normal waves
+		  	gl_Position[1] += h;
 		} else{
 			vec3 nhn = normalize(cross( gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz));
 			ocean_normal = vec4(nhn[0], nhn[1], nhn[2], 0.0f);
