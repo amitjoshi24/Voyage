@@ -255,14 +255,14 @@ void main()
 			for(int i = 0; i < 4; i++){
 				d += (distance(meanOfTidal, gl_in[i].gl_Position.xyz));
 			}
-			multiplier =(4 - int(d));
+			d /= 16;
+			multiplier = int(4.0 - d);
 			if(multiplier < 1){
 				multiplier = 1;
 			}
 			if(multiplier > 4){
 				multiplier = 4;
 			}
-
 		}
 		//multiplier = 1;
 
@@ -320,7 +320,7 @@ void main(void)
 		gl_Position = mix(p1, p2, gl_TessCoord.y);
 
 		float e = 2.71828f;
-		float A = 5;
+		float A = 4;
 		float c = 0.5;
 		float x = gl_Position[0];
 		float z = gl_Position[2];

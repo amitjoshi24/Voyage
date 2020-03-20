@@ -163,8 +163,8 @@ void updateMengerStuff(int level){
 }
 
 Camera g_camera;
-int outerTess = 5;
-int innerTess = 5;
+int outerTess = 3;
+int innerTess = 2;
 bool showOcean = false;
 bool showWireframe = true;
 bool showFloor = true;
