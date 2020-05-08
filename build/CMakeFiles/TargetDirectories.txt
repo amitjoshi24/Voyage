@@ -1,0 +1,6 @@
+/Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/rebuild_cache.dir
+/Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/edit_cache.dir
+/Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/utgraphicsutil.dir
+/Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/src/CMakeFiles/rebuild_cache.dir
+/Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/src/CMakeFiles/edit_cache.dir
+/Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/src/CMakeFiles/menger.dir
