@@ -242,7 +242,7 @@ float ocean_time;
 std::chrono::steady_clock ocean_clock;
 int tidal = 0;
 int tidalX = 0;
-glm::vec4 boat_position = glm::vec4(10.f, 1.0f, 0.0f, 1.0f);
+glm::vec4 fixed_boat_position = glm::vec4(0.f, 1.0f, 0.0f, 1.0f);
 float boatTheta = 0.0f;
 glm::vec4 boat_direction = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
 float boatSpeed = 0.1f;
@@ -284,18 +284,21 @@ KeyCallback(GLFWwindow* window,
 		// FIXME: FPS mode on/off
 	}
 	if (key == GLFW_KEY_J && action != GLFW_RELEASE) {
-		boatTheta += boatRotateSpeed;
-		boat_direction = glm::vec4((cos(boatTheta)*boat_direction[0]) - (sin(boatTheta)*boat_direction[2]), boat_direction[1], (sin(boatTheta)*boat_direction[0]) + (cos(boatTheta)*boat_direction[1]),boat_direction[3]);
+
+		boatTheta -= boatRotateSpeed;
+		boat_direction = glm::vec4(cos(boatTheta)*1, boat_direction[1], sin(boatTheta), boat_direction[3]);
+		boat_direction = glm::normalize(boat_direction);
 	}
 	if (key == GLFW_KEY_L && action != GLFW_RELEASE) {
-		boatTheta -= boatRotateSpeed;
-		boat_direction = glm::vec4((cos(boatTheta)*boat_direction[0]) - (sin(boatTheta)*boat_direction[2]), boat_direction[1], (sin(boatTheta)*boat_direction[0]) + (cos(boatTheta)*boat_direction[1]),boat_direction[3]);
+		boatTheta += boatRotateSpeed;
+		boat_direction = glm::vec4(cos(boatTheta)*1, boat_direction[1], sin(boatTheta), boat_direction[3]);
+		boat_direction = glm::normalize(boat_direction);
 	}
 	else if (key == GLFW_KEY_I && action != GLFW_RELEASE) {
-		boat_position += boatSpeed*boat_direction;
+		fixed_boat_position += boatSpeed*boat_direction;
 	}
 	else if (key == GLFW_KEY_K && action != GLFW_RELEASE) {
-		boat_position -= boatSpeed*boat_direction;
+		fixed_boat_position -= boatSpeed*boat_direction;
 	}
 	
 	if (!g_menger)
@@ -860,6 +863,8 @@ CreateSphere(sphere_vertices, sphere_faces);
   CHECK_GL_ERROR(boat_tidalX_location = glGetUniformLocation(boat_program_id, "tidalX"));
   GLint boat_camera_pos_location = 0;
   CHECK_GL_ERROR(boat_camera_pos_location = glGetUniformLocation(boat_program_id, "camera_pos"));
+  GLint boat_theta_location = 0;
+  CHECK_GL_ERROR(boat_theta_location = glGetUniformLocation(boat_program_id, "boatTheta"));
 
 	//----init some vars we need--------------------------------------------------------------------------
 
@@ -879,7 +884,8 @@ CreateSphere(sphere_vertices, sphere_faces);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDepthFunc(GL_LESS);
-
+		glm::vec4 boat_position = fixed_boat_position;
+		//std::cout << "boat_position[0]: " << boat_position[0] << std::endl;
 		//UPDATE MATRICES-----------------------------------------------------------
 
 		// Compute the projection matrix.
@@ -1051,15 +1057,15 @@ CreateSphere(sphere_vertices, sphere_faces);
 			wave3[4] =  5.0f; //z
 			wave3[5] = 0.5; //w
 
-    	h = 0;
+    		h = 0;
 
 			float* wave;
 			float w = 0;
 
-    	wave = wave1;
+    		wave = wave1;
 			w = wave1[5];
 
-	  	h += (wave[1] * glm::sin((glm::dot( glm::vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+	  		h += (wave[1] * glm::sin((glm::dot( glm::vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
 
 			wave = wave2;
 			w = wave2[5];
@@ -1094,6 +1100,7 @@ CreateSphere(sphere_vertices, sphere_faces);
     CHECK_GL_ERROR(glUniform1i(boat_tidalX_location, tidalX));
     CHECK_GL_ERROR(glUniform1i(boat_showOcean_location, 0));
     CHECK_GL_ERROR(glUniform4fv(boat_camera_pos_location, 1, &temp_eye[0]));
+    CHECK_GL_ERROR(glUniform1f(boat_theta_location, boatTheta));
 
 
     CHECK_GL_ERROR(glDrawElements(GL_PATCHES, boat_faces.size() * 4, GL_UNSIGNED_INT, 0));

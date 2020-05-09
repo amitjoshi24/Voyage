@@ -519,13 +519,14 @@ R"zzz(#version 330 core
 in vec4 vertex_position;
 uniform vec4 light_position;
 uniform vec4 translate_by;
+uniform float boatTheta;
 out vec4 vs_light_direction;
 void main()
 {
 	//multiply by model matrix
-	gl_Position[0] = vertex_position[0] + translate_by[0];
+	gl_Position[0] = (cos(boatTheta)*vertex_position[0]) - (sin(boatTheta)*vertex_position[2]) + translate_by[0];
 	gl_Position[1] = vertex_position[1] + translate_by[1];
-	gl_Position[2] = vertex_position[2] + translate_by[2];
+	gl_Position[2] = (sin(boatTheta)*vertex_position[0]) + (cos(boatTheta)*vertex_position[2]) + translate_by[2];
 	gl_Position[3] = vertex_position[3];
 	vs_light_direction = -gl_Position + light_position;
 }
