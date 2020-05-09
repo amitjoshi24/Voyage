@@ -1456,14 +1456,6 @@ detail/setup.hpp
 detail/func_vector_relational.inl
 ../third-party/glm/glm/detail/func_vector_relational.inl
 
-/Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/camera.cc
-camera.h
-/Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/camera.h
-glm/glm.hpp
--
-iostream
--
-
 /Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/camera.h
 glm/glm.hpp
 -
@@ -1510,23 +1502,11 @@ camera.h
 shaders.h
 /Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/shaders.h
 
-/Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/menger.cc
-menger.h
-/Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/menger.h
-iostream
--
-string
--
-cmath
--
-
 /Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/menger.h
 glm/glm.hpp
 -
 vector
 -
-
-/Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/shaders.cc
 
 /Users/amitjoshi/Desktop/LocalGraphics/Voyage/src/shaders.h
 

@@ -94,3 +94,1155 @@ make: *** [cmTC_cac58/fast] Error 2
 
 
 
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7249b/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_7249b.dir/build.make CMakeFiles/cmTC_7249b.dir/build
+Building C object CMakeFiles/cmTC_7249b.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_7249b.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_7249b.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_7249b/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_69f75/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_69f75.dir/build.make CMakeFiles/cmTC_69f75.dir/build
+Building C object CMakeFiles/cmTC_69f75.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_69f75.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_69f75.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_69f75/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_8d849/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_8d849.dir/build.make CMakeFiles/cmTC_8d849.dir/build
+Building C object CMakeFiles/cmTC_8d849.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_8d849.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_8d849.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_8d849/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_47ba7/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_47ba7.dir/build.make CMakeFiles/cmTC_47ba7.dir/build
+Building CXX object CMakeFiles/cmTC_47ba7.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_47ba7.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_47ba7.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_47ba7/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_8e928/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_8e928.dir/build.make CMakeFiles/cmTC_8e928.dir/build
+Building CXX object CMakeFiles/cmTC_8e928.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_8e928.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_8e928.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_8e928/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_08b90/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_08b90.dir/build.make CMakeFiles/cmTC_08b90.dir/build
+Building CXX object CMakeFiles/cmTC_08b90.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_08b90.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_08b90.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_08b90/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_97f2d/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_97f2d.dir/build.make CMakeFiles/cmTC_97f2d.dir/build
+Building C object CMakeFiles/cmTC_97f2d.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_97f2d.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_97f2d.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_97f2d/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_43da5/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_43da5.dir/build.make CMakeFiles/cmTC_43da5.dir/build
+Building C object CMakeFiles/cmTC_43da5.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_43da5.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_43da5.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_43da5/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4c10c/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_4c10c.dir/build.make CMakeFiles/cmTC_4c10c.dir/build
+Building C object CMakeFiles/cmTC_4c10c.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_4c10c.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_4c10c.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_4c10c/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7e8ec/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_7e8ec.dir/build.make CMakeFiles/cmTC_7e8ec.dir/build
+Building CXX object CMakeFiles/cmTC_7e8ec.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_7e8ec.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_7e8ec.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_7e8ec/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e8cf3/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_e8cf3.dir/build.make CMakeFiles/cmTC_e8cf3.dir/build
+Building CXX object CMakeFiles/cmTC_e8cf3.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_e8cf3.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_e8cf3.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_e8cf3/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_b9dff/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_b9dff.dir/build.make CMakeFiles/cmTC_b9dff.dir/build
+Building CXX object CMakeFiles/cmTC_b9dff.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_b9dff.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_b9dff.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_b9dff/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_b50b7/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_b50b7.dir/build.make CMakeFiles/cmTC_b50b7.dir/build
+Building C object CMakeFiles/cmTC_b50b7.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_b50b7.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_b50b7.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_b50b7/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_b310a/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_b310a.dir/build.make CMakeFiles/cmTC_b310a.dir/build
+Building C object CMakeFiles/cmTC_b310a.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_b310a.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_b310a.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_b310a/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_cc894/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_cc894.dir/build.make CMakeFiles/cmTC_cc894.dir/build
+Building C object CMakeFiles/cmTC_cc894.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_cc894.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_cc894.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_cc894/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_05b27/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_05b27.dir/build.make CMakeFiles/cmTC_05b27.dir/build
+Building CXX object CMakeFiles/cmTC_05b27.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_05b27.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_05b27.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_05b27/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_de3d3/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_de3d3.dir/build.make CMakeFiles/cmTC_de3d3.dir/build
+Building CXX object CMakeFiles/cmTC_de3d3.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_de3d3.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_de3d3.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_de3d3/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_fdd36/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_fdd36.dir/build.make CMakeFiles/cmTC_fdd36.dir/build
+Building CXX object CMakeFiles/cmTC_fdd36.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_fdd36.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_fdd36.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_fdd36/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_48c4f/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_48c4f.dir/build.make CMakeFiles/cmTC_48c4f.dir/build
+Building C object CMakeFiles/cmTC_48c4f.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_48c4f.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_48c4f.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_48c4f/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_b1f1e/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_b1f1e.dir/build.make CMakeFiles/cmTC_b1f1e.dir/build
+Building C object CMakeFiles/cmTC_b1f1e.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_b1f1e.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_b1f1e.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_b1f1e/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_074db/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_074db.dir/build.make CMakeFiles/cmTC_074db.dir/build
+Building C object CMakeFiles/cmTC_074db.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_074db.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_074db.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_074db/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_54945/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_54945.dir/build.make CMakeFiles/cmTC_54945.dir/build
+Building CXX object CMakeFiles/cmTC_54945.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_54945.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_54945.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_54945/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ef0f5/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ef0f5.dir/build.make CMakeFiles/cmTC_ef0f5.dir/build
+Building CXX object CMakeFiles/cmTC_ef0f5.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_ef0f5.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_ef0f5.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_ef0f5/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_dd876/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_dd876.dir/build.make CMakeFiles/cmTC_dd876.dir/build
+Building CXX object CMakeFiles/cmTC_dd876.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_dd876.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_dd876.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_dd876/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7c517/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_7c517.dir/build.make CMakeFiles/cmTC_7c517.dir/build
+Building C object CMakeFiles/cmTC_7c517.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_7c517.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_7c517.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_7c517/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_adaf8/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_adaf8.dir/build.make CMakeFiles/cmTC_adaf8.dir/build
+Building C object CMakeFiles/cmTC_adaf8.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_adaf8.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_adaf8.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_adaf8/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_517ef/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_517ef.dir/build.make CMakeFiles/cmTC_517ef.dir/build
+Building C object CMakeFiles/cmTC_517ef.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_517ef.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_517ef.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_517ef/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_f4132/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_f4132.dir/build.make CMakeFiles/cmTC_f4132.dir/build
+Building CXX object CMakeFiles/cmTC_f4132.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_f4132.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_f4132.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_f4132/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4bb00/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_4bb00.dir/build.make CMakeFiles/cmTC_4bb00.dir/build
+Building CXX object CMakeFiles/cmTC_4bb00.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_4bb00.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_4bb00.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_4bb00/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_dc7ab/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_dc7ab.dir/build.make CMakeFiles/cmTC_dc7ab.dir/build
+Building CXX object CMakeFiles/cmTC_dc7ab.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_dc7ab.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_dc7ab.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_dc7ab/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_83802/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_83802.dir/build.make CMakeFiles/cmTC_83802.dir/build
+Building C object CMakeFiles/cmTC_83802.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_83802.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_83802.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_83802/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_a6bbc/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_a6bbc.dir/build.make CMakeFiles/cmTC_a6bbc.dir/build
+Building C object CMakeFiles/cmTC_a6bbc.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_a6bbc.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_a6bbc.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_a6bbc/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_cb858/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_cb858.dir/build.make CMakeFiles/cmTC_cb858.dir/build
+Building C object CMakeFiles/cmTC_cb858.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_cb858.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_cb858.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_cb858/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_42eef/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_42eef.dir/build.make CMakeFiles/cmTC_42eef.dir/build
+Building CXX object CMakeFiles/cmTC_42eef.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_42eef.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_42eef.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_42eef/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_02c20/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_02c20.dir/build.make CMakeFiles/cmTC_02c20.dir/build
+Building CXX object CMakeFiles/cmTC_02c20.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_02c20.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_02c20.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_02c20/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_a9d72/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_a9d72.dir/build.make CMakeFiles/cmTC_a9d72.dir/build
+Building CXX object CMakeFiles/cmTC_a9d72.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_a9d72.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_a9d72.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_a9d72/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_12571/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_12571.dir/build.make CMakeFiles/cmTC_12571.dir/build
+Building C object CMakeFiles/cmTC_12571.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_12571.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_12571.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_12571/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ab4aa/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ab4aa.dir/build.make CMakeFiles/cmTC_ab4aa.dir/build
+Building C object CMakeFiles/cmTC_ab4aa.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_ab4aa.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_ab4aa.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_ab4aa/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_61403/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_61403.dir/build.make CMakeFiles/cmTC_61403.dir/build
+Building C object CMakeFiles/cmTC_61403.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_61403.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_61403.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_61403/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_664c8/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_664c8.dir/build.make CMakeFiles/cmTC_664c8.dir/build
+Building CXX object CMakeFiles/cmTC_664c8.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_664c8.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_664c8.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_664c8/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_f0318/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_f0318.dir/build.make CMakeFiles/cmTC_f0318.dir/build
+Building CXX object CMakeFiles/cmTC_f0318.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_f0318.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_f0318.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_f0318/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_591aa/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_591aa.dir/build.make CMakeFiles/cmTC_591aa.dir/build
+Building CXX object CMakeFiles/cmTC_591aa.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_591aa.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_591aa.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_591aa/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_924d1/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_924d1.dir/build.make CMakeFiles/cmTC_924d1.dir/build
+Building C object CMakeFiles/cmTC_924d1.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_924d1.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_924d1.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_924d1/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_c6860/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_c6860.dir/build.make CMakeFiles/cmTC_c6860.dir/build
+Building C object CMakeFiles/cmTC_c6860.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_c6860.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_c6860.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_c6860/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7c11e/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_7c11e.dir/build.make CMakeFiles/cmTC_7c11e.dir/build
+Building C object CMakeFiles/cmTC_7c11e.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_7c11e.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_7c11e.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_7c11e/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ea002/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ea002.dir/build.make CMakeFiles/cmTC_ea002.dir/build
+Building CXX object CMakeFiles/cmTC_ea002.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_ea002.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_ea002.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_ea002/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_382bb/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_382bb.dir/build.make CMakeFiles/cmTC_382bb.dir/build
+Building CXX object CMakeFiles/cmTC_382bb.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_382bb.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_382bb.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_382bb/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_87e82/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_87e82.dir/build.make CMakeFiles/cmTC_87e82.dir/build
+Building CXX object CMakeFiles/cmTC_87e82.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_87e82.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_87e82.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_87e82/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_51877/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_51877.dir/build.make CMakeFiles/cmTC_51877.dir/build
+Building C object CMakeFiles/cmTC_51877.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_51877.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_51877.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_51877/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_eb6b2/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_eb6b2.dir/build.make CMakeFiles/cmTC_eb6b2.dir/build
+Building C object CMakeFiles/cmTC_eb6b2.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_eb6b2.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_eb6b2.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_eb6b2/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_f0449/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_f0449.dir/build.make CMakeFiles/cmTC_f0449.dir/build
+Building C object CMakeFiles/cmTC_f0449.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_f0449.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_f0449.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_f0449/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_675f0/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_675f0.dir/build.make CMakeFiles/cmTC_675f0.dir/build
+Building CXX object CMakeFiles/cmTC_675f0.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_675f0.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_675f0.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_675f0/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ed6a0/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ed6a0.dir/build.make CMakeFiles/cmTC_ed6a0.dir/build
+Building CXX object CMakeFiles/cmTC_ed6a0.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_ed6a0.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_ed6a0.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_ed6a0/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_cac43/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_cac43.dir/build.make CMakeFiles/cmTC_cac43.dir/build
+Building CXX object CMakeFiles/cmTC_cac43.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_cac43.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_cac43.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_cac43/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_0251d/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_0251d.dir/build.make CMakeFiles/cmTC_0251d.dir/build
+Building C object CMakeFiles/cmTC_0251d.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_0251d.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_0251d.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_0251d/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_3eb03/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_3eb03.dir/build.make CMakeFiles/cmTC_3eb03.dir/build
+Building C object CMakeFiles/cmTC_3eb03.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_3eb03.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_3eb03.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_3eb03/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_0fcaf/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_0fcaf.dir/build.make CMakeFiles/cmTC_0fcaf.dir/build
+Building C object CMakeFiles/cmTC_0fcaf.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_0fcaf.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_0fcaf.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_0fcaf/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_a052a/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_a052a.dir/build.make CMakeFiles/cmTC_a052a.dir/build
+Building CXX object CMakeFiles/cmTC_a052a.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_a052a.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_a052a.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_a052a/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_58e3f/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_58e3f.dir/build.make CMakeFiles/cmTC_58e3f.dir/build
+Building CXX object CMakeFiles/cmTC_58e3f.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_58e3f.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_58e3f.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_58e3f/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_f096e/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_f096e.dir/build.make CMakeFiles/cmTC_f096e.dir/build
+Building CXX object CMakeFiles/cmTC_f096e.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_f096e.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_f096e.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_f096e/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_26813/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_26813.dir/build.make CMakeFiles/cmTC_26813.dir/build
+Building C object CMakeFiles/cmTC_26813.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_26813.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_26813.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_26813/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_13f79/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_13f79.dir/build.make CMakeFiles/cmTC_13f79.dir/build
+Building C object CMakeFiles/cmTC_13f79.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_13f79.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_13f79.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_13f79/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_cc5ba/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_cc5ba.dir/build.make CMakeFiles/cmTC_cc5ba.dir/build
+Building C object CMakeFiles/cmTC_cc5ba.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_cc5ba.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_cc5ba.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_cc5ba/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_27d77/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_27d77.dir/build.make CMakeFiles/cmTC_27d77.dir/build
+Building CXX object CMakeFiles/cmTC_27d77.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_27d77.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_27d77.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_27d77/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_9a6ad/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_9a6ad.dir/build.make CMakeFiles/cmTC_9a6ad.dir/build
+Building CXX object CMakeFiles/cmTC_9a6ad.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_9a6ad.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_9a6ad.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_9a6ad/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_54181/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_54181.dir/build.make CMakeFiles/cmTC_54181.dir/build
+Building CXX object CMakeFiles/cmTC_54181.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_54181.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_54181.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_54181/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_b3e90/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_b3e90.dir/build.make CMakeFiles/cmTC_b3e90.dir/build
+Building C object CMakeFiles/cmTC_b3e90.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_b3e90.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_b3e90.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_b3e90/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_31150/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_31150.dir/build.make CMakeFiles/cmTC_31150.dir/build
+Building C object CMakeFiles/cmTC_31150.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_31150.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_31150.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_31150/fast] Error 2
+
+
+
+Detecting C OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_23b3c/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_23b3c.dir/build.make CMakeFiles/cmTC_23b3c.dir/build
+Building C object CMakeFiles/cmTC_23b3c.dir/OpenMPTryFlag.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_23b3c.dir/OpenMPTryFlag.c.o   -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_23b3c.dir/OpenMPTryFlag.c.o] Error 1
+make: *** [cmTC_23b3c/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_92c56/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_92c56.dir/build.make CMakeFiles/cmTC_92c56.dir/build
+Building CXX object CMakeFiles/cmTC_92c56.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libomp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_92c56.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_92c56.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_92c56/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_82ed8/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_82ed8.dir/build.make CMakeFiles/cmTC_82ed8.dir/build
+Building CXX object CMakeFiles/cmTC_82ed8.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp=libiomp5 -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_82ed8.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[1]: *** [CMakeFiles/cmTC_82ed8.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_82ed8/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_54439/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_54439.dir/build.make CMakeFiles/cmTC_54439.dir/build
+Building CXX object CMakeFiles/cmTC_54439.dir/OpenMPTryFlag.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    --std=c++14 -g -fopenmp -v -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/cmTC_54439.dir/OpenMPTryFlag.cpp.o -c /Users/amitjoshi/Desktop/LocalGraphics/Voyage/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Apple clang version 11.0.0 (clang-1100.0.33.17)
+Target: x86_64-apple-darwin18.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[1]: *** [CMakeFiles/cmTC_54439.dir/OpenMPTryFlag.cpp.o] Error 1
+make: *** [cmTC_54439/fast] Error 2
+
+
+

@@ -107,11 +107,12 @@ void main()
 {
 	vec4 color;
 	float thres = 0.1;
-	if(mod((floor(world_coordinates.x) + floor(world_coordinates.z)), 2) != 0 ){
+	/*if(mod((floor(world_coordinates.x) + floor(world_coordinates.z)), 2) != 0 ){
 		color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	} else{
 		color = vec4(0.0, 0.0, 0.0, 1.0);
-	}
+	}*/
+	color = vec4(1.0f, 1.0f, 0.811f, 1.0f);
 	float dot_nl = dot(normalize(light_direction), normalize(normal));
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
@@ -303,7 +304,7 @@ const char* ocean_tesselation_evaluation_shader =
 R"zzz(#version 410 core
 layout (quads) in;
 in vec4 vs_light_direction4[];
-uniform int ocean_time;
+uniform float ocean_time;
 uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
@@ -313,7 +314,7 @@ void main(void)
 {
 
 
-		int t = ocean_time;
+		float t = ocean_time;
 
 		//NOTE gl_Position is still in world coords
 		vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
@@ -459,9 +460,6 @@ void main(){
 	float shadowMultiplier = 1.0f;
 	float x = global_coords[0] - 0.5;
 	float z = global_coords[2];
-	if((abs(x) < 0.5 && abs(z) < 0.5) && (abs(x) > 0.5/3 || abs(z) > 0.5/3)){
-		shadowMultiplier = 0.7f;
-	}
 	float k_a = 0.5f; //random number
 	vec4 water_ambient = vec4(0.0f, 1.0f, 1.0f, 1.0f); //bg contribution
 

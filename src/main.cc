@@ -6,6 +6,7 @@
 #include <memory>
 #include <cmath>
 #include <stdlib.h>
+#include <math.h>       /* cos */
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -13,6 +14,7 @@
 
 // OpenGL library includes
 #include <GL/glew.h>
+
 #include <GLFW/glfw3.h>
 #include <debuggl.h>
 #include "menger.h"
@@ -236,10 +238,15 @@ int innerTess = 2;
 bool showOcean = false;
 bool showWireframe = true;
 bool showFloor = true;
-int ocean_time;
+float ocean_time;
 std::chrono::steady_clock ocean_clock;
 int tidal = 0;
 int tidalX = 0;
+glm::vec4 boat_position = glm::vec4(10.f, 1.0f, 0.0f, 1.0f);
+float boatTheta = 0.0f;
+glm::vec4 boat_direction = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+float boatSpeed = 0.1f;
+float boatRotateSpeed = 0.1f;
 
 void
 KeyCallback(GLFWwindow* window,
@@ -276,6 +283,21 @@ KeyCallback(GLFWwindow* window,
 	} else if (key == GLFW_KEY_C && action != GLFW_RELEASE) {
 		// FIXME: FPS mode on/off
 	}
+	if (key == GLFW_KEY_J && action != GLFW_RELEASE) {
+		boatTheta += boatRotateSpeed;
+		boat_direction = glm::vec4((cos(boatTheta)*boat_direction[0]) - (sin(boatTheta)*boat_direction[2]), boat_direction[1], (sin(boatTheta)*boat_direction[0]) + (cos(boatTheta)*boat_direction[1]),boat_direction[3]);
+	}
+	if (key == GLFW_KEY_L && action != GLFW_RELEASE) {
+		boatTheta -= boatRotateSpeed;
+		boat_direction = glm::vec4((cos(boatTheta)*boat_direction[0]) - (sin(boatTheta)*boat_direction[2]), boat_direction[1], (sin(boatTheta)*boat_direction[0]) + (cos(boatTheta)*boat_direction[1]),boat_direction[3]);
+	}
+	else if (key == GLFW_KEY_I && action != GLFW_RELEASE) {
+		boat_position += boatSpeed*boat_direction;
+	}
+	else if (key == GLFW_KEY_K && action != GLFW_RELEASE) {
+		boat_position -= boatSpeed*boat_direction;
+	}
+	
 	if (!g_menger)
 		return ; // 0-4 only available in Menger mode.
 	if (key == GLFW_KEY_0 && action != GLFW_RELEASE) {
@@ -869,15 +891,15 @@ CreateSphere(sphere_vertices, sphere_faces);
 
 		//TODO divide by some number
 		auto current_time = ocean_clock.now() - start_time;
-		ocean_time = (int) current_time.count() / 100000000;
+		ocean_time = (float) current_time.count() / 100000000;
 
-		glm::vec4 boat_position = glm::vec4(10.f, 1.0f, 0.0f, 1.0f);
 
 
     int ugh = showOcean? 1 : 0;
     glm::vec4 temp_eye = glm::vec4(g_camera.eye[0], g_camera.eye[1], g_camera.eye[2], 1.0f);
 
 
+    	/*
 		//----------------RENDER THE CUBE------------------------------------------
 		// Switch to the Geometry VAO.
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kGeometryVao]));
@@ -903,6 +925,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 
 		//draw the CUBE
 		CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, obj_faces.size() * 3, GL_UNSIGNED_INT, 0));
+		*/
 
 		//----------------RENDER THE FLOOR (CHECKERS)------------------------------------------
 		// Poll and swap.
@@ -939,13 +962,13 @@ CreateSphere(sphere_vertices, sphere_faces);
 		CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
 		CHECK_GL_ERROR(glUniform1i(outerTess_location, outerTess));
 		CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
-    CHECK_GL_ERROR(glUniform1i(floor_wireframe_time_location, ocean_time));
+    CHECK_GL_ERROR(glUniform1f(floor_wireframe_time_location, ocean_time));
 		CHECK_GL_ERROR(glUniform1i(floor_wireframe_tidal_location, tidal));
 		CHECK_GL_ERROR(glUniform1i(floor_wireframe_tidalX_location, tidalX));
     CHECK_GL_ERROR(glUniform4fv(floor_wireframe_camera_pos_location, 1, &temp_eye[0]));
     CHECK_GL_ERROR(glUniform1i(floor_wireframe_showOcean_location, ugh));
 
-		if(showWireframe){
+		if(false && showWireframe){
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			/*for(int i = 0; i < floor_quad_vertices.size(); i++){
 				glm::vec4 vertex = floor_quad_vertices.at(i);
@@ -968,7 +991,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 		CHECK_GL_ERROR(glUniform4fv(ocean_light_position_location, 1, &light_position[0]));
 		CHECK_GL_ERROR(glUniform1i(ocean_outerTess_location, outerTess));
 		CHECK_GL_ERROR(glUniform1i(ocean_innerTess_location, innerTess));
-		CHECK_GL_ERROR(glUniform1i(time_location, ocean_time));
+		CHECK_GL_ERROR(glUniform1f(time_location, ocean_time));
 		CHECK_GL_ERROR(glUniform1i(tidal_location, tidal));
 		CHECK_GL_ERROR(glUniform1i(tidalX_location, tidalX));
     CHECK_GL_ERROR(glUniform1i(ocean_showOcean_location, ugh));
@@ -998,7 +1021,7 @@ CreateSphere(sphere_vertices, sphere_faces);
     //Finding height
     float h = 0.0f;
     if (showOcean == 1){
-    		int t = ocean_time;
+    		float t = ocean_time;
     		float x = boat_position[0];
     		float z = boat_position[1];
 	  		glm::vec2 pos = glm::vec2(x, z);
@@ -1066,7 +1089,7 @@ CreateSphere(sphere_vertices, sphere_faces);
     CHECK_GL_ERROR(glUniform4fv(boat_translate_by_location, 1, &boat_position[0]));
     CHECK_GL_ERROR(glUniform1i(boat_outerTess_location, 1));
     CHECK_GL_ERROR(glUniform1i(boat_innerTess_location, 1));
-    CHECK_GL_ERROR(glUniform1i(boat_time_location, ocean_time));
+    CHECK_GL_ERROR(glUniform1f(boat_time_location, ocean_time));
     CHECK_GL_ERROR(glUniform1i(boat_tidal_location, 0));
     CHECK_GL_ERROR(glUniform1i(boat_tidalX_location, tidalX));
     CHECK_GL_ERROR(glUniform1i(boat_showOcean_location, 0));
