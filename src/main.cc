@@ -235,7 +235,7 @@ void updateMengerStuff(int level){
 Camera g_camera;
 int outerTess = 3;
 int innerTess = 2;
-bool showOcean = false;
+bool showOcean = true;
 bool showWireframe = true;
 bool showFloor = true;
 float ocean_time;
@@ -1029,7 +1029,7 @@ CreateSphere(sphere_vertices, sphere_faces);
     if (showOcean == 1){
     		float t = ocean_time;
     		float x = boat_position[0];
-    		float z = boat_position[1];
+    		float z = boat_position[2];
 	  		glm::vec2 pos = glm::vec2(x, z);
 
 			float wave1 [6];
