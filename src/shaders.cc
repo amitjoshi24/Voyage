@@ -341,7 +341,7 @@ void main(void)
 
 			float wave1 [6];
 			wave1[0] = 8.0f; //wavelength
- 			wave1[1] = 0.3f; //amplitude
+ 			wave1[1] = 0.1f; //amplitude
 			wave1[2] =  0.5f; //speed
 			wave1[3] =  5.0f; //x
 			wave1[4] =  0.0f; //z
@@ -364,7 +364,7 @@ void main(void)
 			wave3[4] =  5.0f; //z
 			wave3[5] = 0.5; //w
 
-    	float h = 1;
+    	float h = 2;
 			float dhdx = 0;
 	  	float dhdz = 0;
 

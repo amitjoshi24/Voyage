@@ -1034,7 +1034,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 
 			float wave1 [6];
 			wave1[0] = 8.0f; //wavelength
- 			wave1[1] = 0.3f; //amplitude
+ 			wave1[1] = 0.1f; //amplitude
 			wave1[2] =  0.5f; //speed
 			wave1[3] =  5.0f; //x
 			wave1[4] =  0.0f; //z
@@ -1057,7 +1057,6 @@ CreateSphere(sphere_vertices, sphere_faces);
 			wave3[4] =  5.0f; //z
 			wave3[5] = 0.5; //w
 
-    		h = 0;
 
 			float* wave;
 			float w = 0;
