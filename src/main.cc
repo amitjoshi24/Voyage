@@ -762,7 +762,14 @@ CreateSphere(sphere_vertices, sphere_faces);
 	CHECK_GL_ERROR(floor_view_matrix_location = glGetUniformLocation(floor_program_id, "view"));
 	GLint floor_light_position_location = 0;
 	CHECK_GL_ERROR(floor_light_position_location = glGetUniformLocation(floor_program_id, "light_position"));
-
+	GLint floor_showOcean_location = 0;
+  	CHECK_GL_ERROR(floor_showOcean_location = glGetUniformLocation(floor_program_id, "showOcean"));
+  	GLint floor_time_location = 0;
+	CHECK_GL_ERROR(floor_time_location = glGetUniformLocation(floor_program_id, "ocean_time"));
+	GLint floor_tidal_location = 0;
+	CHECK_GL_ERROR(floor_tidal_location = glGetUniformLocation(floor_program_id, "tidal"));
+	GLint floor_tidalX_location = 0;
+	CHECK_GL_ERROR(floor_tidalX_location = glGetUniformLocation(floor_program_id, "tidalX"));
 
 	//set up wireframe program variables--------------
 	CHECK_GL_ERROR(glBindAttribLocation(floor_wireframe_program_id, 0, "vertex_position"));
@@ -943,6 +950,10 @@ CreateSphere(sphere_vertices, sphere_faces);
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
 		CHECK_GL_ERROR(glUniformMatrix4fv(floor_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
 		CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
+		CHECK_GL_ERROR(glUniform1f(floor_time_location, ocean_time));
+		CHECK_GL_ERROR(glUniform1i(floor_tidal_location, tidal));
+		CHECK_GL_ERROR(glUniform1i(floor_tidalX_location, tidalX));
+		CHECK_GL_ERROR(glUniform1i(floor_showOcean_location, ugh));
 
 		// draw the FLOOR (checkers)
 		if (showFloor)
@@ -971,8 +982,9 @@ CreateSphere(sphere_vertices, sphere_faces);
     CHECK_GL_ERROR(glUniform1f(floor_wireframe_time_location, ocean_time));
 		CHECK_GL_ERROR(glUniform1i(floor_wireframe_tidal_location, tidal));
 		CHECK_GL_ERROR(glUniform1i(floor_wireframe_tidalX_location, tidalX));
+		CHECK_GL_ERROR(glUniform1i(floor_wireframe_showOcean_location, ugh));
     CHECK_GL_ERROR(glUniform4fv(floor_wireframe_camera_pos_location, 1, &temp_eye[0]));
-    CHECK_GL_ERROR(glUniform1i(floor_wireframe_showOcean_location, ugh));
+    
 
 		if(false && showWireframe){
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

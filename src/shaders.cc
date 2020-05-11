@@ -103,6 +103,12 @@ flat in vec4 normal;
 in vec4 light_direction;
 in vec4 world_coordinates;
 out vec4 fragment_color;
+uniform float ocean_time;
+uniform int showOcean;
+uniform int tidalX;
+uniform int tidal;
+uniform vec4 light_position;
+
 void main()
 {
 	vec4 color;
@@ -112,10 +118,110 @@ void main()
 	} else{
 		color = vec4(0.0, 0.0, 0.0, 1.0);
 	}*/
-	color = vec4(1.0f, 1.0f, 0.811f, 1.0f);
-	float dot_nl = dot(normalize(light_direction), normalize(normal));
-	dot_nl = clamp(dot_nl, 0.0, 1.0);
-	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+
+
+	if (showOcean == 1){
+			float e = 2.71828f;
+			float A = 4;
+			float c = 0.5;
+			float x = world_coordinates.x;
+			float z = world_coordinates.z;
+			float tidal_height_increase = 0;
+			vec4 tidalNormal = vec4(0,0,0,0);
+		    float fTidalX = tidalX;
+			fTidalX /= 10.0f;
+			float thePower = (0 - c) * ( ((x - fTidalX)*(x-fTidalX)) + (z*z) );
+			float theBase = e;
+			if(tidal == 1){
+				tidal_height_increase = A * pow(theBase, thePower);
+			}
+			float t = ocean_time;
+	  		vec2 pos = vec2(x, z);
+
+			float wave1 [6];
+			wave1[0] = 8.0f; //wavelength
+ 			wave1[1] = 0.1f; //amplitude
+			wave1[2] =  0.5f; //speed
+			wave1[3] =  5.0f; //x
+			wave1[4] =  0.0f; //z
+			wave1[5] = 0.25; //w
+
+
+			float wave2 [6];
+			wave2[0] = 25.0f; //wavelength
+ 			wave2[1] = 0.3f; //amplitude
+			wave2[2] =  0.25f; //speed
+			wave2[3] = 1.0f; //x
+			wave2[4] =  1.0f; //z
+			wave2[5] = 0.5; //w
+
+			float wave3 [6];
+			wave3[0] = 1.0f; //wavelength
+			wave3[1] = 0.05f; //amplitude
+			wave3[2] =  0.5f; //speed
+			wave3[3] = 0.0f; //x
+			wave3[4] =  5.0f; //z
+			wave3[5] = 0.5; //w
+
+    		float h = 2;
+			float dhdx = 0;
+	  		float dhdz = 0;
+
+			float wave [6];
+			float w = 0;
+
+    		wave = wave1;
+			w = wave1[5];
+
+	  		h += (wave[1] * sin((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+	  		dhdx += (w * wave[3] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+      		dhdz += (w * wave[4] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+
+			wave = wave2;
+			w = wave2[5];
+
+			h += (wave[1] * sin((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+			dhdx += (w * wave[3] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+			dhdz += (w * wave[4] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+
+			wave = wave3;
+			w = wave3[5];
+
+			h += (wave[1] * sin((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave1[2] * 2.0f/wave[0]))));
+			dhdx += (w * wave[3] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+			dhdz += (w * wave[4] * wave[1] * cos((dot( vec2(wave[3], wave[4]), pos)*w) + (t * (wave[2] * 2.0f/wave[0]))));
+
+
+	      	if(tidal == 1){
+	      		dhdx += A*(-2*c)*(x-fTidalX)*pow(theBase, thePower);
+	      		dhdz += A*(-2*c)*(z)*pow(theBase, thePower);
+	      		h += tidal_height_increase;
+	      	}
+		  	vec4 ocean_normal = normalize(vec4(-dhdx, 1, -dhdz,0.0));
+
+
+
+
+
+
+		  	vec4 new_light_direction = light_position - vec4(world_coordinates.x, world_coordinates.y + h, world_coordinates.z, 1);
+		  	
+
+		  	float dot_nl = dot(normalize(new_light_direction), normalize(ocean_normal));
+		  	dot_nl = clamp(dot_nl, 0.0, 1.0);
+			fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+
+	}
+	else{
+		color = vec4(1.0f, 1.0f, 0.811f, 1.0f);
+		float dot_nl = dot(normalize(light_direction), normalize(normal));
+		dot_nl = clamp(dot_nl, 0.0, 1.0);
+		fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+	}
+
+
+
+	
 }
 )zzz";
 //-----------------------------------------------------------------------------
