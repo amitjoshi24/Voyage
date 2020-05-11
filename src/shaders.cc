@@ -553,6 +553,7 @@ in vec4 world_coordinates;
 out vec4 fragment_color;
 uniform vec4 light_position;
 uniform float ocean_time;
+uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
 void main(){
@@ -564,13 +565,13 @@ void main(){
 	float x = global_coords[0] - 0.5;
 	float z = global_coords[2];
 	float k_a = 0.5f; //random number
-	vec4 water_ambient = vec4(0.0f, 1.0f, 1.0f, 1.0f); //bg contribution
+	vec4 water_ambient = vec4(0.01f, 0.8f, 1.0f, 1.0f); //bg contribution
 
 	vec4 ambient_component = k_a * water_ambient; //add this
 
 	//diffuse lighting
 	float k_d = 0.3f; //also random number
-	vec4 light_color = vec4(0.5f, 1.0f, 1.0f, 1.0f);
+	vec4 light_color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 
 	float normalLightDot = float(dot(nnormal, nlight_direction));
@@ -693,8 +694,12 @@ void main(){
   	float lavanya_dot_nl = dot(normalize(new_light_direction), normalize(ocean_normal));
   	lavanya_dot_nl = clamp(lavanya_dot_nl, 0.0, 1.0);
   	vec4 floor_color = clamp(lavanya_dot_nl*sandColor, 0.0, 1.0);
-
-	fragment_color = clamp(color*0.5 + floor_color*0.5, 0.0, 1.0);
+  	if(false){
+		fragment_color = clamp(color*0.5 + floor_color*0.5, 0.0, 1.0);
+	}
+	else{
+		fragment_color = clamp(color, 0.0, 1.0);
+	}
 }
 )zzz";
 //-----------------------------------------------------------------------------
