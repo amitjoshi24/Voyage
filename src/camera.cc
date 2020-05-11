@@ -43,12 +43,30 @@ void Camera::init(){
 
 }
 
+void Camera::defaultOrientation(){
+	eye = glm::vec3(0.0f, 10.0f, 10.0f);
+	look = glm::vec3(0.0f, -10.0f, -10.0f);
+	cam_up = glm::vec3(0.0f, 1.0f, 0.0f);
+	update();
+}
+
 void Camera::update(){
 	cam_right = glm::normalize(glm::cross(look, cam_up));
 
 	center = eye + camera_distance_*look; //TODO elementwise multiply might be weird
 }
-
+void Camera::setPos(glm::vec3 newEye, glm::vec3 newLook){
+	setPos(newEye, newLook, glm::vec3(0,1,0));
+}
+void Camera::setPos(glm::vec3 newEye, glm::vec3 newLook, glm::vec3 newUp){
+	eye = newEye;
+	eye[1] += 1;
+	eye -= newLook;
+	eye -= newLook;
+	look = newLook;
+	cam_up = newUp;
+	update();
+}
 void Camera::left(){
 	eye += -cam_right * pan_speed;
 	update();

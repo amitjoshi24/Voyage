@@ -596,7 +596,7 @@ void main(){
 
 	vec4 color = ambient_component + diffuse_component + specular_component;
 	color = shadowMultiplier * color;
-	color[3] = 0.2;
+	color[3] = 1;
 	//made it so dot_nl only multiplies specular comp
 
 
@@ -699,6 +699,7 @@ void main(){
 	}
 	else{
 		fragment_color = clamp(color, 0.0, 1.0);
+
 	}
 }
 )zzz";

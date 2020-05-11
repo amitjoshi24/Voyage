@@ -18,7 +18,9 @@ public:
 	void up(); //up arrow
 	void down(); //down arrow
 	void update(); //updates things that arent look or eye or cam_up
-
+	void setPos(glm::vec3 newEye, glm::vec3 newLook, glm::vec3 newUp);
+	void setPos(glm::vec3 newEye, glm::vec3 newLook);
+	void defaultOrientation();
 	//rotate camera
 	void clockwise();
 	void counterclockwise();
