@@ -876,7 +876,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 	//----init some vars we need--------------------------------------------------------------------------
 
 	//relocated light position
-	glm::vec4 light_position = glm::vec4(-10.0f, 10.0f, 0.0f, 1.0f);
+	glm::vec4 light_position = glm::vec4(-4.0f, 10.0f, 0.0f, 1.0f);
 
 	float aspect = 0.0f;
 	float theta = 0.0f;
