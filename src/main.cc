@@ -482,11 +482,11 @@ CreateSphere(sphere_vertices, sphere_faces);
 	std::cout << "min_bounds = " << glm::to_string(min_bounds) << "\n";
 	std::cout << "max_bounds = " << glm::to_string(max_bounds) << "\n";
 
-	//-------SETUP THE VAO and like VBO SHIT-----------------------------------------------------------------------
+	//-------SETUP THE VAO and like VBO stuff-----------------------------------------------------------------------
 	// Setup our VAO array.
 	CHECK_GL_ERROR(glGenVertexArrays(kNumVaos, &g_array_objects[0]));
 
-	//-----------setup cube VAO shit------------------
+	//-----------setup cube VAO stuff------------------
 
 	// Switch to the VAO for Geometry.
 	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kGeometryVao]));
@@ -716,6 +716,14 @@ CreateSphere(sphere_vertices, sphere_faces);
     glCompileShader(depth_vertex_shader_id);
     CHECK_GL_SHADER_ERROR(depth_vertex_shader_id);
 
+    // Setup depth geometry shader.
+    GLuint depth_geometry_shader_id = 0;
+    const char* depth_geometry_source_pointer = depth_geometry_shader;
+    CHECK_GL_ERROR(depth_geometry_shader_id = glCreateShader(GL_GEOMETRY_SHADER));
+    CHECK_GL_ERROR(glShaderSource(depth_geometry_shader_id, 1, &depth_geometry_source_pointer, nullptr));
+    glCompileShader(depth_geometry_shader_id);
+    CHECK_GL_SHADER_ERROR(depth_geometry_shader_id);
+
     // Setup depth fragment shader.
     GLuint depth_fragment_shader_id = 0;
     const char* depth_fragment_source_pointer = depth_fragment_shader;
@@ -778,6 +786,7 @@ CreateSphere(sphere_vertices, sphere_faces);
   GLuint depth_program_id= 0;
   CHECK_GL_ERROR(depth_program_id = glCreateProgram());
   CHECK_GL_ERROR(glAttachShader(depth_program_id, depth_vertex_shader_id));
+  CHECK_GL_ERROR(glAttachShader(depth_program_id, depth_geometry_shader_id));
   CHECK_GL_ERROR(glAttachShader(depth_program_id, depth_fragment_shader_id));
 
 
@@ -876,8 +885,8 @@ CreateSphere(sphere_vertices, sphere_faces);
 	CHECK_GL_ERROR(camera_pos_location = glGetUniformLocation(ocean_program_id, "camera_pos"));
   	GLint ocean_showOcean_location = 0;
 	CHECK_GL_ERROR(ocean_showOcean_location = glGetUniformLocation(ocean_program_id, "showOcean"));
-	GLint ocean_lightSpaceMatrix_location = 0;
-	CHECK_GL_ERROR(ocean_lightSpaceMatrix_location = glGetUniformLocation(ocean_program_id, "lightSpaceMatrix"));
+	GLint ocean_far_plane_location = 0;
+	CHECK_GL_ERROR(ocean_far_plane_location = glGetUniformLocation(ocean_program_id, "far_plane"));
   
   //set up orb program variables------------
 	// Bind attributes.
@@ -926,59 +935,90 @@ CreateSphere(sphere_vertices, sphere_faces);
   GLint boat_theta_location = 0;
   CHECK_GL_ERROR(boat_theta_location = glGetUniformLocation(boat_program_id, "boatTheta"));
 
-  //------set up uniforms (just one rlly) for depth program
+  //------set up uniforms for depth program
   CHECK_GL_ERROR(glBindAttribLocation(depth_program_id, 0, "vertex_position"));
   glLinkProgram(depth_program_id);
   CHECK_GL_PROGRAM_ERROR(depth_program_id);
-  GLint light_space_location = 0;
-  CHECK_GL_ERROR(light_space_location = glGetUniformLocation(depth_program_id, "lightSpaceMatrix"));
+  GLint lightPos_location = 0;
+  CHECK_GL_ERROR(lightPos_location = glGetUniformLocation(depth_program_id, "lightPos"));
+  GLint far_plane_location = 0;
+  CHECK_GL_ERROR(far_plane_location = glGetUniformLocation(depth_program_id, "far_plane"));
+  GLint shadowMatrix0_location = 0;
+  CHECK_GL_ERROR(shadowMatrix0_location = glGetUniformLocation(depth_program_id, "shadowMatrix0"));
+  GLint shadowMatrix1_location = 0;
+  CHECK_GL_ERROR(shadowMatrix1_location = glGetUniformLocation(depth_program_id, "shadowMatrix1"));
+  GLint shadowMatrix2_location = 0;
+  CHECK_GL_ERROR(shadowMatrix2_location = glGetUniformLocation(depth_program_id, "shadowMatrix2"));
+  GLint shadowMatrix3_location = 0;
+  CHECK_GL_ERROR(shadowMatrix3_location = glGetUniformLocation(depth_program_id, "shadowMatrix3"));
+  GLint shadowMatrix4_location = 0;
+  CHECK_GL_ERROR(shadowMatrix4_location = glGetUniformLocation(depth_program_id, "shadowMatrix4"));
+  GLint shadowMatrix5_location = 0;
+  CHECK_GL_ERROR(shadowMatrix5_location = glGetUniformLocation(depth_program_id, "shadowMatrix5"));
+
   //----shadow mapping stuff
 
 
 
   	unsigned int depthMapFBO;
-	glGenFramebuffers(1, &depthMapFBO);  
+	CHECK_GL_ERROR(glGenFramebuffers(1, &depthMapFBO));  
 
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
-	unsigned int depthMap;
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 
-	             SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); 
+	unsigned int depthCubemap;
+	CHECK_GL_ERROR(glGenTextures(1, &depthCubemap));
+	CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_2D, depthCubemap));
+	for (unsigned int i = 0; i < 6; ++i){
+		CHECK_GL_ERROR(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
+	}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+	CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+	CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+	CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));  
+
+
+	CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
+	CHECK_GL_ERROR(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthCubemap, 0));
+	CHECK_GL_ERROR(glDrawBuffer(GL_NONE));
+	CHECK_GL_ERROR(glReadBuffer(GL_NONE));
+	CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
 	//----init some vars we need--------------------------------------------------------------------------
 
 	//relocated light position
 	glm::vec4 light_position = glm::vec4(0.0f, 10.0f, 0.0f, 1.0f);
 
+	float shadowAspect = (float)SHADOW_WIDTH/(float)SHADOW_HEIGHT;
+	float shadowNear = 1.0f;
+	float shadowFar = 25.0f;
+	glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), shadowAspect, shadowNear, shadowFar);
+
+
 	float aspect = 0.0f;
 	float theta = 0.0f;
 
+	std::vector<glm::mat4> shadowTransforms;
+	glm::vec3 light_pos3 = glm::vec3(light_position);
+	shadowTransforms.push_back(shadowProj * glm::lookAt(light_pos3, light_pos3 + glm::vec3( 1.0, 0.0, 0.0), glm::vec3(0.0,-1.0, 0.0)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(light_pos3, light_pos3 + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0,-1.0, 0.0)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(light_pos3, light_pos3 + glm::vec3( 0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, 1.0)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(light_pos3, light_pos3 + glm::vec3( 0.0,-1.0, 0.0), glm::vec3(0.0, 0.0,-1.0)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(light_pos3, light_pos3 + glm::vec3( 0.0, 0.0, 1.0), glm::vec3(0.0,-1.0, 0.0)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(light_pos3, light_pos3 + glm::vec3( 0.0, 0.0,-1.0), glm::vec3(0.0,-1.0, 0.0)));
 
 	//LOOP DE DOOP----------------------------------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
 		// Setup some basic window stuff.
 
 		//configure shader and matrices
-		glm::mat4 light_projection_matrix = glm::perspective(glm::radians(45.0f), aspect, 0.0001f, 1000.0f);
-		glm::mat4 light_view_matrix = glm::lookAt(glm::vec3(light_position), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4 lightSpaceMatrix = light_projection_matrix*light_view_matrix;
-		CHECK_GL_ERROR(glUseProgram(depth_program_id));
-		glUniformMatrix4fv(light_space_location, 1, GL_FALSE, &lightSpaceMatrix[0][0]);
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		
+		CHECK_GL_ERROR(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
+		CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
+		//CHECK_GL_ERROR(glClear(GL_DEPTH_BUFFER_BIT));
+
+
 
 		glm::vec4 boat_position = fixed_boat_position;
 		//std::cout << "boat_position[0]: " << boat_position[0] << std::endl;
@@ -1052,13 +1092,6 @@ CreateSphere(sphere_vertices, sphere_faces);
 
 		int ugh = showOcean? 1 : 0;
 
-		// Compute the projection matrix.
-		aspect = static_cast<float>(window_width) / window_height;
-		glm::mat4 projection_matrix = light_projection_matrix;
-
-		// Compute the view matrix
-		glm::mat4 view_matrix = light_view_matrix;
-
 		//TODO divide by some number
 		auto current_time = ocean_clock.now() - start_time;
 		ocean_time = (float) current_time.count() / 100000000;
@@ -1071,104 +1104,57 @@ CreateSphere(sphere_vertices, sphere_faces);
 
     	glm::vec4 temp_eye = light_position;
 
-    	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
-    	CHECK_GL_ERROR(glPatchParameteri(GL_PATCH_VERTICES, 4));
-		CHECK_GL_ERROR(glUseProgram(floor_program_id));
-
-		//Update floor uniforms
-		CHECK_GL_ERROR(glUniformMatrix4fv(floor_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
-		CHECK_GL_ERROR(glUniformMatrix4fv(floor_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
-		CHECK_GL_ERROR(glUniform4fv(floor_light_position_location, 1, &light_position[0]));
-		CHECK_GL_ERROR(glUniform1f(floor_time_location, ocean_time));
-		CHECK_GL_ERROR(glUniform1i(floor_tidal_location, tidal));
-		CHECK_GL_ERROR(glUniform1i(floor_tidalX_location, tidalX));
-		CHECK_GL_ERROR(glUniform1i(floor_showOcean_location, ugh));
-
-		// draw the FLOOR (checkers)
-		if (showFloor)
-			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_triangle_faces.size() * 3, GL_UNSIGNED_INT, 0));
-
-      	//----------------RENDER THE ORB------------------------------------------
-      	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kOrbVao]));
-  		CHECK_GL_ERROR(glUseProgram(orb_program_id));
-
-      	CHECK_GL_ERROR(glUniformMatrix4fv(orb_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
-      	CHECK_GL_ERROR(glUniformMatrix4fv(orb_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
-      	CHECK_GL_ERROR(glUniform4fv(orb_light_position_location, 1, &light_position[0]));
-
-      	CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, sphere_faces.size() * 3, GL_UNSIGNED_INT, 0));
-		//----------------RENDER THE WIREFRAME------------------------------------------
-		CHECK_GL_ERROR(glUseProgram(floor_wireframe_program_id));
-    	CHECK_GL_ERROR(glPatchParameteri(GL_PATCH_VERTICES, 4));
-		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
+		// Compute the projection matrix.
+		aspect = static_cast<float>(window_width) / window_height;
 
 
-		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
-		CHECK_GL_ERROR(glUniformMatrix4fv(floor_wireframe_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
-		CHECK_GL_ERROR(glUniform4fv(floor_wireframe_light_position_location, 1, &light_position[0]));
-		CHECK_GL_ERROR(glUniform1i(outerTess_location, outerTess));
-		CHECK_GL_ERROR(glUniform1i(innerTess_location, innerTess));
-    	CHECK_GL_ERROR(glUniform1f(floor_wireframe_time_location, ocean_time));
-		CHECK_GL_ERROR(glUniform1i(floor_wireframe_tidal_location, tidal));
-		CHECK_GL_ERROR(glUniform1i(floor_wireframe_tidalX_location, tidalX));
-		CHECK_GL_ERROR(glUniform1i(floor_wireframe_showOcean_location, ugh));
-    	CHECK_GL_ERROR(glUniform4fv(floor_wireframe_camera_pos_location, 1, &temp_eye[0]));
 
-		//TODO if showing ocean have wireframe render with a pipeline that uses the ocean TES
-		//----------------RENDER THE WIREFRAME------------------------------------------
-		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
-		CHECK_GL_ERROR(glUseProgram(ocean_program_id));
+    	//---------Render the Ocean
 
-		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
-		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
-		CHECK_GL_ERROR(glUniform4fv(ocean_light_position_location, 1, &light_position[0]));
-		CHECK_GL_ERROR(glUniform1i(ocean_outerTess_location, outerTess));
-		CHECK_GL_ERROR(glUniform1i(ocean_innerTess_location, innerTess));
-		CHECK_GL_ERROR(glUniform1f(time_location, ocean_time));
-		CHECK_GL_ERROR(glUniform1i(tidal_location, tidal));
-		CHECK_GL_ERROR(glUniform1i(tidalX_location, tidalX));
-    	CHECK_GL_ERROR(glUniform1i(ocean_showOcean_location, ugh));
-		CHECK_GL_ERROR(glUniform4fv(camera_pos_location, 1, &temp_eye[0]));
-		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_lightSpaceMatrix_location, 1, GL_FALSE, &lightSpaceMatrix[0][0]));
+    	CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
 
+
+    	CHECK_GL_ERROR(glUseProgram(depth_program_id));
+
+        CHECK_GL_ERROR(glUniform1f(far_plane_location, shadowFar));
+        CHECK_GL_ERROR(glUniform4fv(lightPos_location, 1, &light_position[0]));
+
+		glUniformMatrix4fv(shadowMatrix0_location, 1, GL_FALSE, &shadowTransforms.at(0)[0][0]);
+		glUniformMatrix4fv(shadowMatrix1_location, 1, GL_FALSE, &shadowTransforms.at(1)[0][0]);
+		glUniformMatrix4fv(shadowMatrix2_location, 1, GL_FALSE, &shadowTransforms.at(2)[0][0]);
+		glUniformMatrix4fv(shadowMatrix3_location, 1, GL_FALSE, &shadowTransforms.at(3)[0][0]);
+		glUniformMatrix4fv(shadowMatrix4_location, 1, GL_FALSE, &shadowTransforms.at(4)[0][0]);
+		glUniformMatrix4fv(shadowMatrix5_location, 1, GL_FALSE, &shadowTransforms.at(5)[0][0]);
 
 		if (showOcean){
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
 		}
 
-
-
 	    //----------------RENDER THE BOAT------------------------------------------
 	    CHECK_GL_ERROR(glBindVertexArray(g_array_objects[KBoatVao]));
-		CHECK_GL_ERROR(glUseProgram(boat_program_id));
+	    CHECK_GL_ERROR(glUseProgram(depth_program_id));
 
-	    CHECK_GL_ERROR(glUniformMatrix4fv(boat_projection_matrix_location, 1, GL_FALSE, &projection_matrix[0][0]));
-	    CHECK_GL_ERROR(glUniformMatrix4fv(boat_view_matrix_location, 1, GL_FALSE, &view_matrix[0][0]));
-	    CHECK_GL_ERROR(glUniform4fv(boat_light_position_location, 1, &light_position[0]));
-	    //MODIFY BOAT POSITION TO HAVE THE HEIGHT FOR THIS GIVEN TIME
+        CHECK_GL_ERROR(glUniform1f(far_plane_location, shadowFar));
+        CHECK_GL_ERROR(glUniform4fv(lightPos_location, 1, &light_position[0]));
 
-	    CHECK_GL_ERROR(glUniform4fv(boat_translate_by_location, 1, &boat_position[0]));
-	    CHECK_GL_ERROR(glUniform1i(boat_outerTess_location, 1));
-	    CHECK_GL_ERROR(glUniform1i(boat_innerTess_location, 1));
-	    CHECK_GL_ERROR(glUniform1f(boat_time_location, ocean_time));
-	    CHECK_GL_ERROR(glUniform1i(boat_tidal_location, 0));
-	    CHECK_GL_ERROR(glUniform1i(boat_tidalX_location, tidalX));
-	    CHECK_GL_ERROR(glUniform1i(boat_showOcean_location, 0));
-	    CHECK_GL_ERROR(glUniform4fv(boat_camera_pos_location, 1, &temp_eye[0]));
-	    CHECK_GL_ERROR(glUniform1f(boat_theta_location, boatTheta));
-
+		glUniformMatrix4fv(shadowMatrix0_location, 1, GL_FALSE, &shadowTransforms.at(0)[0][0]);
+		glUniformMatrix4fv(shadowMatrix1_location, 1, GL_FALSE, &shadowTransforms.at(1)[0][0]);
+		glUniformMatrix4fv(shadowMatrix2_location, 1, GL_FALSE, &shadowTransforms.at(2)[0][0]);
+		glUniformMatrix4fv(shadowMatrix3_location, 1, GL_FALSE, &shadowTransforms.at(3)[0][0]);
+		glUniformMatrix4fv(shadowMatrix4_location, 1, GL_FALSE, &shadowTransforms.at(4)[0][0]);
+		glUniformMatrix4fv(shadowMatrix5_location, 1, GL_FALSE, &shadowTransforms.at(5)[0][0]);
 
 	    CHECK_GL_ERROR(glDrawElements(GL_PATCHES, boat_faces.size() * 4, GL_UNSIGNED_INT, 0));
 
-	    // second pass stuff below
-	    
+	    //------------SECOND PASS BELOW-----------------------
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glfwGetFramebufferSize(window, &window_width, &window_height);
 		glViewport(0, 0, window_width, window_height);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
+		glBindTexture(GL_TEXTURE_2D, depthCubemap);
 		glDepthFunc(GL_LESS);
 		
 		
@@ -1177,15 +1163,14 @@ CreateSphere(sphere_vertices, sphere_faces);
 		}
 		// Compute the projection matrix.
 		aspect = static_cast<float>(window_width) / window_height;
-		projection_matrix = glm::perspective(glm::radians(45.0f), aspect, 0.0001f, 1000.0f);
+		glm::mat4 projection_matrix = glm::perspective(glm::radians(45.0f), aspect, 0.0001f, 1000.0f);
 
 		// Compute the view matrix
-		view_matrix = g_camera.get_view_matrix();
+		glm::mat4 view_matrix = g_camera.get_view_matrix();
 
     	temp_eye = glm::vec4(g_camera.eye[0], g_camera.eye[1], g_camera.eye[2], 1.0f);
 
 
- 
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kFloorVao]));
     	CHECK_GL_ERROR(glPatchParameteri(GL_PATCH_VERTICES, 4));
 		CHECK_GL_ERROR(glUseProgram(floor_program_id));
@@ -1230,7 +1215,7 @@ CreateSphere(sphere_vertices, sphere_faces);
     	CHECK_GL_ERROR(glUniform4fv(floor_wireframe_camera_pos_location, 1, &temp_eye[0]));
 
 		//TODO if showing ocean have wireframe render with a pipeline that uses the ocean TES
-		//----------------RENDER THE WIREFRAME------------------------------------------
+		//----------------RENDER THE OCEAN------------------------------------------
 		CHECK_GL_ERROR(glBindVertexArray(g_array_objects[kWireframeVao]));
 		CHECK_GL_ERROR(glUseProgram(ocean_program_id));
 
@@ -1244,8 +1229,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 		CHECK_GL_ERROR(glUniform1i(tidalX_location, tidalX));
     	CHECK_GL_ERROR(glUniform1i(ocean_showOcean_location, ugh));
 		CHECK_GL_ERROR(glUniform4fv(camera_pos_location, 1, &temp_eye[0]));
-		CHECK_GL_ERROR(glUniformMatrix4fv(ocean_lightSpaceMatrix_location, 1, GL_FALSE, &lightSpaceMatrix[0][0]));
-
+		CHECK_GL_ERROR(glUniform1f(ocean_far_plane_location, shadowFar));
 
 		if (showOcean){
 			CHECK_GL_ERROR(glDrawElements(GL_PATCHES, floor_quad_faces.size() * 4, GL_UNSIGNED_INT, 0));
