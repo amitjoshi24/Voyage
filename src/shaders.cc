@@ -235,7 +235,6 @@ uniform int outerTess;
 uniform int innerTess;
 in vec4 vs_light_direction[];
 out vec4 vs_light_direction4[];
-
 void main()
 {
 
@@ -251,8 +250,7 @@ void main()
 	}
 
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
-	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
-
+		vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
 }
 )zzz";
 
@@ -340,7 +338,6 @@ uniform int tidal;
 in vec4 vs_light_direction[];
 out vec4 vs_light_direction4[];
 
-
 out vec4 tidal_normals[];
 
 void main()
@@ -389,7 +386,6 @@ void main()
 	//TODO potentially tweak normals here too, to account for the tidal wave
   gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
-
 }
 )zzz";
 
@@ -512,32 +508,14 @@ void main(void)
 		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
 		vec4 light2 = mix(vs_light_direction4[3], vs_light_direction4[2], gl_TessCoord.x);
 		vs_light_direction = mix(light1, light2, gl_TessCoord.y);
-}		
-
-
-)zzz";
-
-const char* ocean_vertex_shader =
-R"zzz(#version 330 core
-in vec4 vertex_position;
-uniform vec4 light_position;
-
-out vec4 vs_light_direction;
-void main()
-{
-	gl_Position = vertex_position;
-	vs_light_direction = -gl_Position + light_position;
 }
+
 )zzz";
 
 const char* ocean_geometry_shader =
 R"zzz(#version 330 core
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
-
-
-
-
 uniform mat4 projection;
 uniform mat4 view;
 uniform vec4 camera_pos; //homogenous point, (xyzw) w= 1
@@ -578,25 +556,6 @@ uniform float ocean_time;
 uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
-uniform float far_plane;
-
-
-uniform samplerCube depthMap;
-
-float shadowCalculation(vec4 fragPos){
-	vec3 fragToLight = fragPos.xyz - light_position.xyz;
-    // use the light to fragment vector to sample from the depth map    
-    float closestDepth = texture(depthMap, fragToLight).r;
-    // it is currently in linear range between [0,1]. Re-transform back to original value
-    closestDepth *= far_plane;
-    // now get current linear depth as the length between the fragment and light position
-    float currentDepth = length(fragToLight);
-    // now test for shadows
-    float bias = 0.05; 
-    float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
-    return shadow;
-
-}
 void main(){
 
 	vec4 nlight_direction = normalize(light_direction);
@@ -635,8 +594,7 @@ void main(){
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	vec4 specular_component = dot_nl*(k_s*pow(cameraReflectDot, alpha)*light_color);
 
-	float shadow = shadowCalculation(global_coords);
-	vec4 color = (shadow*ambient_component) + (shadow*diffuse_component) + (shadow*specular_component);
+	vec4 color = ambient_component + diffuse_component + specular_component;
 	color = shadowMultiplier * color;
 	color[3] = 1;
 	//made it so dot_nl only multiplies specular comp
@@ -741,6 +699,7 @@ void main(){
 	}
 	else{
 		fragment_color = clamp(color, 0.0, 1.0);
+
 	}
 }
 )zzz";
@@ -792,236 +751,4 @@ void main()
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
 }
-)zzz";
-
-const char* depth_boat_vertex_shader =
-R"zzz(#version 330 core
-in vec4 vertex_position;
-uniform vec4 light_position;
-uniform vec4 translate_by;
-uniform float boatTheta;
-out vec4 vs_light_direction;
-void main()
-{
-	//multiply by model matrix
-	gl_Position[0] = (cos(boatTheta)*vertex_position[0]) - (sin(boatTheta)*vertex_position[2]) + translate_by[0];
-	gl_Position[1] = vertex_position[1] + translate_by[1];
-	gl_Position[2] = (sin(boatTheta)*vertex_position[0]) + (cos(boatTheta)*vertex_position[2]) + translate_by[2];
-	gl_Position[3] = vertex_position[3];
-
-
-
-	vs_light_direction = -gl_Position + light_position;
-}
-)zzz";
-
-const char* depth_boat_geometry_shader = 
-R"zzz(#version 330 core
-layout (quads) in;
-layout (lines_adjacency, max_vertices=24) out;
-
-uniform mat4 shadowMatrix0;
-uniform mat4 shadowMatrix1;
-uniform mat4 shadowMatrix2;
-uniform mat4 shadowMatrix3;
-uniform mat4 shadowMatrix4;
-uniform mat4 shadowMatrix5;
-
-out vec4 FragPos; // FragPos from GS (output per emitvertex)
-
-void main()
-{
-	mat4 shadowMatrices[6];
-	shadowMatrices[0] = shadowMatrix0;
-	shadowMatrices[1] = shadowMatrix1;
-	shadowMatrices[2] = shadowMatrix2;
-	shadowMatrices[3] = shadowMatrix3;
-	shadowMatrices[4] = shadowMatrix4;
-	shadowMatrices[5] = shadowMatrix5;
-    for(int face = 0; face < 6; ++face)
-    {
-        gl_Layer = face; // built-in variable that specifies to which face we render.
-        for(int i = 0; i < 4; ++i) // for each quad vertex
-        {
-            FragPos = gl_in[i].gl_Position;
-            gl_Position = FragPos;
-            EmitVertex();
-        }    
-        EndPrimitive();
-    }
-}  
-)zzz";
-
-const char* depth_boat_fragment_shader =
-R"zzz(#version 330 core
-in vec4 FragPos;
-
-uniform vec4 lightPos;
-uniform float far_plane;
-void main()
-{
-    // get distance between fragment and light source
-    float lightDistance = length(FragPos.xyz - lightPos.xyz);
-    
-    // map to [0;1] range by dividing by far_plane
-    lightDistance = lightDistance / far_plane;
-    
-    // write this as modified depth
-    gl_FragDepth = lightDistance;
-}
-)zzz";
-
-const char* depth_ocean_vertex_shader =
-R"zzz(#version 330 core
-in vec4 vertex_position;
-uniform vec4 light_position;
-
-out vec4 vs_light_direction;
-void main()
-{
-	gl_Position = vertex_position;
-	vs_light_direction = -gl_Position + light_position;
-}
-)zzz";
-
-
-const char* depth_ocean_geometry_shader =
-R"zzz(#version 330 core
-layout (triangles) in;
-layout (triangle_strip, max_vertices = 18) out;
-
-uniform mat4 shadowMatrix0;
-uniform mat4 shadowMatrix1;
-uniform mat4 shadowMatrix2;
-uniform mat4 shadowMatrix3;
-uniform mat4 shadowMatrix4;
-uniform mat4 shadowMatrix5;
-
-uniform vec4 camera_pos; //homogenous point, (xyzw) w= 1
-in vec4 vs_light_direction[];
-in vec4 ocean_normal[];
-out vec4 normal;
-out vec4 global_coords;
-out vec4 light_direction;
-out vec4 camera_direction;
-out vec4 world_coordinates;
-
-void main()
-{
-	mat4 shadowMatrices[6];
-	shadowMatrices[0] = shadowMatrix0;
-	shadowMatrices[1] = shadowMatrix1;
-	shadowMatrices[2] = shadowMatrix2;
-	shadowMatrices[3] = shadowMatrix3;
-	shadowMatrices[4] = shadowMatrix4;
-	shadowMatrices[5] = shadowMatrix5;
-	for(int face = 0; face < 6; ++face)
-    {
-        gl_Layer = face; // built-in variable that specifies to which face we render.
-
-		for (int n = 0; n < 3; n++) {
-
-			light_direction = vs_light_direction[n];
-			normal = ocean_normal[n];
-			global_coords = gl_in[n].gl_Position;
-			world_coordinates = gl_in[n].gl_Position;
-			camera_direction = -gl_in[n].gl_Position + camera_pos;
-			FragPos = gl_in[i].gl_Position;
-			gl_Position = shadowMatrices[face] * gl_in[n].gl_Position;
-			EmitVertex();
-		}
-		EndPrimitive();
-	}
-}
-)zzz";
-
-const char* depth_ocean_fragment_shader =
-R"zzz(#version 330 core
-in vec4 FragPos;
-
-uniform vec4 lightPos;
-uniform float far_plane;
-
-void main()
-{             
-    // get distance between fragment and light source
-    float lightDistance = length(FragPos.xyz - lightPos.xyz);
-    
-    // map to [0;1] range by dividing by far_plane
-    lightDistance = lightDistance / far_plane;
-    
-    // write this as modified depth
-    gl_FragDepth = lightDistance;
-}  
-)zzz";
-
-
-const char* depth_vertex_shader = 
-R"zzz(#version 330 core
-layout (location = 0)
-
-in vec4 vertex_position;
-
-void main()
-{
-    gl_Position = vertex_position;
-}  
-)zzz";
-
-const char* depth_geometry_shader = 
-R"zzz(#version 330 core
-layout (quads) in;
-layout (lines_adjacency, max_vertices=24) out;
-
-uniform mat4 shadowMatrix0;
-uniform mat4 shadowMatrix1;
-uniform mat4 shadowMatrix2;
-uniform mat4 shadowMatrix3;
-uniform mat4 shadowMatrix4;
-uniform mat4 shadowMatrix5;
-
-
-out vec4 FragPos; // FragPos from GS (output per emitvertex)
-
-void main()
-{
-	/*mat4 shadowMatrices[6];
-	shadowMatrices[0] = shadowMatrix0;
-	shadowMatrices[1] = shadowMatrix1;
-	shadowMatrices[2] = shadowMatrix2;
-	shadowMatrices[3] = shadowMatrix3;
-	shadowMatrices[4] = shadowMatrix4;
-	shadowMatrices[5] = shadowMatrix5;*/
-    for(int face = 0; face < 6; ++face)
-    {
-        gl_Layer = face; // built-in variable that specifies to which face we render.
-        for(int i = 0; i < 3; ++i) // for each triangle vertex
-        {
-            FragPos = gl_in[i].gl_Position;
-            gl_Position = shadowMatrices[face] * FragPos;
-            EmitVertex();
-        }    
-        EndPrimitive();
-    }
-}  
-)zzz";
-
-const char* depth_fragment_shader =
-R"zzz(#version 330 core
-in vec4 FragPos;
-
-uniform vec4 lightPos;
-uniform float far_plane;
-
-void main()
-{             
-    // get distance between fragment and light source
-    float lightDistance = length(FragPos.xyz - lightPos.xyz);
-    
-    // map to [0;1] range by dividing by far_plane
-    lightDistance = lightDistance / far_plane;
-    
-    // write this as modified depth
-    gl_FragDepth = lightDistance;
-}  
 )zzz";
