@@ -235,6 +235,7 @@ uniform int outerTess;
 uniform int innerTess;
 in vec4 vs_light_direction[];
 out vec4 vs_light_direction4[];
+
 void main()
 {
 
@@ -250,7 +251,8 @@ void main()
 	}
 
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
-		vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
+	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
+
 }
 )zzz";
 
@@ -338,6 +340,7 @@ uniform int tidal;
 in vec4 vs_light_direction[];
 out vec4 vs_light_direction4[];
 
+
 out vec4 tidal_normals[];
 
 void main()
@@ -386,6 +389,7 @@ void main()
 	//TODO potentially tweak normals here too, to account for the tidal wave
   gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 	vs_light_direction4[gl_InvocationID] = vs_light_direction[gl_InvocationID];
+
 }
 )zzz";
 
@@ -407,7 +411,9 @@ uniform float ocean_time;
 uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
+uniform mat4 lightSpaceMatrix;
 out vec4 vs_light_direction;
+out vec4 frag_pos_light_space;
 out vec4 ocean_normal;
 void main(void)
 {
@@ -508,8 +514,23 @@ void main(void)
 		vec4 light1 = mix(vs_light_direction4[0], vs_light_direction4[1], gl_TessCoord.x);
 		vec4 light2 = mix(vs_light_direction4[3], vs_light_direction4[2], gl_TessCoord.x);
 		vs_light_direction = mix(light1, light2, gl_TessCoord.y);
-}
+		frag_pos_light_space = lightSpaceMatrix*gl_Position;
+}		
 
+
+)zzz";
+
+const char* ocean_vertex_shader =
+R"zzz(#version 330 core
+in vec4 vertex_position;
+uniform vec4 light_position;
+
+out vec4 vs_light_direction;
+void main()
+{
+	gl_Position = vertex_position;
+	vs_light_direction = -gl_Position + light_position;
+}
 )zzz";
 
 const char* ocean_geometry_shader =
@@ -521,11 +542,13 @@ uniform mat4 view;
 uniform vec4 camera_pos; //homogenous point, (xyzw) w= 1
 in vec4 vs_light_direction[];
 in vec4 ocean_normal[];
+in vec4 frag_pos_light_space[];
 out vec4 normal;
 out vec4 global_coords;
 out vec4 light_direction;
 out vec4 camera_direction;
 out vec4 world_coordinates;
+out vec4 fpls;
 
 void main()
 {
@@ -536,6 +559,7 @@ void main()
 		global_coords = gl_in[n].gl_Position;
 		world_coordinates = gl_in[n].gl_Position;
 		camera_direction = -gl_in[n].gl_Position + camera_pos;
+		fpls = frag_pos_light_space[n];
 		gl_Position = projection * view * gl_in[n].gl_Position;
 		EmitVertex();
 	}
@@ -550,12 +574,33 @@ in vec4 global_coords;
 in vec4 light_direction;
 in vec4 camera_direction;
 in vec4 world_coordinates;
+in vec4 fpls;
 out vec4 fragment_color;
 uniform vec4 light_position;
 uniform float ocean_time;
 uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
+
+
+uniform sampler2D depthMap;
+
+float shadowCalculation(vec4 fragPosLightSpace){
+	// perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(depthMap, projCoords.xy).r;
+    if(closestDepth < 0.9997){
+    	return 0;
+    } 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+    return shadow;
+}
 void main(){
 
 	vec4 nlight_direction = normalize(light_direction);
@@ -594,7 +639,8 @@ void main(){
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	vec4 specular_component = dot_nl*(k_s*pow(cameraReflectDot, alpha)*light_color);
 
-	vec4 color = ambient_component + diffuse_component + specular_component;
+	float shadow = shadowCalculation(fpls);
+	vec4 color = (shadow*ambient_component) + (shadow*diffuse_component) + (shadow*specular_component);
 	color = shadowMultiplier * color;
 	color[3] = 1;
 	//made it so dot_nl only multiplies specular comp
@@ -699,7 +745,6 @@ void main(){
 	}
 	else{
 		fragment_color = clamp(color, 0.0, 1.0);
-
 	}
 }
 )zzz";
@@ -751,4 +796,27 @@ void main()
 	dot_nl = clamp(dot_nl, 0.0, 1.0);
 	fragment_color = clamp(dot_nl * color, 0.0, 1.0);
 }
+)zzz";
+
+const char* depth_vertex_shader = 
+R"zzz(#version 330 core
+layout (location = 0)
+
+in vec4 vertex_position;
+
+uniform mat4 lightSpaceMatrix;
+
+void main()
+{
+    gl_Position = lightSpaceMatrix * vertex_position;
+}  
+)zzz";
+
+const char* depth_fragment_shader =
+R"zzz(#version 330 core
+
+void main()
+{             
+    // gl_FragDepth = gl_FragCoord.z;
+}  
 )zzz";

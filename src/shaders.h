@@ -12,6 +12,7 @@ extern const char* floor_wireframe_tesselation_evaluation_shader;
 extern const char* floor_wireframe_geometry_shader;
 extern const char* floor_wireframe_fragment_shader;
 //-----------------------------------------------------------------------------
+extern const char* ocean_vertex_shader;
 extern const char* ocean_tesselation_control_shader;
 extern const char* ocean_tesselation_evaluation_shader;
 extern const char* ocean_geometry_shader;
@@ -25,3 +26,7 @@ extern const char* orb_vertex_shader;
 extern const char* boat_vertex_shader;
 
 extern const char* boat_fragment_shader;
+
+//----------
+extern const char* depth_vertex_shader;
+extern const char* depth_fragment_shader;
