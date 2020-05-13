@@ -960,7 +960,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 	//----init some vars we need--------------------------------------------------------------------------
 
 	//relocated light position
-	glm::vec4 light_position = glm::vec4(-4.0f, 10.0f, 0.0f, 1.0f);
+	glm::vec4 light_position = glm::vec4(0.0f, 10.0f, 0.0f, 1.0f);
 
 	float aspect = 0.0f;
 	float theta = 0.0f;
@@ -1160,7 +1160,8 @@ CreateSphere(sphere_vertices, sphere_faces);
 
 	    CHECK_GL_ERROR(glDrawElements(GL_PATCHES, boat_faces.size() * 4, GL_UNSIGNED_INT, 0));
 
-
+	    // second pass stuff below
+	    
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glfwGetFramebufferSize(window, &window_width, &window_height);
 		glViewport(0, 0, window_width, window_height);
@@ -1170,7 +1171,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 		glDepthFunc(GL_LESS);
 		
-		// second pass stuff below
+		
 		if(fps){
 			g_camera.setPos(boat_position, boat_direction);
 		}
