@@ -1,5 +1,9 @@
 Amit Joshi Voyage Graphics Final Project Readme
 
+Amit Joshi
+aj29432
+
+
 To run: Simply do "./run.sh"  You may need to update the cmake folder to contain the
 correct locations of glew and glfw for your own computer.
 
@@ -18,6 +22,8 @@ So to go to default view, press Q.  And if that doesn't work, then you are still
 in fps mode, so press C and then Q.
 
 Pictures:  All pictures are in the pictures folder, with descriptive names
+
+Report: the report can be found in the report.pdf folder.
 
 ecis survey: I filled out the ecis survey for this class
 
