@@ -236,6 +236,7 @@ Camera g_camera;
 int outerTess = 3;
 int innerTess = 2;
 bool showOcean = true;
+bool additiveBlending = false;
 bool fps = false;
 bool showWireframe = true;
 bool showFloor = true;
@@ -317,6 +318,9 @@ KeyCallback(GLFWwindow* window,
 		fixed_boat_position -= boatSpeed*boat_direction;
 		if(fps)
 			g_camera.setPos(glm::vec3(fixed_boat_position), glm::vec3(boat_direction));
+	}
+	else if(key == GLFW_KEY_B && action != GLFW_RELEASE) {
+		additiveBlending = !additiveBlending;
 	}
 	
 	if (!g_menger)
@@ -844,6 +848,8 @@ CreateSphere(sphere_vertices, sphere_faces);
 	CHECK_GL_ERROR(camera_pos_location = glGetUniformLocation(ocean_program_id, "camera_pos"));
   GLint ocean_showOcean_location = 0;
 	CHECK_GL_ERROR(ocean_showOcean_location = glGetUniformLocation(ocean_program_id, "showOcean"));
+	GLint ocean_additiveBlending_location = 0;
+	CHECK_GL_ERROR(ocean_additiveBlending_location = glGetUniformLocation(ocean_program_id, "additiveBlending"));
   //set up orb program variables------------
 	// Bind attributes.
 	CHECK_GL_ERROR(glBindAttribLocation(orb_program_id, 0, "vertex_position"));
@@ -1100,6 +1106,7 @@ CreateSphere(sphere_vertices, sphere_faces);
 		CHECK_GL_ERROR(glUniform1i(tidalX_location, tidalX));
     CHECK_GL_ERROR(glUniform1i(ocean_showOcean_location, ugh));
 		CHECK_GL_ERROR(glUniform4fv(camera_pos_location, 1, &temp_eye[0]));
+		CHECK_GL_ERROR(glUniform1i(ocean_additiveBlending_location, (additiveBlending ? 1 : 0)));
 
 
 		if (showOcean)

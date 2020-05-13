@@ -556,6 +556,7 @@ uniform float ocean_time;
 uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
+uniform int additiveBlending;
 void main(){
 
 	vec4 nlight_direction = normalize(light_direction);
@@ -694,8 +695,8 @@ void main(){
   	float lavanya_dot_nl = dot(normalize(new_light_direction), normalize(ocean_normal));
   	lavanya_dot_nl = clamp(lavanya_dot_nl, 0.0, 1.0);
   	vec4 floor_color = clamp(lavanya_dot_nl*sandColor, 0.0, 1.0);
-  	if(false){
-		fragment_color = clamp(color*0.5 + floor_color*0.5, 0.0, 1.0);
+  	if(additiveBlending == 1){
+		fragment_color = clamp(color*0.7 + floor_color*0.3, 0.0, 1.0);
 	}
 	else{
 		fragment_color = clamp(color, 0.0, 1.0);
