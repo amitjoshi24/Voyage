@@ -3,6 +3,7 @@ Amit Joshi Voyage Graphics Final Project Readme
 Amit Joshi
 aj29432
 
+Starter code from amit and dora's menger sponge, but this is only amit's final project
 
 To run: Simply do "./run.sh"  You may need to update the cmake folder to contain the
 correct locations of glew and glfw for your own computer.
@@ -16,6 +17,8 @@ Move boat forward: I
 Move boat backward: K
 
 FPS mode on/off: C
+
+Additive Blending for Over-Water Caustics on/off: B
 
 Default view (third person): Q (must turn FPS mode off before tapping Q)
 So to go to default view, press Q.  And if that doesn't work, then you are still
