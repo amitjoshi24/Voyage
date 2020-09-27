@@ -14,7 +14,8 @@
 
 // OpenGL library includes
 #include <GL/glew.h>
-
+#include <chrono>
+using namespace std::chrono;
 #include <GLFW/glfw3.h>
 #include <debuggl.h>
 #include "menger.h"
