@@ -25,3 +25,9 @@ extern const char* orb_vertex_shader;
 extern const char* boat_vertex_shader;
 
 extern const char* boat_fragment_shader;
+//------------------------------------------------------------------------------
+extern const char* depth_boat_vertex_shader;
+extern const char* depth_boat_tesselation_control_shader;
+extern const char* depth_boat_tesselation_evaluation_shader;
+extern const char* depth_boat_geometry_shader;
+extern const char* depth_boat_fragment_shader;

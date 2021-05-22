@@ -108,7 +108,7 @@ uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
 uniform vec4 light_position;
-
+uniform samplerCube depthMap;
 void main()
 {
 	vec4 color = vec4(1.0f, 1.0f, 0.811f, 1.0f);
@@ -202,14 +202,35 @@ void main()
 
 		  	float dot_nl = dot(normalize(new_light_direction), normalize(ocean_normal));
 		  	dot_nl = clamp(dot_nl, 0.0, 1.0);
-			fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+
+			vec3 fragToLight = world_coordinates.xyz - light_position.xyz; 
+		    float closestDepth = texture(depthMap, fragToLight).r;
+
+		    closestDepth *= 25; // change to actually use a variable pls cutie ok i love u so much
+		    float currentDepth = length(fragToLight);  
+
+		    float bias = 0.05; 
+			float shadow = currentDepth - bias > closestDepth ? 0.24 : 1.0;   
+
+			fragment_color = clamp(shadow * dot_nl * color, 0.0, 1.0);
 
 	}
 	else{
 		color = vec4(1.0f, 1.0f, 0.811f, 1.0f);
 		float dot_nl = dot(normalize(light_direction), normalize(normal));
 		dot_nl = clamp(dot_nl, 0.0, 1.0);
-		fragment_color = clamp(dot_nl * color, 0.0, 1.0);
+
+
+		vec3 fragToLight = world_coordinates.xyz - light_position.xyz; 
+	    float closestDepth = texture(depthMap, fragToLight).r;
+
+	    closestDepth *= 25; // change to actually use a variable pls cutie ok i love u so much
+	    float currentDepth = length(fragToLight);  
+
+	    float bias = 0.05; 
+		float shadow = currentDepth - bias > closestDepth ? 0.24 : 1.0;   
+
+		fragment_color = clamp(shadow * (dot_nl * color), 0.0, 1.0);
 	}
 
 
@@ -557,6 +578,8 @@ uniform int showOcean;
 uniform int tidalX;
 uniform int tidal;
 uniform int additiveBlending;
+
+uniform samplerCube depthMap;
 void main(){
 
 	vec4 nlight_direction = normalize(light_direction);
@@ -692,15 +715,27 @@ void main(){
   	vec4 new_light_direction = light_position - vec4(world_coordinates.x, world_coordinates.y + h, world_coordinates.z, 1);
   	
 
-  	float lavanya_dot_nl = dot(normalize(new_light_direction), normalize(ocean_normal));
-  	lavanya_dot_nl = clamp(lavanya_dot_nl, 0.0, 1.0);
-  	vec4 floor_color = clamp(lavanya_dot_nl*sandColor, 0.0, 1.0);
+  	float cutie_dot_nl = dot(normalize(new_light_direction), normalize(ocean_normal));
+  	cutie_dot_nl = clamp(cutie_dot_nl, 0.0, 1.0);
+  	vec4 floor_color = clamp(cutie_dot_nl*sandColor, 0.0, 1.0);
+
+  	
+  	vec3 fragToLight = world_coordinates.xyz - light_position.xyz; 
+    float closestDepth = texture(depthMap, fragToLight).r;
+
+    closestDepth *= 25; // change to actually use a variable pls cutie ok i love u so much
+    float currentDepth = length(fragToLight);  
+
+    float bias = 0.05; 
+	float shadow = currentDepth - bias > closestDepth ? 0.24 : 1.0;   
+	if(closestDepth == 0){
+		shadow = 0.5;
+	}
   	if(additiveBlending == 1){
-		fragment_color = clamp(color*0.7 + floor_color*0.3, 0.0, 1.0);
+		fragment_color = clamp(shadow * (color*0.7 + floor_color*0.3), 0.0, 1.0);
 	}
 	else{
-		fragment_color = clamp(color, 0.0, 1.0);
-
+		fragment_color = clamp(shadow * color, 0.0, 1.0);
 	}
 }
 )zzz";
@@ -721,6 +756,114 @@ void main()
 }
 )zzz";
 
+const char* depth_boat_vertex_shader =
+R"zzz(#version 330 core
+in vec4 vertex_position;
+uniform vec4 light_position;
+uniform vec4 translate_by;
+uniform float boatTheta;
+void main()
+{
+	//multiply by model matrix
+	gl_Position[0] = (cos(boatTheta)*vertex_position[0]) - (sin(boatTheta)*vertex_position[2]) + translate_by[0];
+	gl_Position[1] = vertex_position[1] + translate_by[1];
+	gl_Position[2] = (sin(boatTheta)*vertex_position[0]) + (cos(boatTheta)*vertex_position[2]) + translate_by[2];
+	gl_Position[3] = vertex_position[3];
+}
+)zzz";
+
+const char* depth_boat_tesselation_control_shader =
+R"zzz(#version 410 core
+layout (vertices = 4) out;
+void main()
+{
+
+	if (gl_InvocationID == 0){
+
+	    gl_TessLevelInner[0] = 1;
+	    gl_TessLevelInner[1] = 1;
+	    gl_TessLevelOuter[0] = 1;
+	    gl_TessLevelOuter[1] = 1;
+		gl_TessLevelOuter[2] = 1;
+	    gl_TessLevelOuter[3] = 1;
+
+	}
+
+    gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
+}
+)zzz";
+
+//run on tesselated patch
+const char* depth_boat_tesselation_evaluation_shader =
+R"zzz(#version 410 core
+layout (quads, equal_spacing) in;
+in vec4 vs_light_direction4[];
+out vec4 vs_light_direction;
+void main(void)
+{
+		//world coordinates
+    vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
+    vec4 p2 = mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x);
+    gl_Position = mix(p1, p2, gl_TessCoord.y);
+
+}
+
+)zzz";
+
+const char* depth_boat_geometry_shader =
+R"zzz(#version 330 core
+layout (triangles) in;
+layout (triangle_strip, max_vertices=18) out;
+
+uniform mat4 shadowMatrix1;
+uniform mat4 shadowMatrix2;
+uniform mat4 shadowMatrix3;
+uniform mat4 shadowMatrix4;
+uniform mat4 shadowMatrix5;
+uniform mat4 shadowMatrix6;
+
+out vec4 FragPos; // FragPos from GS (output per emitvertex)
+
+void main()
+{
+
+	mat4 shadowMatrices[6] = mat4[6](shadowMatrix1, shadowMatrix2, shadowMatrix3, shadowMatrix4, shadowMatrix5, shadowMatrix6);
+    for(int face = 0; face < 6; ++face)
+    {
+        gl_Layer = face; // built-in variable that specifies to which face we render.
+        for(int i = 0; i < 3; ++i) // for each triangle vertex
+        {
+            FragPos = gl_in[i].gl_Position;
+            gl_Position = shadowMatrices[face] * FragPos;
+            EmitVertex();
+        }    
+        EndPrimitive();
+    }
+}  
+
+)zzz";
+
+const char* depth_boat_fragment_shader = 
+
+R"zzz(#version 330 core
+in vec4 FragPos;
+
+uniform vec4 light_position;
+uniform float far_plane;
+
+void main()
+{
+    // get distance between fragment and light source
+    float lightDistance = length(FragPos.xyz - light_position.xyz);
+    
+    // map to [0;1] range by dividing by far_plane
+    lightDistance = lightDistance / far_plane;
+    
+    // write this as modified depth
+    gl_FragDepth = lightDistance;
+}  
+
+)zzz";
 
 const char* boat_vertex_shader =
 R"zzz(#version 330 core
@@ -743,6 +886,7 @@ void main()
 const char* boat_fragment_shader =
 R"zzz(#version 330 core
 flat in vec4 normal;
+uniform vec4 light_position;
 in vec4 light_direction;
 out vec4 fragment_color;
 void main()

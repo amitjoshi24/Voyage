@@ -1,8 +1,8 @@
 FIND_PACKAGE(GLEW REQUIRED)
 
 if (APPLE)
-         set(GLEW_INCLUDE_DIRS "/usr/local/Cellar/glew/2.1.0_1/include")
-         set(GLEW_LIBRARIES "/usr/local/Cellar/glew/2.1.0_1/lib/libGlEW.a")
+         set(GLEW_INCLUDE_DIRS "/usr/local/Cellar/glew/2.2.0_1/include")
+         set(GLEW_LIBRARIES "/usr/local/Cellar/glew/2.2.0_1/lib/libGlEW.a")
 endif ()
 INCLUDE_DIRECTORIES(${GLEW_INCLUDE_DIRS})
 LINK_LIBRARIES(${GLEW_LIBRARIES})
